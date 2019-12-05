@@ -28,6 +28,11 @@ assert(SQL_SERVER, 'SQL_SERVER value not found in .env file.');
 assert(SQL_DATABASE, 'SQL_DATABASE value not found in .env file.');
 assert(SQL_USER, 'SQL_USER value not found in .env file.');
 assert(SQL_PASSWORD, 'SQL_PASSWORD value not found in .env file.');
+assert(RATE_MSG_PER, 'RATE_MSG_PER value not found in .env file.');
+assert(
+  RATE_TIME_BETWEEN_MSG,
+  'RATE_TIME_BETWEEN_MSG value not found in .env file.'
+);
 
 //
 // Setup the express server:
@@ -36,7 +41,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname + '/public/views'));
 app.set('port', PORT);
 app.use(cors());
-app.use(express.static(path.join(__dirname + '/public')));
+//app.use(express.static(path.join(__dirname + '/public')));
 app.use(express.json());
 
 //
@@ -68,6 +73,9 @@ app.get('/chirp', (req, res) => {
   });
 });
 
+//
+// Validates that a Chirp is properly formatted:
+//
 const isValidChirp = data => {
   if (
     data.name &&
@@ -83,7 +91,9 @@ const isValidChirp = data => {
 //
 // Rate limit posts:
 //
-app.use(rateLimit({ windowMs: 30 * 1000, max: 5 }));
+app.use(
+  rateLimit({ windowMs: RATE_TIME_BETWEEN_MSG * 1000, max: RATE_MSG_PER })
+);
 
 app.post('/chirp', (req, res) => {
   if (isValidChirp(req.body)) {
