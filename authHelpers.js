@@ -1,0 +1,39 @@
+const assert = require('assert');
+//const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
+const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = process.env;
+
+assert(
+  ACCESS_TOKEN_SECRET,
+  'ACCESS_TOKEN_SECRET value not found in .env file.'
+);
+assert(
+  REFRESH_TOKEN_SECRET,
+  'REFRESH_TOKEN_SECRET value not found in .env file.'
+);
+
+exports.authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (token === null) return res.sendStatus(401);
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
+    if (err) return res.sendStatus(403);
+    req.data = data;
+    next();
+  });
+};
+
+exports.verifyRefreshToken = (token, fn) => {
+  jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, fn);
+};
+
+exports.generateAccessToken = data => {
+  return jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' });
+};
+
+exports.generateRefreshToken = data => {
+  return jwt.sign(data, process.env.REFRESH_TOKEN_SECRET);
+};
