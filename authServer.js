@@ -68,6 +68,7 @@ app.use(express.json());
 app.post('/create-user', async (req, res) => {
   try {
     const hashedPass = await bcrypt.hash(req.body.password, 10);
+    console.log(hashedPass);
     const user = { name: req.body.name, password: hashedPass };
     users.push(user);
     req.setTimeout(0);
@@ -88,7 +89,7 @@ app.post('/user-login', async (req, res) => {
       if (result) {
         const user = { name: 'Mike' };
         const accessToken = generateAccessToken(user);
-        const refreshToken = generateRefreshToken(user); //jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+        const refreshToken = generateRefreshToken(user);
         refreshTokens.push(refreshToken);
         res.json({ accessToken, refreshToken });
       } else {
