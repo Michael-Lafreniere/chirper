@@ -1,11 +1,10 @@
 const express = require('express');
 const assert = require('assert');
-// const mysql = require('mysql2');
-// const cors = require('cors');
-// const rateLimit = require('express-rate-limit');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+//const jwt = require('jsonwebtoken');
 require('dotenv').config();
+
+const { connectToDB, queryDB } = require('./dbAccess');
 
 const {
   verifyRefreshToken,
@@ -23,10 +22,6 @@ let users = [
   }
 ];
 
-// const generateAccessToken = data => {
-//   return jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' });
-// };
-
 const {
   NODE_ENV,
   AUTH_HOST,
@@ -36,9 +31,7 @@ const {
   SQL_USER,
   SQL_PASSWORD,
   RATE_MSG_PER,
-  RATE_TIME_BETWEEN_MSGS,
-  ACCESS_TOKEN_SECRET,
-  REFRESH_TOKEN_SECRET
+  RATE_TIME_BETWEEN_MSGS
 } = process.env;
 
 // Verify we have all the data from the .env file we need:
@@ -54,50 +47,53 @@ assert(
   RATE_TIME_BETWEEN_MSGS,
   'RATE_TIME_BETWEEN_MSG value not found in .env file.'
 );
-assert(
-  ACCESS_TOKEN_SECRET,
-  'ACCESS_TOKEN_SECRET value not found in .env file.'
-);
-assert(
-  REFRESH_TOKEN_SECRET,
-  'REFRESH_TOKEN_SECRET value not found in .env file.'
-);
 
 app.use(express.json());
 
+connectToDB();
+
 app.post('/create-user', async (req, res) => {
-  try {
-    const hashedPass = await bcrypt.hash(req.body.password, 10);
-    console.log(hashedPass);
-    const user = { name: req.body.name, password: hashedPass };
-    users.push(user);
-    req.setTimeout(0);
-    res.status(201).send();
-  } catch {
-    res.status(500).send();
+  const email = `SELECT * FROM user WHERE email_addr='${req.body.email}'`;
+  const exists = await queryDB(email);
+  if (exists[0] === undefined) {
+    try {
+      const hashedPass = await bcrypt.hash(req.body.password, 10);
+      const newUser = `INSERT INTO user (passwd, email_addr, phone_num, display_name, name, dob, location) VALUES ('${hashedPass}', '${req.body.email}', '${req.body.phone_num}', '${req.body.display_name}', '${req.body.name}', '${req.body.dob}', '${req.body.location}');`;
+      await queryDB(newUser);
+      req.setTimeout(0);
+      res.status(201).send();
+    } catch {
+      res.status(500).send();
+    }
+  } else {
+    res.send('already exists.');
   }
 });
 
 app.post('/user-login', async (req, res) => {
-  const user = users.find(user => user.name === req.body.name);
-  if (user === null) {
-    res.status(400).send('Invalid username/password.');
-  }
+  const email = req.body.email;
+  const query = `SELECT * FROM user WHERE email_addr='${email}';`;
+  const results = await queryDB(query);
+  if (results[0] !== undefined) {
+    const { passwd } = results[0];
 
-  try {
-    bcrypt.compare(req.body.password, user.password, (err, result) => {
-      if (result) {
-        const user = { name: 'Mike' };
-        const accessToken = generateAccessToken(user);
-        const refreshToken = generateRefreshToken(user);
-        refreshTokens.push(refreshToken);
-        res.json({ accessToken, refreshToken });
-      } else {
-        res.status(401).send(`Invalid username/password.`);
-      }
-    });
-  } catch {
-    res.status(500).send('Failed.');
+    try {
+      bcrypt.compare(req.body.password, passwd, (err, result) => {
+        if (result) {
+          const user = { name: 'Mike' };
+          const accessToken = generateAccessToken(user);
+          const refreshToken = generateRefreshToken(user);
+          refreshTokens.push(refreshToken);
+          res.json({ accessToken, refreshToken });
+        } else {
+          res.status(401).send(`Invalid email or password.`);
+        }
+      });
+    } catch {
+      res.status(500).send('Failed.');
+    }
+  } else {
+    res.send('Invalid email or password.');
   }
 });
 
@@ -105,7 +101,6 @@ app.post('/token', (req, res) => {
   const refreshToken = req.body.token;
   if (refreshToken === null) return res.sendStatus(401);
   if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403);
-  //jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
   verifyRefreshToken(refreshTokens, (err, user) => {
     if (err) return res.sendStatus(403);
     const accessToken = generateAccessToken({ name: user.name });

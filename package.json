@@ -4,9 +4,8 @@
   "description": "A more fully fledged twitter clone",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
-    "auth": "nodemon authServer.js"    
+    "start": "concurrently \"node server.js\" \"node authServer.js\"",
+    "dev": "concurrently \"nodemon server.js\" \"nodemon authServer.js\""
   },
   "keywords": [
     "Twitter Clone",

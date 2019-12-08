@@ -1,13 +1,14 @@
 const express = require('express');
 const assert = require('assert');
 const path = require('path');
-const mysql = require('mysql2');
+//const mysql = require('mysql2');
 const cors = require('cors');
 const Filter = require('bad-words');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 const { authenticateToken } = require('./authHelpers');
+const { connectToDB, queryDB } = require('./dbAccess');
 
 const app = express();
 const filter = new Filter();
@@ -23,18 +24,6 @@ let users = [
   }
 ];
 
-// const authenticateToken = (req, res, next) => {
-//   const authHeader = req.headers['authorization'];
-//   const token = authHeader && authHeader.split(' ')[1];
-//   if (token === null) return res.sendStatus(401);
-
-//   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-//     if (err) return res.sendStatus(403);
-//     req.user = user;
-//     next();
-//   });
-// };
-
 const {
   NODE_ENV,
   HOST,
@@ -45,8 +34,6 @@ const {
   SQL_PASSWORD,
   RATE_MSG_PER,
   RATE_TIME_BETWEEN_MSGS
-  // ACCESS_TOKEN_SECRET
-  // REFRESH_TOKEN_SECRET
 } = process.env;
 
 // Verify we have all the data from the .env file we need:
@@ -62,14 +49,6 @@ assert(
   RATE_TIME_BETWEEN_MSGS,
   'RATE_TIME_BETWEEN_MSG value not found in .env file.'
 );
-// assert(
-//   ACCESS_TOKEN_SECRET,
-//   'ACCESS_TOKEN_SECRET value not found in .env file.'
-// );
-// assert(
-//   REFRESH_TOKEN_SECRET,
-//   'REFRESH_TOKEN_SECRET value not found in .env file.'
-// );
 
 //
 // Setup the express server:
@@ -82,17 +61,19 @@ app.use(express.json());
 //
 // Connect to MySQL DB:
 //
-const connection = mysql.createConnection({
-  host: SQL_SERVER,
-  user: SQL_USER,
-  password: SQL_PASSWORD,
-  database: SQL_DATABASE
-});
-// Check the connection:
-connection.connect(error => {
-  if (error) throw error;
-  console.log(`Connected to ${SQL_DATABASE}`);
-});
+// const connection = mysql.createConnection({
+//   host: SQL_SERVER,
+//   user: SQL_USER,
+//   password: SQL_PASSWORD,
+//   database: SQL_DATABASE
+// });
+// // Check the connection:
+// connection.connect(error => {
+//   if (error) throw error;
+//   console.log(`Connected to ${SQL_DATABASE}`);
+// });
+
+connectToDB();
 
 //
 // Handle the default route:
@@ -101,11 +82,12 @@ app.get('/', (req, res) => {
   res.render('index', {});
 });
 
-app.get('/chirp', authenticateToken, (req, res) => {
-  const query = 'SELECT * FROM chirp LIMIT 25';
-  connection.query(query, (err, results) => {
-    res.json(results);
-  });
+app.get('/chirp', async (req, res) => {
+  const query = 'SELECT * FROM user LIMIT 25';
+  const results = await queryDB(query);
+  //const { passwd } = results[0];
+  //console.log(passwd);
+  res.send(results);
 });
 
 app.get('/users', (req, res) => {
@@ -137,21 +119,16 @@ const isValidChirp = data => {
 app.post('/chirp', authenticateToken, (req, res) => {
   if (isValidChirp(req.body)) {
     const chirp = {
-      name: filter.clean(req.body.name.toString()),
-      post: filter.clean(req.body.chirp.toString()),
-      //ip: req.ip.toString(),
-      date: new Date()
-        .toISOString()
-        .slice(0, 19)
-        .replace('T', ' ')
+      user_id: filter.clean(req.body.name.toString()),
+      content: filter.clean(req.body.content.toString())
     };
 
-    const query = `INSERT INTO chirp (name, post, date) VALUES ('${chirp.name}', '${chirp.post}', '${chirp.date}');`;
-    connection.query(query, (err, results) => {
-      if (err !== null) {
-        console.log('error:', err);
-      }
-    });
+    // const query = `INSERT INTO chirps (name, post) VALUES ('${chirp.name}', '${chirp.post}');`;
+    // queryDB(query) => {
+    //   if (err !== null) {
+    //     console.log('error:', err);
+    //   }
+    // });
 
     req.setTimeout(0);
     res.status(200).json(chirp);
