@@ -82,8 +82,11 @@ app.get('/', (req, res) => {
   res.render('index', {});
 });
 
+//
+// Get chrips, for those not logged in to see latest 'trending' chirps:
+//
 app.get('/chirp', async (req, res) => {
-  const query = 'SELECT * FROM user LIMIT 25';
+  const query = 'SELECT * FROM chirps LIMIT 25';
   const results = await queryDB(query);
   //const { passwd } = results[0];
   //console.log(passwd);
@@ -99,10 +102,10 @@ app.get('/users', (req, res) => {
 //
 const isValidChirp = data => {
   if (
-    data.name &&
-    data.name.toString().trim() !== '' &&
-    data.chirp &&
-    data.chirp.toString().trim() !== ''
+    data.content &&
+    data.content.toString().trim() !== '' &&
+    data.user_id &&
+    data.user_id.toString().trim() !== ''
   ) {
     return true;
   }
@@ -116,24 +119,25 @@ const isValidChirp = data => {
 //   rateLimit({ windowMs: RATE_TIME_BETWEEN_MSGS * 1000, max: RATE_MSG_PER })
 // );
 
-app.post('/chirp', authenticateToken, (req, res) => {
+app.post('/chirp', authenticateToken, async (req, res) => {
   if (isValidChirp(req.body)) {
     const chirp = {
-      user_id: filter.clean(req.body.name.toString()),
-      content: filter.clean(req.body.content.toString())
+      content: filter.clean(req.body.content.toString()),
+      reply_to: req.body.reply_to,
+      user_id: req.body.user_id,
+      image: req.body.image.toString(),
+      image1: req.body.image1.toString(),
+      image2: req.body.image2.toString(),
+      image3: req.body.image3.toString()
     };
 
-    // const query = `INSERT INTO chirps (name, post) VALUES ('${chirp.name}', '${chirp.post}');`;
-    // queryDB(query) => {
-    //   if (err !== null) {
-    //     console.log('error:', err);
-    //   }
-    // });
+    const newChirp = `INSERT INTO chirps (content, reply_to, user_id, image, image1, image2, image3) VALUES ('${chirp.content}', '${chirp.reply_to}', '${chirp.user_id}', '${chirp.image}', '${chirp.image1}', '${chirp.image2}', '${chirp.image3}');`;
+    await queryDB(newChirp);
 
     req.setTimeout(0);
     res.status(200).json(chirp);
   } else {
-    res.status(422).send({ message: 'Requires a name and a message.' });
+    res.status(422).send({ message: 'Improperly formatted chrip' });
   }
 });
 
