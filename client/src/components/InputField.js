@@ -3,24 +3,22 @@ import React from 'react';
 import './InputField.css';
 
 const InputField = props => {
-  let width = '';
+  let width = 'normal_width';
   if (props.customClass === 'short') width = 'short-width';
-  const c = ` ${width} input-form`;
+  const c = `input-form ${width}`;
   return (
     <div className={c}>
-      <form>
-        <input
-          type="text"
-          name="name"
-          class="question"
-          id="input"
-          required
-          autocomplete="off"
-        />
-        <label for="input" className="label-name">
-          <span className="content-name">Email address</span>
-        </label>
-      </form>
+      <input
+        type="text"
+        name="name"
+        class="question"
+        id="input"
+        required
+        autocomplete="off"
+      />
+      <label for="input" className="label-name">
+        <span className="content-name">Email address</span>
+      </label>
     </div>
   );
 };
