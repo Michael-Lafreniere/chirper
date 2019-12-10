@@ -85,6 +85,8 @@ app.post('/user-login', async (req, res) => {
           const refreshToken = generateRefreshToken(user);
           refreshTokens.push(refreshToken);
           res.json({ accessToken, refreshToken });
+          // res.cookie('token', token, { httpOnly: true })
+          //   .sendStatus(200);
         } else {
           res.status(401).send(`Invalid email or password.`);
         }

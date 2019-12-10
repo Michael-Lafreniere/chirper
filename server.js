@@ -28,10 +28,6 @@ const {
   NODE_ENV,
   HOST,
   PORT,
-  SQL_SERVER,
-  SQL_DATABASE,
-  SQL_USER,
-  SQL_PASSWORD,
   RATE_MSG_PER,
   RATE_TIME_BETWEEN_MSGS
 } = process.env;
@@ -40,10 +36,6 @@ const {
 assert(NODE_ENV, 'NODE_ENV value not found in .env file.');
 assert(HOST, 'HOST value not found in .env file.');
 assert(PORT, 'PORT value not found in .env file.');
-assert(SQL_SERVER, 'SQL_SERVER value not found in .env file.');
-assert(SQL_DATABASE, 'SQL_DATABASE value not found in .env file.');
-assert(SQL_USER, 'SQL_USER value not found in .env file.');
-assert(SQL_PASSWORD, 'SQL_PASSWORD value not found in .env file.');
 assert(RATE_MSG_PER, 'RATE_MSG_PER value not found in .env file.');
 assert(
   RATE_TIME_BETWEEN_MSGS,
@@ -53,34 +45,21 @@ assert(
 //
 // Setup the express server:
 //
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname + '/public/views'));
+//app.set('view engine', 'ejs');
 app.use(cors());
+// if (NODE_ENV === 'production') {
+//   app.set(express.static(path.join(__dirname, '/client/build')));
+// } else {
+//   const p = path.join(__dirname, '/client/public/');
+//   console.log(p);
+//   app.set(express.static(p));
+// }
 app.use(express.json());
 
 //
-// Connect to MySQL DB:
+// Establish a connection to the DB:
 //
-// const connection = mysql.createConnection({
-//   host: SQL_SERVER,
-//   user: SQL_USER,
-//   password: SQL_PASSWORD,
-//   database: SQL_DATABASE
-// });
-// // Check the connection:
-// connection.connect(error => {
-//   if (error) throw error;
-//   console.log(`Connected to ${SQL_DATABASE}`);
-// });
-
 connectToDB();
-
-//
-// Handle the default route:
-//
-app.get('/', (req, res) => {
-  res.render('index', {});
-});
 
 //
 // Get chrips, for those not logged in to see latest 'trending' chirps:
@@ -131,7 +110,7 @@ app.post('/chirp', authenticateToken, async (req, res) => {
       image3: req.body.image3.toString()
     };
 
-    const newChirp = `INSERT INTO chirps (content, reply_to, user_id, image, image1, image2, image3) VALUES ('${chirp.content}', '${chirp.reply_to}', '${chirp.user_id}', '${chirp.image}', '${chirp.image1}', '${chirp.image2}', '${chirp.image3}');`;
+    const newChirp = `INSERT INTO chirps (content, reply_to, user_id) VALUES ('${chirp.content}', '${chirp.reply_to}', '${chirp.user_id}');`;
     await queryDB(newChirp);
 
     req.setTimeout(0);
