@@ -1,10 +1,13 @@
 import React from 'react';
 
-import '../css/InputField.css';
+import './InputField.css';
 
-const InputField = () => {
+const InputField = props => {
+  let width = '';
+  if (props.customClass === 'short') width = 'short-width';
+  const c = ` ${width} input-form`;
   return (
-    <div className="input-form">
+    <div className={c}>
       <form>
         <input
           type="text"

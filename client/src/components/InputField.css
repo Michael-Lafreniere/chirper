@@ -9,15 +9,22 @@
   position: relative;
 }
 
-.input-form input,
-select,
-textarea {
+.short_width {
+  width: 10%;
+}
+
+input::selection {
+  color: var(--base-color);
+  background: var(--highlight-color);
+}
+
+.input-form input {
   width: 100%;
   height: 100%;
-  color: var(--highlight-color-color);
-  background: transparent;
   outline: none;
   border: none;
+  color: var(--base-color);
+  background: transparent;
   padding-top: 30px;
   overflow: hidden;
 }
@@ -40,6 +47,7 @@ textarea {
   height: 100%;
   left: 0px;
   bottom: -1px;
+  transition: all 0.3s ease;
   border-bottom: 3px solid var(--highlight-color);
 }
 
