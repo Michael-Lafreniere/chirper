@@ -9,11 +9,11 @@
   position: relative;
 }
 
-.short-width {
+.input-form_short-width {
   width: 10%;
 }
 
-.long-width {
+.input-form_long-width {
   width: 35%;
 }
 
@@ -29,7 +29,7 @@ input::selection {
   border: none;
   color: var(--base-color);
   background: transparent;
-  padding-top: 30px;
+  padding-top: 12px;
   overflow: hidden;
 }
 
@@ -65,7 +65,7 @@ input::selection {
 input:focus,
 textarea:focus {
   color: var(--highlight-color);
-  background: transparent;
+  /* background: transparent; */
 }
 
 .input-form input:focus + .label-name .content-name,
@@ -79,4 +79,12 @@ textarea:focus {
 .input-form:valid + .label-name::after {
   width: 100%;
   transition: all 0.3s ease;
+}
+
+.error {
+  position: absolute;
+  bottom: -50%;
+  left: 0%;
+  font-size: 1.15em;
+  color: red;
 }

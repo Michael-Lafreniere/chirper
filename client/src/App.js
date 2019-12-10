@@ -14,7 +14,13 @@ class App extends Component {
       <div className="App">
         <Header />
         <br />
-        <InputField width="" />
+        <InputField
+          input="textOnly"
+          text="Name"
+          maxLength={20}
+          progressiveErrorChecking={true}
+        />
+        <InputField text="Email Address" input="email" />
       </div>
     );
   }
