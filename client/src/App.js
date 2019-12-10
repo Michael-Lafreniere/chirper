@@ -14,7 +14,7 @@ class App extends Component {
       <div className="App">
         <Header />
         <br />
-        <InputField customClass="short" />
+        <InputField width="" />
       </div>
     );
   }

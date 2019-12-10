@@ -4,16 +4,17 @@
 }
 
 .input-form {
+  width: 25%;
   height: 50px;
   position: relative;
 }
 
-.short_width {
+.short-width {
   width: 10%;
 }
 
-.normal_width {
-  width: 25%;
+.long-width {
+  width: 35%;
 }
 
 input::selection {
