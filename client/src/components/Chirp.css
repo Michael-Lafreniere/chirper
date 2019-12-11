@@ -1,0 +1,22 @@
+.chirp {
+  color: white;
+  width: 35%;
+  padding: 20px;
+  border: 1px solid white;
+}
+
+.chirp-header {
+  display: flex;
+}
+
+.chirp-body_user_image img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.chirp-body_content {
+  border: 1px solid white;
+  padding: 5px;
+  border-radius: 5px;
+}

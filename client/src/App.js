@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from './components/Header';
 import InputField from './components/InputField';
+import Chirp from './components/Chirp';
 import './App.css';
 
 class App extends Component {
@@ -13,6 +14,7 @@ class App extends Component {
     return (
       <div className="App">
         <Header />
+        <Chirp />
         <br />
         <InputField
           input="textOnly"
