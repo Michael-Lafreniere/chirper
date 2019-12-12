@@ -10,8 +10,8 @@ class Chirp extends Component {
 
   render() {
     return (
-      <div className="chirp">
-        <article>
+      <section className="chirp">
+        <div className="container">
           <div className="chirp-sidebar">
             <div className="user-image">
               <a href="http://localhost:3000/">
@@ -32,7 +32,7 @@ class Chirp extends Component {
             <div className="chirp-body">
               <div className="user-info">
                 <div className="user-name">
-                  <a href="http://localhost:3000/">Their Name</a>
+                  <a href="http://localhost:3000/">User Name</a>
                 </div>
                 <div className="user-verified">
                   <img
@@ -43,30 +43,63 @@ class Chirp extends Component {
                 <div className="user-handle">
                   <a href="http://localhost:3000/">@CoolHandle</a>
                 </div>
-                <div className="post-time">
-                  <a href="http://localhost:3000/">20h</a>
-                </div>
+                <div className="dot">&middot;</div>
+                <div className="post-time">20h</div>
               </div>
-              <div className="chirp-content">
+              <article className="chirp-content">
                 <div className="text">
                   This is my chirp, there are many like it, but this one is
-                  mine. @World #test
+                  mine. This is a very long text test to see how it wraps and
+                  stuff to see if we need to change anything @World #test
                 </div>
-                <div className="images"></div>
+                <div className="images">
+                  <a href="http://localhost:3000/">
+                    <img
+                      src="https://via.placeholder.com/200"
+                      alt="user supplied profile"
+                    />
+                  </a>
+                  <a href="http://localhost:3000/">
+                    <img
+                      src="https://via.placeholder.com/200"
+                      alt="user supplied profile"
+                    />
+                  </a>
+                  <a href="http://localhost:3000/">
+                    <img
+                      src="https://via.placeholder.com/200"
+                      alt="user supplied profile"
+                    />
+                  </a>
+                </div>
+              </article>
+              <div className="chirp-footer">
+                <button>
+                  <img
+                    src="https://via.placeholder.com/24"
+                    alt="comment button"
+                  />
+                </button>
+                <span className="num-comments">4</span>
+                <button>
+                  <img
+                    src="https://via.placeholder.com/24"
+                    alt="re-chirp button"
+                  />
+                </button>
+                <span className="num-rechirps">2</span>
+                <button>
+                  <img
+                    src="https://via.placeholder.com/24"
+                    alt="like chirp button"
+                  />
+                </button>
+                <span className="num-stars">31</span>
               </div>
-              <button>
-                comment<span className="num-comments">4</span>
-              </button>
-              <button>
-                re-chirp<span className="num-rechirps">2</span>
-              </button>
-              <button>
-                star<span className="num-stars">31</span>
-              </button>
             </div>
           </div>
-        </article>
-      </div>
+        </div>
+      </section>
     );
   }
 }

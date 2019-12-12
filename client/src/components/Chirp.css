@@ -1,49 +1,101 @@
 .chirp {
   color: white;
+  display: block;
 }
 
-/* .chirp {
+.container {
   display: flex;
-  flex-flow: row nowrap;
-  color: white;
-  width: 35%;
-  padding: 20px;
+  flex-direction: row;
+  width: 30%;
   border: 1px solid white;
 }
 
-.chirp .chirp-sidebar {
-  width: 15%;
-  height: 100%;
+.chirp-sidebar {
+  width: 10%;
+  height: 50%;
 }
 
-.chirp .chirp-sidebar .user-image img {
-  width: 50px;
-  height: 50px;
+.user-image {
+  width: 49px;
+  height: 49px;
+  padding: 5px 0 0 5px;
+}
+
+.user-image img {
   border-radius: 50%;
 }
 
-.chirp .chirp-body {
-  width: auto;
-  height: 100%;
+.chirp-wrapper {
+  width: 100%;
 }
 
-.chirp .chirp-body .chirp-header {
+.chirp-header {
   display: flex;
+  font-size: 0.85em;
 }
 
-.chirp .chirp-header .header-icon img {
+.chirp-header .header-icon {
   width: 18px;
   height: 18px;
+}
+
+.chirp-header .header-icon img {
   border-radius: 50%;
 }
 
-.chirp-body .user-info {
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: space-around;
-  width: 40%;
+.header-text {
+  padding-left: 10px;
 }
 
-.chirp-body .content {
-  padding: 5px;
-} */
+.user-info {
+  display: flex;
+  padding-top: 5px;
+}
+
+.user-info .user-name a {
+  color: blue;
+}
+
+.user-info .user-verified {
+  width: 18px;
+  height: 18px;
+  padding: 0 5px;
+}
+
+.user-info .user-verified img {
+  border-radius: 50%;
+}
+
+.user-info .user-handle a {
+  color: grey;
+  text-decoration: none;
+  padding-left: 5px;
+}
+
+.user-info .dot {
+  color: grey;
+  padding-left: 5px;
+}
+
+.user-info .post-time {
+  color: grey;
+  padding-left: 5px;
+}
+
+.chirp-content {
+  width: 100%;
+}
+
+.chirp-content .text {
+  padding: 5px 0;
+}
+
+.chirp-content .images {
+  display: flex;
+  width: 200px;
+  height: 200px;
+}
+
+.chirp-content .images img {
+  border-radius: 10px;
+}
