@@ -1,22 +1,49 @@
 .chirp {
   color: white;
+}
+
+/* .chirp {
+  display: flex;
+  flex-flow: row nowrap;
+  color: white;
   width: 35%;
   padding: 20px;
   border: 1px solid white;
 }
 
-.chirp-header {
-  display: flex;
+.chirp .chirp-sidebar {
+  width: 15%;
+  height: 100%;
 }
 
-.chirp-body_user_image img {
+.chirp .chirp-sidebar .user-image img {
   width: 50px;
   height: 50px;
   border-radius: 50%;
 }
 
-.chirp-body_content {
-  border: 1px solid white;
-  padding: 5px;
-  border-radius: 5px;
+.chirp .chirp-body {
+  width: auto;
+  height: 100%;
 }
+
+.chirp .chirp-body .chirp-header {
+  display: flex;
+}
+
+.chirp .chirp-header .header-icon img {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+
+.chirp-body .user-info {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  width: 40%;
+}
+
+.chirp-body .content {
+  padding: 5px;
+} */
