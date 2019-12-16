@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Header from './components/Header';
-import InputField from './components/InputField';
+// import InputField from './components/InputField';
 import Chirp from './components/Chirp';
 import './App.css';
 
@@ -15,14 +15,14 @@ class App extends Component {
       <div className="App">
         <Header />
         <Chirp />
-        <br />
+        {/* <br />
         <InputField
           input="textOnly"
           text="Name"
           maxLength={20}
           progressiveErrorChecking={true}
         />
-        <InputField text="Email Address" input="email" />
+        <InputField text="Email Address" input="email" /> */}
       </div>
     );
   }
