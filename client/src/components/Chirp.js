@@ -15,7 +15,7 @@ class Chirp extends Component {
       username: this.props.data.username,
       handle: this.props.data.handle,
       userImage: this.props.data.userImage,
-      reChirp: this.props.data.reChirp,
+      reChirp: this.props.data.reChirp
     };
   }
 
@@ -26,15 +26,17 @@ class Chirp extends Component {
           <div className="chirp-sidebar">
             <div className="user-image">
               <a href={`http://localhost:3000/${this.state.username}`}>
-                <img
-                  src={this.state.userImage}
-                  alt="user supplied profile"
-                />
+                <img src={this.state.userImage} alt="user supplied profile" />
               </a>
             </div>
           </div>
           <div className="chirp-wrapper">
-            <ChirpHeader reChirp={this.state.reChirp} username={this.state.username} handle={this.state.handle} time="21h"/>
+            <ChirpHeader
+              reChirp={this.state.reChirp}
+              username={this.state.username}
+              handle={this.state.handle}
+              time="21h"
+            />
             <article className="chirp-content">
               <main>
                 <ChirpText text={this.state.chirpText} />

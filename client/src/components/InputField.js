@@ -4,6 +4,17 @@ import PropTypes from 'prop-types';
 import { validateInput } from '../ValidateInput';
 import './InputField.css';
 
+/*
+  @text: Title of input
+  @input: 'email', 'numberOnly', or 'textOnly', 'any' (default)
+  @width: 'short' or 'long'
+  @minLength: number of characters needed at a minimum.
+  @maxLength: maximum number of characters allowed. 
+  @progressiveErrorChecking: true or false (default)
+
+  isValid() - returns true/false.  False if any error state exists.
+*/
+
 class InputField extends Component {
   constructor(props) {
     super(props);
@@ -38,6 +49,16 @@ class InputField extends Component {
       );
       this.setState({ error });
     }
+  };
+
+  isValid = () => {
+    if (
+      this.state.error ||
+      this.state.error !== null ||
+      this.state.error !== undefined
+    )
+      return false;
+    return true;
   };
 
   render() {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Header from './components/Header';
-// import InputField from './components/InputField';
+import CreateAccount from './components/CreateAccount';
 import Chirp from './components/Chirp';
 import './App.css';
 
@@ -15,24 +15,18 @@ class App extends Component {
 
   render() {
     let chirpData = {
-      username: "SomeCoolDude",
-      handle: "CoolDude2",
-      userImage: "https://via.placeholder.com/49",
-      chirpText: text,
+      username: 'SomeCoolDude',
+      handle: 'CoolDude2',
+      userImage: 'https://via.placeholder.com/49',
+      chirpText: text
       // reChirp: "StanLee",
-    }
+    };
     return (
       <div className="App">
         <Header />
+        <CreateAccount />
+        <br />
         <Chirp data={chirpData} />
-        {/* <br />
-        <InputField
-          input="textOnly"
-          text="Name"
-          maxLength={20}
-          progressiveErrorChecking={true}
-        />
-        <InputField text="Email Address" input="email" /> */}
       </div>
     );
   }
