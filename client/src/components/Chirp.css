@@ -1,9 +1,6 @@
-.atUser {
-  color: blue;
-}
-
-.userTrend {
-  color: green;
+.chirp-link {
+  text-decoration: none;
+  color: var(--highlight-color);
 }
 
 .chirp {
@@ -36,63 +33,6 @@
   margin: 5px 10px;
 }
 
-.chirp-header {
-  display: flex;
-  font-size: 0.85em;
-}
-
-.chirp-header .header-icon {
-  width: var(--chirp-min-icon-size);
-  height: var(--chirp-min-icon-size);
-}
-
-.chirp-header .header-icon img {
-  border-radius: 50%;
-}
-
-.chirp-header .header-text {
-  color: grey;
-  padding-left: calc((var(--chirp-min-icon-size) / 2) + 1px);
-}
-
-.user-info {
-  display: flex;
-  padding-top: 5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.user-info .user-name a {
-  color: blue;
-}
-
-.user-info .user-verified {
-  width: var(--chirp-min-icon-size);
-  height: var(--chirp-min-icon-size);
-  padding: 0 5px;
-}
-
-.user-info .user-verified img {
-  border-radius: 50%;
-}
-
-.user-info .user-handle a {
-  color: grey;
-  text-decoration: none;
-  padding: 0 4px 0 2px;
-}
-
-.user-info .dot {
-  color: grey;
-  /* padding: 0 2px; */
-}
-
-.user-info .post-time {
-  color: grey;
-  padding: 0 4px;
-}
-
 .chirp-content {
   width: 100%;
 }
@@ -100,6 +40,10 @@
 .chirp-content .text {
   color: white;
   padding: 5px 0;
+}
+
+.chirp-content .chirp-link a {
+  color: var(--highlight-color);
 }
 
 .chirp .container .chirp-content .gallary {

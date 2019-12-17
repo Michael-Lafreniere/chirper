@@ -4,6 +4,9 @@ import Header from './components/Header';
 import Chirp from './components/Chirp';
 import './App.css';
 
+const text =
+  'This is my chirp, there are many like it, but this one is mine. @steve_rocks This is a very long text test to see how it wraps and stuff to see if we need to change anything @World #test';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -11,10 +14,17 @@ class App extends Component {
   }
 
   render() {
+    let chirpData = {
+      username: "SomeCoolDude",
+      handle: "CoolDude2",
+      userImage: "https://via.placeholder.com/49",
+      chirpText: text,
+      // reChirp: "StanLee",
+    }
     return (
       <div className="App">
         <Header />
-        <Chirp />
+        <Chirp data={chirpData} />
         {/* <br />
         <InputField
           input="textOnly"
