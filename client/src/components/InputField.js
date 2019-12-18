@@ -6,7 +6,7 @@ import './InputField.css';
 
 /*
   @text: Title of input
-  @input: 'email', 'numberOnly', or 'textOnly', 'any' (default)
+  @input: 'email', 'numberOnly', or 'textOnly', 'password', 'any' (default)
   @width: 'short' or 'long'
   @minLength: number of characters needed at a minimum.
   @maxLength: maximum number of characters allowed. 

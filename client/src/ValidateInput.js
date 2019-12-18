@@ -18,10 +18,10 @@ export const validateInput = (
   maxLength = 0
 ) => {
   if (minLength > 0) {
-    if (data.length < minLength) return 'To short';
+    if (data.length < minLength) return `To short, min: ${minLength}`;
   }
   if (maxLength > 0) {
-    if (data.length > maxLength) return 'To long';
+    if (data.length > maxLength) return `To long, max: ${maxLength}`;
   }
   if (inputType === 'textOnly' && data.length > 0) {
     if (!isCharacters(data)) return 'Please use A-Z or a-z only';

@@ -1,29 +1,32 @@
 .account-creation {
   width: 30%;
-  border: 1px solid white;
+  border: 1px solid var(--base-color);
+  /* height: 30vh; */
 }
 
-.general-info {
-  display: inline-block;
+.account-creation .user-info {
+  display: grid;
+  margin: 0 5%;
+  height: 100%;
+  grid-template-columns: 57% 35%;
+  grid-template-rows: 45% 45%;
+  grid-column-gap: 5%;
   /* display: flex; */
   /* justify-content: space-evenly; */
 }
 
-.top-line {
-  width: 80%;
-  display: flex;
-  justify-content: flex-end;
+.account-text {
+  margin: 2% 0 0 5%;
+  font-size: 1.15em;
+  font-weight: 600;
+  text-decoration: underline;
+  color: var(--base-color);
 }
 
 .dob {
-  color: white;
+  color: var(--base-color);
   width: 100%;
-}
-
-.second-line {
-  display: flex;
-  justify-content: space-around;
-  width: 90%;
+  margin-top: 7px;
 }
 
 .dob-text {
@@ -31,9 +34,25 @@
 }
 
 .dob-daymonth {
-  width: 10%;
+  width: 12%;
 }
 
 .dob-year {
-  width: 18%;
+  width: 22%;
+}
+
+.separation {
+  width: 100%;
+  height: 1px;
+  border-top: 1px solid var(--base-color);
+}
+
+.account-creation .account-info {
+  display: grid;
+  margin: 0 5%;
+  height: 100%;
+  grid-template-columns: 45% 45%;
+  grid-template-rows: 45% 45%;
+  grid-column-gap: 5%;
+  /* display: block; */
 }
