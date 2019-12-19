@@ -6,8 +6,98 @@ import Selector from './Selector';
 
 import './CreateAccount.css';
 
+const rawData = [
+  {
+    countryName: 'Afghanistan',
+    countryShortCode: 'AF',
+    regions: [
+      {
+        name: 'Badakhshan',
+        shortCode: 'BDS'
+      },
+      {
+        name: 'Badghis',
+        shortCode: 'BDG'
+      },
+      {
+        name: 'Baghlan',
+        shortCode: 'BGL'
+      },
+      {
+        name: 'Balkh',
+        shortCode: 'BAL'
+      },
+      {
+        name: 'Bamyan',
+        shortCode: 'BAM'
+      }
+    ]
+  },
+  {
+    countryName: 'Åland Islands',
+    countryShortCode: 'AX',
+    regions: [
+      {
+        name: 'Brändö',
+        shortCode: 'BR'
+      },
+      {
+        name: 'Eckerö',
+        shortCode: 'EC'
+      },
+      {
+        name: 'Finström',
+        shortCode: 'FN'
+      },
+      {
+        name: 'Föglö',
+        shortCode: 'FG'
+      },
+      {
+        name: 'Geta',
+        shortCode: 'GT'
+      },
+      {
+        name: 'Hammarland',
+        shortCode: 'HM'
+      }
+    ]
+  }
+];
+
+const getCountryData = data => {
+  let results = [];
+  data.map(country =>
+    results.push({ key: country.countryShortCode, data: country.countryName })
+  );
+  return results;
+};
+
+const getRegionData = (countryName, data) => {
+  let country = data.filter(country => country.countryName === countryName);
+  console.log(country[0]);
+  if (country !== undefined) return country[0].regions;
+  return [];
+};
+
 class CreateAccount extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedCountry: '',
+      regionData: []
+    };
+  }
+
+  selectCountry(value, event) {
+    console.log(value);
+    this.setState({ selectedCountry: value });
+    const regions = getRegionData(value, rawData);
+    console.log(regions);
+  }
+
   render() {
+    const ctryData = getCountryData(rawData);
     return (
       <div className="account-creation">
         <div className="account-text">User Information:</div>
@@ -63,12 +153,19 @@ class CreateAccount extends Component {
           </div>
         </div>
         <div className="country-selector">
-          <Selector defaultOptionLabel="Select Country" />
-          {/* <select {...attrs}>
-            <option value="" key="default">
-              Select Region
-            </option>
-          </select> */}
+          <Selector
+            defaultOptionLabel="Select Country"
+            data={ctryData}
+            value={this.state.selectedCountry}
+            onChange={(value, event) => {
+              this.selectCountry(value, event);
+            }}
+          />
+          <Selector
+            defaultOptionLabel="Select Region"
+            data={this.state.regionData}
+            disabled={true}
+          />
         </div>
         <div className="separation"></div>
         <div className="account-text">Account Information:</div>

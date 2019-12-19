@@ -5,7 +5,9 @@ class Selector extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      data: this.props.data
+    };
   }
 
   getDefaultOption() {
@@ -18,6 +20,19 @@ class Selector extends Component {
         {defaultOptionLabel}
       </option>
     );
+  }
+
+  getData() {
+    if (this.state.data === undefined) return null;
+
+    return this.state.data.map(item => (
+      <option
+        value={item.data}
+        key={item.key !== undefined ? item.data : item.key}
+      >
+        {item.data}
+      </option>
+    ));
   }
 
   render() {
@@ -44,8 +59,9 @@ class Selector extends Component {
       ...extraProps,
       name,
       value,
-      onChange: e => onChange(e.target.value, e),
-      onBlur: e => onBlur(e),
+      data: null,
+      onChange: event => onChange(event.target.value, event),
+      onBlur: event => onBlur(event),
       disabled
     };
 
@@ -56,10 +72,7 @@ class Selector extends Component {
     return (
       <select {...attrs}>
         {this.getDefaultOption()}
-        <option value="Canada">Canada</option>
-        <option value="US">United States of America</option>
-        <option value="Germany">Germany</option>
-        <option value="Japan">Japan</option>
+        {this.getData()}
       </select>
     );
   }
