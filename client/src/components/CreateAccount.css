@@ -11,8 +11,6 @@
   grid-template-columns: 57% 35%;
   grid-template-rows: 45% 45%;
   grid-column-gap: 5%;
-  /* display: flex; */
-  /* justify-content: space-evenly; */
 }
 
 .account-text {
@@ -34,11 +32,27 @@
 }
 
 .dob-daymonth {
+  font-size: 1.15em;
   width: 12%;
+  padding: 2px;
 }
 
 .dob-year {
-  width: 22%;
+  padding: 2px;
+  width: 23%;
+  font-size: 1.15em;
+}
+
+.country-selector {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin: 0 0 10px 0;
+}
+
+.general-selector {
+  font-size: 1.05em;
+  padding: 3px;
 }
 
 .separation {
