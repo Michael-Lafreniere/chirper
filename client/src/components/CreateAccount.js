@@ -19,6 +19,11 @@ class CreateAccount extends Component {
     };
   }
 
+  updateName(name) {
+    console.log(name);
+    this.setState({ name });
+  }
+
   async selectCountry(value, event) {
     await this.setState({ selectedCountry: value });
     // await this.setState({
@@ -44,6 +49,9 @@ class CreateAccount extends Component {
             text="Name"
             maxLength={50}
             progressiveErrorChecking={true}
+            update={name => {
+              this.updateName(name);
+            }}
           />
           <InputField
             input="numberOnly"

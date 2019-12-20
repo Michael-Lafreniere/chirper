@@ -36,7 +36,8 @@ class InputField extends Component {
       this.state.minLength,
       this.state.maxLength
     );
-    this.setState({ error });
+    if (error !== undefined) this.setState({ error });
+    if (this.state.update !== undefined) this.state.update(event.target.value);
   };
 
   onKeyUp = event => {
@@ -96,7 +97,8 @@ InputField.propTypes = {
   width: PropTypes.string,
   minLength: PropTypes.number,
   maxLength: PropTypes.number,
-  progressiveErrorChecking: PropTypes.bool
+  progressiveErrorChecking: PropTypes.bool,
+  update: PropTypes.func
 };
 
 InputField.defaultProps = {
@@ -104,7 +106,8 @@ InputField.defaultProps = {
   width: '',
   minLength: 0,
   maxLength: 0,
-  progressiveErrorChecking: false
+  progressiveErrorChecking: false,
+  update: () => {}
 };
 
 export default InputField;
