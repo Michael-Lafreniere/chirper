@@ -35,6 +35,13 @@ class Selector extends Component {
     ));
   }
 
+  static getDerivedStateFromProps(props, state) {
+    if (state.data !== props.data) {
+      return { data: props.data };
+    }
+    return null;
+  }
+
   render() {
     const {
       name,
@@ -46,10 +53,6 @@ class Selector extends Component {
       disabled,
       showDefaultOption,
       defaultOptionLabel,
-      labelType,
-      valueType,
-      whitelist,
-      blacklist,
       customOptions,
       priorityOptions,
       ...extraProps

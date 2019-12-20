@@ -3,101 +3,38 @@ import React, { Component } from 'react';
 
 import InputField from './InputField';
 import Selector from './Selector';
+import { data } from '../CountryData';
+import { getCountryData } from '../utils/CountryRegion';
 
 import './CreateAccount.css';
-
-const rawData = [
-  {
-    countryName: 'Afghanistan',
-    countryShortCode: 'AF',
-    regions: [
-      {
-        name: 'Badakhshan',
-        shortCode: 'BDS'
-      },
-      {
-        name: 'Badghis',
-        shortCode: 'BDG'
-      },
-      {
-        name: 'Baghlan',
-        shortCode: 'BGL'
-      },
-      {
-        name: 'Balkh',
-        shortCode: 'BAL'
-      },
-      {
-        name: 'Bamyan',
-        shortCode: 'BAM'
-      }
-    ]
-  },
-  {
-    countryName: 'Åland Islands',
-    countryShortCode: 'AX',
-    regions: [
-      {
-        name: 'Brändö',
-        shortCode: 'BR'
-      },
-      {
-        name: 'Eckerö',
-        shortCode: 'EC'
-      },
-      {
-        name: 'Finström',
-        shortCode: 'FN'
-      },
-      {
-        name: 'Föglö',
-        shortCode: 'FG'
-      },
-      {
-        name: 'Geta',
-        shortCode: 'GT'
-      },
-      {
-        name: 'Hammarland',
-        shortCode: 'HM'
-      }
-    ]
-  }
-];
-
-const getCountryData = data => {
-  let results = [];
-  data.map(country =>
-    results.push({ key: country.countryShortCode, data: country.countryName })
-  );
-  return results;
-};
-
-const getRegionData = (countryName, data) => {
-  let country = data.filter(country => country.countryName === countryName);
-  console.log(country[0]);
-  if (country !== undefined) return country[0].regions;
-  return [];
-};
 
 class CreateAccount extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedCountry: '',
-      regionData: []
+      selectedCountry: ''
+      // selectedRegion: '',
+      // regionData: [],
+      // regionDisabled: true
     };
   }
 
-  selectCountry(value, event) {
-    console.log(value);
-    this.setState({ selectedCountry: value });
-    const regions = getRegionData(value, rawData);
-    console.log(regions);
+  async selectCountry(value, event) {
+    await this.setState({ selectedCountry: value });
+    // await this.setState({
+    //   regionData: getRegionData(value, data()),
+    //   regionDisabled: false
+    // });
   }
 
+  // async selectRegion(value, event) {
+  //   await this.setState({ selectedRegion: value });
+  // }
+
+  onSubmit() {}
+
   render() {
-    const ctryData = getCountryData(rawData);
+    const countryData = getCountryData(data());
     return (
       <div className="account-creation">
         <div className="account-text">User Information:</div>
@@ -127,6 +64,7 @@ class CreateAccount extends Component {
               autoComplete="off"
               onBlur={this.onBlur}
               onKeyUp={this.onKeyUp}
+              maxLength="2"
             />
             /
             <input
@@ -138,6 +76,7 @@ class CreateAccount extends Component {
               autoComplete="off"
               onBlur={this.onBlur}
               onKeyUp={this.onKeyUp}
+              maxLength="2"
             />
             /
             <input
@@ -149,25 +88,30 @@ class CreateAccount extends Component {
               autoComplete="off"
               onBlur={this.onBlur}
               onKeyUp={this.onKeyUp}
+              maxLength="4"
             />
           </div>
         </div>
         <div className="country-selector">
           <Selector
             defaultOptionLabel="Select Country"
-            data={ctryData}
+            data={countryData}
             value={this.state.selectedCountry}
             onChange={(value, event) => {
               this.selectCountry(value, event);
             }}
           />
-          <Selector
+          {/* <Selector
             defaultOptionLabel="Select Region"
             data={this.state.regionData}
-            disabled={true}
-          />
+            disabled={this.state.regionDisabled}
+            value={this.state.selectedRegion}
+            onChange={(value, event) => {
+              this.selectRegion(value, event);
+            }}
+          /> */}
         </div>
-        <div className="separation"></div>
+        {/* <div className="separation"></div> */}
         <div className="account-text">Account Information:</div>
         <div className="account-info">
           <InputField
@@ -194,6 +138,17 @@ class CreateAccount extends Component {
             maxLength={15}
             progressiveErrorChecking={true}
           />
+        </div>
+        <div className="submit">
+          <button
+            type="button"
+            className="button"
+            onClick={() => {
+              this.onSubmit();
+            }}
+          >
+            Submit
+          </button>
         </div>
       </div>
     );

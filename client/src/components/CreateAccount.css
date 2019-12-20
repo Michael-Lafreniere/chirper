@@ -1,5 +1,6 @@
 .account-creation {
-  width: 30%;
+  width: 35%;
+  padding: 1em;
   border: 1px solid var(--base-color);
   /* height: 30vh; */
 }
@@ -8,17 +9,9 @@
   display: grid;
   margin: 0 5%;
   height: 100%;
-  grid-template-columns: 57% 35%;
+  grid-template-columns: 57% auto;
   grid-template-rows: 45% 45%;
   grid-column-gap: 5%;
-}
-
-.account-text {
-  margin: 2% 0 0 5%;
-  font-size: 1.15em;
-  font-weight: 600;
-  text-decoration: underline;
-  color: var(--base-color);
 }
 
 .dob {
@@ -33,21 +26,25 @@
 
 .dob-daymonth {
   font-size: 1.15em;
-  width: 12%;
+  width: 10%;
   padding: 2px;
+  outline: none;
 }
 
 .dob-year {
   padding: 2px;
-  width: 23%;
+  width: 20%;
   font-size: 1.15em;
+  outline: none;
 }
 
 .country-selector {
   display: flex;
   justify-content: space-around;
-  width: 100%;
+  /* width: 100%; */
+  max-width: 100%;
   margin: 0 0 10px 0;
+  flex-wrap: wrap;
 }
 
 .general-selector {
@@ -61,6 +58,14 @@
   border-top: 1px solid var(--base-color);
 }
 
+.account-text {
+  margin: 5% 0 0 5%;
+  font-size: 1.15em;
+  font-weight: 600;
+  text-decoration: underline;
+  color: var(--base-color);
+}
+
 .account-creation .account-info {
   display: grid;
   margin: 0 5%;
@@ -69,4 +74,20 @@
   grid-template-rows: 45% 45%;
   grid-column-gap: 5%;
   /* display: block; */
+}
+
+.submit {
+  display: flex;
+  justify-content: center;
+}
+
+.submit .button {
+  font-size: 1.15em;
+  padding: 15px 30px;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--highlight-color);
+  color: var(--base-color);
+  cursor: pointer;
+  outline: none;
 }
