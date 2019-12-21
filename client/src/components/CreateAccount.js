@@ -70,13 +70,14 @@ class CreateAccount extends Component {
     };
   }
 
-  updateData(value, event) {
+  async updateData(value, event) {
     // const what = event.target.name;
     // if (what === 'dob-day') this.setState({ dobDay: value });
     // if (what === 'dob-mon') this.setState({ dobMonth: value });
     // if (what === 'dob-Yr') this.setState({ dobYear: value });
     if (event.target.name === 'email') {
-      this.setState({ emailExists: true });
+      console.log('here');
+      await this.setState({ emailExists: true });
     } else if (event.target.name === 'password2') {
       if (this.state.password1 !== undefined && value !== undefined) {
         if (this.state.password1.length === value.length) {

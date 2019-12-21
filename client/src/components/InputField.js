@@ -61,10 +61,7 @@ class InputField extends Component {
   };
 
   static getDerivedStateFromProps(props, state) {
-    if (state.data !== props.data) {
-      console.log('error?');
-      return { data: props.data };
-    }
+    if (state !== props) return { error: props.error };
     return null;
   }
 
@@ -77,6 +74,7 @@ class InputField extends Component {
       autoComplete,
       onChange,
       disabled,
+      error,
       maxLength
     } = this.props;
 
@@ -84,6 +82,7 @@ class InputField extends Component {
       id,
       name,
       type,
+      error,
       autoComplete,
       onChange: event => onChange(event.target.value, event),
       disabled,
@@ -102,9 +101,9 @@ class InputField extends Component {
     let required = null;
     if (this.state.required) required = <span className="required">*</span>;
 
-    let error = null;
+    let errorMsg = null;
     if (this.state.error)
-      error = <span className="error">{this.state.error}</span>;
+      errorMsg = <span className="error">{this.state.error}</span>;
 
     return (
       <div className={divClass}>
@@ -120,7 +119,7 @@ class InputField extends Component {
             <span>{this.state.text}</span>
           </div>
         </label>
-        {error}
+        {errorMsg}
       </div>
     );
   }
