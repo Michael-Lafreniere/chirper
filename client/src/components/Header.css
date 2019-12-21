@@ -1,0 +1,45 @@
+header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title {
+  color: white;
+}
+
+.title span {
+  color: yellow;
+}
+
+.login-signup {
+  margin: 0 5px;
+  display: flex;
+}
+
+.login-signup form {
+  height: 55px;
+}
+
+.login-signup input {
+  padding: 5px;
+  background-color: white;
+  color: blue;
+  outline: none;
+  border: 1px solid blue;
+  border-radius: 5px;
+  height: 35px;
+  font-size: 0.55em;
+}
+
+.login-signup button {
+  border: none;
+  outline: none;
+  border-radius: 20px;
+  padding: 10px 25px;
+  background-color: blue;
+  color: white;
+  margin: 0 10px;
+  font-size: 0.55em;
+  font-weight: 550;
+  cursor: pointer;
+}

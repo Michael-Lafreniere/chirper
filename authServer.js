@@ -55,6 +55,7 @@ app.use(express.json());
 connectToDB();
 
 app.post('/create-user', async (req, res) => {
+  console.log('Here in the create-user route...');
   const email = `SELECT * FROM user WHERE email_addr='${req.body.email}'`;
   const exists = await queryDB(email);
   if (exists[0] === undefined) {
@@ -63,6 +64,7 @@ app.post('/create-user', async (req, res) => {
       const hashedPass = await bcrypt.hash(req.body.password, 10);
       const newUser = `INSERT INTO user (passwd, email_addr, phone_num, display_name, name, dob, location, handle) VALUES ('${hashedPass}', '${req.body.email}', '${req.body.phone_num}', '${req.body.display_name}', '${req.body.name}', '${req.body.dob}', '${req.body.location}', '${req.body.handle}');`;
       await queryDB(newUser);
+      console.log('new uers created:', req.body.handle);
       req.setTimeout(0);
       res.status(201).send({ message: 'successful' });
     } catch {

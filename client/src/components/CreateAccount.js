@@ -38,6 +38,8 @@ async function submitUser(user) {
     password: user.password
   };
 
+  console.log(data);
+
   fetch('http://192.168.1.71:4000/create-user', {
     method: 'POST',
     headers: {
@@ -48,6 +50,7 @@ async function submitUser(user) {
   })
     .then(response => response.json())
     .then(data => {
+      console.log(data);
       if (data.message && data.message === 'successful') {
         console.log('Created a new user.');
         localStorage.setItem('token', data.jwt);
@@ -120,6 +123,7 @@ class CreateAccount extends Component {
       displayName,
       handle
     } = this.state;
+    console.log('..here..');
     if (
       verifyString(selectedCountry) &&
       selectedCountry !== 'Select Country' &&
@@ -130,7 +134,7 @@ class CreateAccount extends Component {
       verifyString(displayName) &&
       verifyString(handle)
     ) {
-      // console.log('valid user info');
+      console.log('valid user info');
       submitUser(this.state);
     }
   }
@@ -142,6 +146,10 @@ class CreateAccount extends Component {
       emailExistsError = 'Email address already exists.';
     return (
       <div className="account-creation">
+        <div className="title">
+          <span className="yellow">C</span>reate&nbsp;
+          <span className="yellow">A</span>ccount
+        </div>
         <div className="account-text">User Information:</div>
         <div className="user-info">
           <InputField

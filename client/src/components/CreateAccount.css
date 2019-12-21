@@ -5,6 +5,17 @@
   /* height: 30vh; */
 }
 
+.account-creation .title {
+  display: flex;
+  justify-content: center;
+  font-size: 2.25em;
+  color: white;
+}
+
+.account-creation .yellow {
+  color: yellow;
+}
+
 .account-creation .user-info {
   display: grid;
   margin: 0 5%;

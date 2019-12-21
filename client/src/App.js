@@ -10,7 +10,9 @@ const text =
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      createAccount: true
+    };
   }
 
   render() {
@@ -21,10 +23,12 @@ class App extends Component {
       chirpText: text
       // reChirp: "StanLee",
     };
+    let createAccount = null;
+    if (this.state.createAccount) createAccount = <CreateAccount />;
     return (
       <div className="App">
         <Header />
-        <CreateAccount />
+        {createAccount}
         <br />
         <Chirp data={chirpData} />
       </div>
