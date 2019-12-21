@@ -59,10 +59,15 @@ input::selection {
   transition: all 0.3s ease;
 }
 
+.required {
+  font-size: 0.85em;
+  color: red;
+  margin-right: 3px;
+}
+
 input:focus,
 textarea:focus {
   color: var(--highlight-color);
-  /* background: transparent; */
 }
 
 .input-form input:focus + .label-name .content-name,
@@ -70,6 +75,12 @@ textarea:focus {
   transform: translateY(-100%);
   font-size: 15px;
   color: var(--highlight-color);
+}
+
+.input-form input:focus + .label-name .content-name .required,
+.input-form input:valid + .label-name .content-name .required {
+  transform: translateY(-5%);
+  color: red;
 }
 
 .input-form input:focus + .label-name::after,

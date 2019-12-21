@@ -1,6 +1,7 @@
 const express = require('express');
 const assert = require('assert');
 const bcrypt = require('bcryptjs');
+const cors = require('cors');
 //const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -48,6 +49,7 @@ assert(
   'RATE_TIME_BETWEEN_MSG value not found in .env file.'
 );
 
+app.use(cors());
 app.use(express.json());
 
 connectToDB();
@@ -57,16 +59,17 @@ app.post('/create-user', async (req, res) => {
   const exists = await queryDB(email);
   if (exists[0] === undefined) {
     try {
+      console.log(req.body);
       const hashedPass = await bcrypt.hash(req.body.password, 10);
-      const newUser = `INSERT INTO user (passwd, email_addr, phone_num, display_name, name, dob, location) VALUES ('${hashedPass}', '${req.body.email}', '${req.body.phone_num}', '${req.body.display_name}', '${req.body.name}', '${req.body.dob}', '${req.body.location}');`;
+      const newUser = `INSERT INTO user (passwd, email_addr, phone_num, display_name, name, dob, location, handle) VALUES ('${hashedPass}', '${req.body.email}', '${req.body.phone_num}', '${req.body.display_name}', '${req.body.name}', '${req.body.dob}', '${req.body.location}', '${req.body.handle}');`;
       await queryDB(newUser);
       req.setTimeout(0);
-      res.status(201).send();
+      res.status(201).send({ message: 'successful' });
     } catch {
       res.status(500).send();
     }
   } else {
-    res.send('already exists.');
+    res.send({ message: 'already exists.' });
   }
 });
 

@@ -31,7 +31,7 @@ exports.verifyRefreshToken = (token, fn) => {
 };
 
 exports.generateAccessToken = data => {
-  return jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' });
+  return jwt.sign(data, process.env.ACCESS_TOKEN_SECRET);
 };
 
 exports.generateRefreshToken = data => {

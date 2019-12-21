@@ -11,19 +11,16 @@ import './InputField.css';
   @minLength: number of characters needed at a minimum.
   @maxLength: maximum number of characters allowed. 
   @progressiveErrorChecking: true or false (default)
-
-  isValid() - returns true/false.  False if any error state exists.
 */
 
 class InputField extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      required: props.required,
       text: props.text,
-      input: props.input,
-      width: props.width,
-      minLength: props.minLength,
-      maxLength: props.maxLength,
+      type: props.type,
+      update: props.update,
       progressiveErrorChecking: props.progressiveErrorChecking || false,
       error: props.error
     };
@@ -37,7 +34,8 @@ class InputField extends Component {
       this.state.maxLength
     );
     if (error !== undefined) this.setState({ error });
-    if (this.state.update !== undefined) this.state.update(event.target.value);
+    if (this.state.update !== undefined)
+      this.state.update(event.target.value, event);
   };
 
   onKeyUp = event => {
@@ -62,67 +60,101 @@ class InputField extends Component {
     return true;
   };
 
+  static getDerivedStateFromProps(props, state) {
+    if (state.data !== props.data) {
+      console.log('error?');
+      return { data: props.data };
+    }
+    return null;
+  }
+
   render() {
-    let inputType = 'text';
-    if (this.state.input === 'email' || this.state.input === 'textOnly')
-      inputType = 'text';
+    const {
+      id,
+      type,
+      name,
+      classes,
+      autoComplete,
+      onChange,
+      disabled,
+      maxLength
+    } = this.props;
+
+    const attrs = {
+      id,
+      name,
+      type,
+      autoComplete,
+      onChange: event => onChange(event.target.value, event),
+      disabled,
+      maxLength
+    };
+
+    if (name === undefined) attrs.name = this.state.text;
+    if (classes) attrs.classNames = classes;
+    if (this.state.type === 'email' || this.state.input === 'textOnly')
+      attrs.type = 'text';
+
     let divClass = 'input-form';
-    if (this.state.width === 'short')
-      divClass = 'input-form input-form_short-width';
-    if (this.state.width === 'long')
-      divClass = 'input-form input-form_long-width';
+    if (this.state.width === 'short') divClass += ' input-form_short-width';
+    if (this.state.width === 'long') divClass += ' input-form_long-width';
+
+    let required = null;
+    if (this.state.required) required = <span className="required">*</span>;
+
+    let error = null;
+    if (this.state.error)
+      error = <span className="error">{this.state.error}</span>;
+
     return (
       <div className={divClass}>
         <input
-          type={inputType}
-          name="name"
-          id="input"
+          {...attrs}
           required
-          autoComplete="off"
-          onBlur={this.onBlur}
           onKeyUp={this.onKeyUp}
+          onBlur={this.onBlur}
         />
         <label htmlFor="input" className="label-name">
-          <span className="content-name">{this.state.text}</span>
+          <div className="content-name">
+            {required}
+            <span>{this.state.text}</span>
+          </div>
         </label>
-        <span className="error">{this.state.error}</span>
+        {error}
       </div>
     );
   }
 }
 
 InputField.propTypes = {
+  id: PropTypes.string,
+  autoComplete: PropTypes.string,
   text: PropTypes.string.isRequired,
-  input: PropTypes.string,
+  type: PropTypes.string,
   width: PropTypes.string,
   minLength: PropTypes.number,
   maxLength: PropTypes.number,
   progressiveErrorChecking: PropTypes.bool,
-  update: PropTypes.func
+  onChange: PropTypes.func,
+  update: PropTypes.func,
+  disabled: PropTypes.bool,
+  require: PropTypes.bool,
+  error: PropTypes.string
 };
 
 InputField.defaultProps = {
-  input: 'text',
-  width: '',
+  id: null,
+  autoComplete: 'off',
+  type: 'text',
+  width: null,
   minLength: 0,
-  maxLength: 0,
+  maxLength: null,
   progressiveErrorChecking: false,
-  update: () => {}
+  onChange: () => {},
+  update: () => {},
+  disabled: false,
+  required: false,
+  error: null
 };
 
 export default InputField;
-
-/*
-  <textarea
-    name="message"
-    rows="2"
-    class="question"
-    id="msg"
-    required
-    autocomplete="off"
-  ></textarea>
-  <label for="msg">
-      <span>What's your message?</span>
-  </label>
-  <input type="submit" value="Submit!" /> 
-*/

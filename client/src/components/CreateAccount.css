@@ -91,3 +91,8 @@
   cursor: pointer;
   outline: none;
 }
+
+.required {
+  font-size: 0.85em;
+  color: red;
+}
