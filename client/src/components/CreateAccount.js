@@ -75,7 +75,9 @@ class CreateAccount extends Component {
     // if (what === 'dob-day') this.setState({ dobDay: value });
     // if (what === 'dob-mon') this.setState({ dobMonth: value });
     // if (what === 'dob-Yr') this.setState({ dobYear: value });
-    if (event.target.name === 'password2') {
+    if (event.target.name === 'email') {
+      this.setState({ emailExists: true });
+    } else if (event.target.name === 'password2') {
       if (this.state.password1 !== undefined && value !== undefined) {
         if (this.state.password1.length === value.length) {
           if (this.state.password1 === value) {
