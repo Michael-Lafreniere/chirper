@@ -13,19 +13,6 @@ const verifyString = string => {
   return false;
 };
 
-// POST http://192.168.1.71:4000/create-user
-// Content-Type: application/json
-
-// {
-//     "name": "Steve Gilkes",
-//     "password": "123456",
-//     "email": "ssteve@yahoo.com",
-//     "phone_num": "1234567890",
-//     "display_name": "steveG",
-//     "dob":"1977-05-16",
-//     "location": "Chilliwack, BC"
-// }
-
 async function submitUser(user) {
   const data = {
     name: user.name,
@@ -60,13 +47,47 @@ async function submitUser(user) {
     });
 }
 
+const validateAccountForm = (
+  name,
+  phone,
+  email,
+  dob,
+  country,
+  displayName,
+  handle,
+  password
+) => {
+  return {
+    isName: verifyString(name),
+    isPhone: verifyString(phone),
+    isEmail: verifyString(email),
+    isDoB: verifyString(dob),
+    isCountry: verifyString(country) && country !== 'Select Country',
+    isDisplayName: verifyString(displayName),
+    isHandle: verifyString(handle),
+    isPassword: verifyString(password)
+  };
+};
+
 class CreateAccount extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedCountry: '',
       emailExists: false,
-      passwordError: false
+      handleExists: false,
+      passwordError: false,
+      errors: {
+        name: null,
+        email: null,
+        phone: null,
+        dob: null,
+        displayName: null,
+        handle: null,
+        password: null,
+        password2: null
+      }
+      // errorText: null
       // selectedRegion: '',
       // regionData: [],
       // regionDisabled: true
@@ -74,43 +95,66 @@ class CreateAccount extends Component {
   }
 
   async updateData(value, event) {
-    // const what = event.target.name;
-    // if (what === 'dob-day') this.setState({ dobDay: value });
-    // if (what === 'dob-mon') this.setState({ dobMonth: value });
-    // if (what === 'dob-Yr') this.setState({ dobYear: value });
-    if (event.target.name === 'email') {
-      console.log('here');
-      await this.setState({ emailExists: true });
-    } else if (event.target.name === 'password2') {
-      if (this.state.password1 !== undefined && value !== undefined) {
-        if (this.state.password1.length === value.length) {
-          if (this.state.password1 === value) {
-            this.setState({ password: value });
-          } else {
-            console.log("values don't match");
-          }
-        } else {
-          console.log("lengths don't match");
+    const { name } = event.target;
+    if (name === 'dob-day') this.setState({ dobDay: value });
+    if (name === 'dob-mon') this.setState({ dobMonth: value });
+    if (name === 'dob-Yr') this.setState({ dobYear: value });
+    if (name === 'email') {
+      const url = `http://192.168.1.71:4000/email/${value}`;
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
         }
-      } else {
-        console.log('one undefined');
+      })
+        .then(response => response.json())
+        .then(res => {
+          if (res.message === 'exists') {
+            this.setState({ errors: { email: 'Email address already used' } });
+          } else {
+            this.setState({
+              errors: { email: null },
+              email: value
+            });
+          }
+        });
+    } else if (name === 'handle') {
+      const url = `http://192.168.1.71:4000/handle/${value}`;
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(res => {
+          if (res.message === 'exists') {
+            this.setState({ errors: { handle: 'Handle already in use' } });
+          } else {
+            this.setState({
+              errors: { handle: null },
+              handle: value
+            });
+          }
+        });
+    } else if (name === 'password2') {
+      if (this.state.password1 !== undefined && value !== undefined) {
+        if (this.state.password1 === value) {
+          this.setState({ password: value });
+        } else {
+          this.setState({ errors: { password2: "Passwords don't match" } });
+        }
       }
     } else {
-      this.setState({ [event.target.name]: value });
+      this.setState({ [name]: value });
     }
   }
 
   async selectCountry(value, event) {
     await this.setState({ selectedCountry: value });
-    // await this.setState({
-    //   regionData: getRegionData(value, data()),
-    //   regionDisabled: false
-    // });
   }
-
-  // async selectRegion(value, event) {
-  //   await this.setState({ selectedRegion: value });
-  // }
 
   onSubmit(event) {
     event.preventDefault();
@@ -123,27 +167,69 @@ class CreateAccount extends Component {
       displayName,
       handle
     } = this.state;
-    console.log('..here..');
-    if (
-      verifyString(selectedCountry) &&
-      selectedCountry !== 'Select Country' &&
-      verifyString(name) &&
-      verifyString(phone) &&
-      verifyString(email) &&
-      verifyString(password) &&
-      verifyString(displayName) &&
-      verifyString(handle)
-    ) {
-      console.log('valid user info');
+
+    const errors = validateAccountForm(
+      name,
+      phone,
+      email,
+      '',
+      selectedCountry,
+      displayName,
+      handle,
+      password
+    );
+
+    console.log('error:', errors);
+    let error = false;
+
+    if (!errors.isName) {
+      this.setState({ errors: { name: 'Name is required.' } });
+      error = true;
+    }
+    if (!errors.isEmail) {
+      this.setState({
+        ...errors,
+        errors: { ...errors, email: 'Email is required.' }
+      });
+      error = true;
+    }
+    if (!errors.isDisplayName) {
+      this.setState({
+        errors.displayName: 'A display name is required.'
+      });
+      error = true;
+    }
+    if (!errors.isCountry) {
+      console.log('damn country!');
+      error = true;
+    }
+
+    if (!error) {
       submitUser(this.state);
     }
+
+    // if (
+    //   !verifyString(selectedCountry) ||
+    //   selectedCountry === 'Select Country'
+    // ) {
+    //   this.setState({ errorText: 'Please select a country' });
+    // }
+    // if (
+    //   verifyString(name) &&
+    //   verifyString(phone) &&
+    //   verifyString(email) &&
+    //   verifyString(password) &&
+    //   verifyString(displayName) &&
+    //   verifyString(handle)
+    // ) {
+    //   console.log('valid user info');
+    //   submitUser(this.state);
+    // }
   }
 
   render() {
     const countryData = getCountryData(data());
-    let emailExistsError;
-    if (this.state.emailExists)
-      emailExistsError = 'Email address already exists.';
+    const { errors } = this.state;
     return (
       <div className="account-creation">
         <div className="title">
@@ -159,9 +245,11 @@ class CreateAccount extends Component {
             autoComplete="name"
             maxLength={50}
             progressiveErrorChecking={true}
+            error={errors.name}
             update={(value, event) => {
               this.updateData(value, event);
             }}
+            // required={true}
           />
           <InputField
             type="numberOnly"
@@ -170,10 +258,10 @@ class CreateAccount extends Component {
             autoComplete="phone number"
             maxLength={15}
             progressiveErrorChecking={true}
+            error={errors.phone}
             update={(value, event) => {
               this.updateData(value, event);
             }}
-            required={true}
           />
           <InputField
             text="Email Address"
@@ -181,14 +269,15 @@ class CreateAccount extends Component {
             name="email"
             autoComplete="email"
             value="me@email.com"
-            error={emailExistsError}
+            error={errors.email}
             update={(value, event) => {
               this.updateData(value, event);
             }}
+            // required={true}
           />
 
           <div className="dob">
-            <div className="dob-text">Date of Birth: (mm/dd/yyyy)</div>
+            <div className="dob-text">Date of Birth:</div>
             <input
               className="dob-daymonth"
               type=""
@@ -235,15 +324,6 @@ class CreateAccount extends Component {
               this.selectCountry(value, event);
             }}
           />
-          {/* <Selector
-            defaultOptionLabel="Select Region"
-            data={this.state.regionData}
-            disabled={this.state.regionDisabled}
-            value={this.state.selectedRegion}
-            onChange={(value, event) => {
-              this.selectRegion(value, event);
-            }}
-          /> */}
         </div>
         {/* <div className="separation"></div> */}
         <div className="account-text">Account Information:</div>
@@ -254,6 +334,7 @@ class CreateAccount extends Component {
             name="displayName"
             maxLength={15}
             progressiveErrorChecking={true}
+            error={errors.displayName}
             update={(value, event) => {
               this.updateData(value, event);
             }}
@@ -264,6 +345,7 @@ class CreateAccount extends Component {
             name="handle"
             maxLength={15}
             progressiveErrorChecking={true}
+            error={errors.handle}
             update={(value, event) => {
               this.updateData(value, event);
             }}
@@ -273,6 +355,7 @@ class CreateAccount extends Component {
             text="Password"
             name="password1"
             autoComplete="password"
+            error={errors.password}
             update={(value, event) => {
               this.updateData(value, event);
             }}
@@ -281,6 +364,7 @@ class CreateAccount extends Component {
             type="password"
             text="Repeat Password"
             name="password2"
+            error={errors.password2}
             update={(value, event) => {
               this.updateData(value, event);
             }}
@@ -296,6 +380,7 @@ class CreateAccount extends Component {
           >
             Submit
           </button>
+          <div className="error-text">{this.state.errorText}</div>
         </div>
       </div>
     );

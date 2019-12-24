@@ -72,9 +72,9 @@ app.get('/chirp', async (req, res) => {
   res.send(results);
 });
 
-app.get('/users', (req, res) => {
-  res.send(users);
-});
+// app.get('/users', (req, res) => {
+//   res.send(users);
+// });
 
 //
 // Validates that a Chirp is properly formatted:

@@ -1,7 +1,8 @@
 .account-creation {
-  width: 35%;
+  width: 40%;
   padding: 1em;
   border: 1px solid var(--base-color);
+  border-radius: 20px;
   /* height: 30vh; */
 }
 

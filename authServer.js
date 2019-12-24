@@ -75,6 +75,34 @@ app.post('/create-user', async (req, res) => {
   }
 });
 
+app.get('/email/:email', async (req, res) => {
+  const { email } = req.params;
+  if (email !== undefined) {
+    try {
+      const query = `SELECT * FROM user WHERE email_addr='${email}';`;
+      const results = await queryDB(query);
+      if (results[0] === undefined) res.send({ message: 'does not exist' });
+      else res.send({ message: 'exists' });
+    } catch {
+      res.status(500).send({ message: 'Improperly formatted request.' });
+    }
+  }
+});
+
+app.get('/handle/:handle', async (req, res) => {
+  const { handle } = req.params;
+  if (handle !== undefined) {
+    try {
+      const query = `SELECT * FROM user WHERE handle='${handle}';`;
+      const results = await queryDB(query);
+      if (results[0] === undefined) res.send({ message: 'does not exist' });
+      else res.send({ message: 'exists' });
+    } catch {
+      res.status(500).send({ message: 'Improperly formatted request.' });
+    }
+  }
+});
+
 app.post('/user-login', async (req, res) => {
   const email = req.body.email;
   const query = `SELECT * FROM user WHERE email_addr='${email}';`;
