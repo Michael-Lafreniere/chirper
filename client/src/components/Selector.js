@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 class Selector extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
+      error: this.props.error,
       data: this.props.data
     };
   }
@@ -38,6 +38,8 @@ class Selector extends Component {
   static getDerivedStateFromProps(props, state) {
     if (state.data !== props.data) {
       return { data: props.data };
+    } else if (state.error !== props.error) {
+      return { error: props.error };
     }
     return null;
   }
@@ -90,7 +92,8 @@ Selector.propTypes = {
   defaultOptionLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func,
   onBlur: PropTypes.func,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  error: PropTypes.string
 };
 
 Selector.defaultProps = {
@@ -102,7 +105,8 @@ Selector.defaultProps = {
   defaultOptionLabel: 'Select',
   onChange: () => {},
   onBlur: () => {},
-  disabled: false
+  disabled: false,
+  error: 'Test error message'
 };
 
 export default Selector;

@@ -25,8 +25,6 @@ async function submitUser(user) {
     password: user.password
   };
 
-  console.log(data);
-
   fetch('http://192.168.1.71:4000/create-user', {
     method: 'POST',
     headers: {
@@ -73,28 +71,23 @@ class CreateAccount extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      password: '',
+      password2: '',
       selectedCountry: '',
-      emailExists: false,
-      handleExists: false,
-      passwordError: false,
-      errors: {
-        name: null,
-        email: null,
-        phone: null,
-        dob: null,
-        displayName: null,
-        handle: null,
-        password: null,
-        password2: null
-      }
-      // errorText: null
-      // selectedRegion: '',
-      // regionData: [],
-      // regionDisabled: true
+      errorText: null,
+      nameError: null,
+      emailError: null,
+      phoneError: null,
+      countryError: null,
+      dobError: null,
+      displayNameError: null,
+      handleError: null,
+      passwordError: null,
+      password2Error: null
     };
   }
 
-  async updateData(value, event) {
+  updateData = async (value, event) => {
     const { name } = event.target;
     if (name === 'dob-day') this.setState({ dobDay: value });
     if (name === 'dob-mon') this.setState({ dobMonth: value });
@@ -111,10 +104,10 @@ class CreateAccount extends Component {
         .then(response => response.json())
         .then(res => {
           if (res.message === 'exists') {
-            this.setState({ errors: { email: 'Email address already used' } });
+            this.setState({ emailError: 'Email address already used' });
           } else {
             this.setState({
-              errors: { email: null },
+              emailError: null,
               email: value
             });
           }
@@ -131,10 +124,10 @@ class CreateAccount extends Component {
         .then(response => response.json())
         .then(res => {
           if (res.message === 'exists') {
-            this.setState({ errors: { handle: 'Handle already in use' } });
+            this.setState({ handleError: 'Handle already in use' });
           } else {
             this.setState({
-              errors: { handle: null },
+              handleError: null,
               handle: value
             });
           }
@@ -142,22 +135,42 @@ class CreateAccount extends Component {
     } else if (name === 'password2') {
       if (this.state.password1 !== undefined && value !== undefined) {
         if (this.state.password1 === value) {
-          this.setState({ password: value });
+          this.setState({
+            password: value,
+            password2Error: null,
+            passwordError: null
+          });
         } else {
-          this.setState({ errors: { password2: "Passwords don't match" } });
+          this.setState({ password2: "Passwords don't match" });
         }
       }
     } else {
       this.setState({ [name]: value });
     }
-  }
+  };
 
   async selectCountry(value, event) {
     await this.setState({ selectedCountry: value });
   }
 
-  onSubmit(event) {
+  resetErrors = () => {
+    this.setState({
+      errorText: null,
+      nameError: null,
+      phoneError: null,
+      countryError: null,
+      dobError: null,
+      displayNameError: null,
+      passwordError: null,
+      password2Error: null
+    });
+  };
+
+  onSubmit = event => {
     event.preventDefault();
+
+    this.resetErrors();
+
     const {
       selectedCountry,
       name,
@@ -179,57 +192,50 @@ class CreateAccount extends Component {
       password
     );
 
-    console.log('error:', errors);
     let error = false;
-
     if (!errors.isName) {
-      this.setState({ errors: { name: 'Name is required.' } });
+      this.setState({ nameError: 'A name is required.' });
       error = true;
     }
-    if (!errors.isEmail) {
+    if (!errors.isEmail && this.state.emailError === null) {
       this.setState({
-        ...errors,
-        errors: { ...errors, email: 'Email is required.' }
+        emailError: 'An email address is required.'
       });
+      error = true;
+    }
+    if (!error.isDoB) {
+      this.setState({ dobError: 'A date of birth is required.' });
       error = true;
     }
     if (!errors.isDisplayName) {
-      this.setState({
-        errors.displayName: 'A display name is required.'
-      });
+      this.setState({ displayNameError: 'A display name is required.' });
       error = true;
     }
+    if (!errors.isHandle && this.state.handleError === null) {
+      this.setState({ handleError: 'A handle is required.' });
+      error = true;
+    }
+    if (!errors.isPassword) {
+      this.setState({ passwordError: 'Matching passwords required' });
+      error = true;
+    }
+    if (!errors.isPassword) {
+      this.setState({ password2Error: 'Matching passwords required' });
+      error = true;
+    }
+
     if (!errors.isCountry) {
-      console.log('damn country!');
+      this.setState({ countryError: 'You must provide a country' });
       error = true;
     }
 
     if (!error) {
       submitUser(this.state);
     }
-
-    // if (
-    //   !verifyString(selectedCountry) ||
-    //   selectedCountry === 'Select Country'
-    // ) {
-    //   this.setState({ errorText: 'Please select a country' });
-    // }
-    // if (
-    //   verifyString(name) &&
-    //   verifyString(phone) &&
-    //   verifyString(email) &&
-    //   verifyString(password) &&
-    //   verifyString(displayName) &&
-    //   verifyString(handle)
-    // ) {
-    //   console.log('valid user info');
-    //   submitUser(this.state);
-    // }
-  }
+  };
 
   render() {
     const countryData = getCountryData(data());
-    const { errors } = this.state;
     return (
       <div className="account-creation">
         <div className="title">
@@ -245,7 +251,7 @@ class CreateAccount extends Component {
             autoComplete="name"
             maxLength={50}
             progressiveErrorChecking={true}
-            error={errors.name}
+            error={this.state.nameError}
             update={(value, event) => {
               this.updateData(value, event);
             }}
@@ -258,7 +264,7 @@ class CreateAccount extends Component {
             autoComplete="phone number"
             maxLength={15}
             progressiveErrorChecking={true}
-            error={errors.phone}
+            error={this.state.phoneError}
             update={(value, event) => {
               this.updateData(value, event);
             }}
@@ -269,7 +275,7 @@ class CreateAccount extends Component {
             name="email"
             autoComplete="email"
             value="me@email.com"
-            error={errors.email}
+            error={this.state.emailError}
             update={(value, event) => {
               this.updateData(value, event);
             }}
@@ -313,17 +319,22 @@ class CreateAccount extends Component {
               onKeyUp={this.onKeyUp}
               maxLength="4"
             />
+            <div className="required">{this.state.dobError}</div>
           </div>
         </div>
         <div className="country-selector">
-          <Selector
-            defaultOptionLabel="Select Country"
-            data={countryData}
-            value={this.state.selectedCountry}
-            onChange={(value, event) => {
-              this.selectCountry(value, event);
-            }}
-          />
+          <div className="selector">
+            <Selector
+              defaultOptionLabel="Select Country"
+              data={countryData}
+              value={this.state.selectedCountry}
+              // error={this.state.countryError}
+              onChange={(value, event) => {
+                this.selectCountry(value, event);
+              }}
+            />
+          </div>
+          <div className="required center">{this.state.countryError}</div>
         </div>
         {/* <div className="separation"></div> */}
         <div className="account-text">Account Information:</div>
@@ -334,7 +345,7 @@ class CreateAccount extends Component {
             name="displayName"
             maxLength={15}
             progressiveErrorChecking={true}
-            error={errors.displayName}
+            error={this.state.displayNameError}
             update={(value, event) => {
               this.updateData(value, event);
             }}
@@ -345,7 +356,7 @@ class CreateAccount extends Component {
             name="handle"
             maxLength={15}
             progressiveErrorChecking={true}
-            error={errors.handle}
+            error={this.state.handleError}
             update={(value, event) => {
               this.updateData(value, event);
             }}
@@ -355,7 +366,7 @@ class CreateAccount extends Component {
             text="Password"
             name="password1"
             autoComplete="password"
-            error={errors.password}
+            error={this.state.passwordError}
             update={(value, event) => {
               this.updateData(value, event);
             }}
@@ -364,7 +375,7 @@ class CreateAccount extends Component {
             type="password"
             text="Repeat Password"
             name="password2"
-            error={errors.password2}
+            error={this.state.password2Error}
             update={(value, event) => {
               this.updateData(value, event);
             }}
