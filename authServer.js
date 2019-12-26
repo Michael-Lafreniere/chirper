@@ -55,20 +55,30 @@ app.use(express.json());
 connectToDB();
 
 app.post('/create-user', async (req, res) => {
-  console.log('Here in the create-user route...');
   const email = `SELECT * FROM user WHERE email_addr='${req.body.email}'`;
   const exists = await queryDB(email);
   if (exists[0] === undefined) {
     try {
-      console.log(req.body);
+      // console.log(req.body);
       const hashedPass = await bcrypt.hash(req.body.password, 10);
-      const newUser = `INSERT INTO user (passwd, email_addr, phone_num, display_name, name, dob, location, handle) VALUES ('${hashedPass}', '${req.body.email}', '${req.body.phone_num}', '${req.body.display_name}', '${req.body.name}', '${req.body.dob}', '${req.body.location}', '${req.body.handle}');`;
-      await queryDB(newUser);
-      console.log('new uers created:', req.body.handle);
+      const convertedDate = new Date(req.body.dob)
+        .toISOString()
+        .slice(0, 19)
+        .replace('T', ' ');
+      const newUser = `INSERT INTO user (passwd, email_addr, phone_num, display_name, name, dob, location, handle) VALUES ('${hashedPass}', '${req.body.email}', '${req.body.phone_num}', '${req.body.display_name}', '${req.body.name}', '${convertedDate}', '${req.body.location}', '${req.body.handle}');`;
+      const result = await queryDB(newUser);
+      // console.log('results', result);
       req.setTimeout(0);
-      res.status(201).send({ message: 'successful' });
-    } catch {
-      res.status(500).send();
+      if (result !== null && result.ResultSetHeader.insertId > 0) {
+        console.log('new uers created:', req.body.handle);
+        res.status(201).send({ message: 'successful' });
+      } else {
+        console.log('Failed to create new user.');
+        req.send({ message: result });
+      }
+    } catch (error) {
+      // console.log('The error:', error);
+      res.status(500).send({ message: 'internal error.', error });
     }
   } else {
     res.send({ message: 'already exists.' });
@@ -77,7 +87,8 @@ app.post('/create-user', async (req, res) => {
 
 app.get('/email/:email', async (req, res) => {
   const { email } = req.params;
-  if (email !== undefined) {
+  // console.log(email);
+  if (email !== undefined || email !== null) {
     try {
       const query = `SELECT * FROM user WHERE email_addr='${email}';`;
       const results = await queryDB(query);

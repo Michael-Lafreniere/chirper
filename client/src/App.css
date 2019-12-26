@@ -3,7 +3,7 @@
   --bkgrnd-color: #282c34;
   --base-color: #fff;
   --highlight-color: #5fa8de;
-  --comment-color: rgba(200,10, 10, 255);
+  --comment-color: rgba(200, 10, 10, 255);
   --rechirp-color: rgba(10, 200, 10, 255);
   --star-color: rgba(200, 200, 10, 255);
 
@@ -48,4 +48,13 @@ body {
 
 .App-link {
   color: #61dafb;
+}
+
+.test {
+  display: flex;
+  /* position: absolute;
+  width: 100%;
+  margin: 0 auto; */
+  justify-content: center;
+  align-items: center;
 }

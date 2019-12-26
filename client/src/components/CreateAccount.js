@@ -18,7 +18,7 @@ async function submitUser(user) {
     name: user.name,
     email: user.email,
     phone_num: user.phone,
-    dob: '1956-03-19',
+    dob: user.dob,
     location: user.selectedCountry,
     display_name: user.displayName,
     handle: user.handle,
@@ -35,7 +35,7 @@ async function submitUser(user) {
   })
     .then(response => response.json())
     .then(data => {
-      console.log(data);
+      // console.log(data);
       if (data.message && data.message === 'successful') {
         console.log('Created a new user.');
         localStorage.setItem('token', data.jwt);
@@ -59,7 +59,7 @@ const validateAccountForm = (
     isName: verifyString(name),
     isPhone: verifyString(phone),
     isEmail: verifyString(email),
-    isDoB: verifyString(dob),
+    isDoB: dob !== null ? true : false,
     isCountry: verifyString(country) && country !== 'Select Country',
     isDisplayName: verifyString(displayName),
     isHandle: verifyString(handle),
@@ -87,12 +87,20 @@ class CreateAccount extends Component {
     };
   }
 
-  updateData = async (value, event) => {
-    const { name } = event.target;
-    if (name === 'dob-day') this.setState({ dobDay: value });
-    if (name === 'dob-mon') this.setState({ dobMonth: value });
-    if (name === 'dob-Yr') this.setState({ dobYear: value });
-    if (name === 'email') {
+  async dob() {
+    if (this.state.dobDay && this.state.dobMonth && this.state.dobYear) {
+      await this.setState({
+        dob: new Date(
+          `${this.state.dobYear}-${this.state.dobMonth}-${this.state.dobDay}`
+        )
+      });
+    }
+  }
+
+  updateData = async event => {
+    const { value, name } = event.target;
+
+    if (name === 'email' && value.trim() !== '') {
       const url = `http://192.168.1.71:4000/email/${value}`;
       fetch(url, {
         method: 'GET',
@@ -112,7 +120,7 @@ class CreateAccount extends Component {
             });
           }
         });
-    } else if (name === 'handle') {
+    } else if (name === 'handle' && value.trim() !== '') {
       const url = `http://192.168.1.71:4000/handle/${value}`;
       fetch(url, {
         method: 'GET',
@@ -132,6 +140,27 @@ class CreateAccount extends Component {
             });
           }
         });
+    } else if (name === 'month') {
+      if (value < 1 || value > 12) {
+        this.setState({ dobError: 'Month needs to betwween 1-12.' });
+      } else {
+        this.setState({ dobError: null, dobMonth: value });
+        this.dob();
+      }
+    } else if (name === 'day') {
+      if (value < 1 || value > 31) {
+        this.setState({ dobError: 'Day needs to betwween 1-31.' });
+      } else {
+        this.setState({ dobError: null, dobDay: value });
+        this.dob();
+      }
+    } else if (name === 'year') {
+      if (value < 1910 || value > 2001) {
+        this.setState({ dobError: 'Year needs to betwween 1910-2001.' });
+      } else {
+        this.setState({ dobError: null, dobYear: value });
+        this.dob();
+      }
     } else if (name === 'password2') {
       if (this.state.password1 !== undefined && value !== undefined) {
         if (this.state.password1 === value) {
@@ -166,7 +195,7 @@ class CreateAccount extends Component {
     });
   };
 
-  onSubmit = event => {
+  async onSubmit(event) {
     event.preventDefault();
 
     this.resetErrors();
@@ -181,11 +210,13 @@ class CreateAccount extends Component {
       handle
     } = this.state;
 
+    await this.dob();
+
     const errors = validateAccountForm(
       name,
       phone,
       email,
-      '',
+      this.state.dob,
       selectedCountry,
       displayName,
       handle,
@@ -203,7 +234,7 @@ class CreateAccount extends Component {
       });
       error = true;
     }
-    if (!error.isDoB) {
+    if (!errors.isDoB) {
       this.setState({ dobError: 'A date of birth is required.' });
       error = true;
     }
@@ -232,7 +263,7 @@ class CreateAccount extends Component {
     if (!error) {
       submitUser(this.state);
     }
-  };
+  }
 
   render() {
     const countryData = getCountryData(data());
@@ -252,8 +283,8 @@ class CreateAccount extends Component {
             maxLength={50}
             progressiveErrorChecking={true}
             error={this.state.nameError}
-            update={(value, event) => {
-              this.updateData(value, event);
+            update={event => {
+              this.updateData(event);
             }}
             // required={true}
           />
@@ -265,8 +296,8 @@ class CreateAccount extends Component {
             maxLength={15}
             progressiveErrorChecking={true}
             error={this.state.phoneError}
-            update={(value, event) => {
-              this.updateData(value, event);
+            update={event => {
+              this.updateData(event);
             }}
           />
           <InputField
@@ -276,8 +307,8 @@ class CreateAccount extends Component {
             autoComplete="email"
             value="me@email.com"
             error={this.state.emailError}
-            update={(value, event) => {
-              this.updateData(value, event);
+            update={event => {
+              this.updateData(event);
             }}
             // required={true}
           />
@@ -291,8 +322,10 @@ class CreateAccount extends Component {
               id="input"
               required
               autoComplete="off"
-              onBlur={this.onBlur}
-              onKeyUp={this.onKeyUp}
+              onBlur={event => {
+                this.updateData(event);
+              }}
+              // onKeyUp={this.onKeyUp}
               maxLength="2"
             />
             /
@@ -303,20 +336,24 @@ class CreateAccount extends Component {
               id="input"
               required
               autoComplete="off"
-              onBlur={this.onBlur}
-              onKeyUp={this.onKeyUp}
+              onBlur={event => {
+                this.updateData(event);
+              }}
+              // onKeyUp={this.onKeyUp}
               maxLength="2"
             />
             /
             <input
               className="dob-year"
               type=""
-              name="month"
+              name="year"
               id="input"
               required
               autoComplete="off"
-              onBlur={this.onBlur}
-              onKeyUp={this.onKeyUp}
+              onBlur={event => {
+                this.updateData(event);
+              }}
+              // onKeyUp={this.onKeyUp}
               maxLength="4"
             />
             <div className="required">{this.state.dobError}</div>
@@ -346,8 +383,8 @@ class CreateAccount extends Component {
             maxLength={15}
             progressiveErrorChecking={true}
             error={this.state.displayNameError}
-            update={(value, event) => {
-              this.updateData(value, event);
+            update={event => {
+              this.updateData(event);
             }}
           />
           <InputField
@@ -357,8 +394,8 @@ class CreateAccount extends Component {
             maxLength={15}
             progressiveErrorChecking={true}
             error={this.state.handleError}
-            update={(value, event) => {
-              this.updateData(value, event);
+            update={event => {
+              this.updateData(event);
             }}
           />
           <InputField
@@ -367,8 +404,8 @@ class CreateAccount extends Component {
             name="password1"
             autoComplete="password"
             error={this.state.passwordError}
-            update={(value, event) => {
-              this.updateData(value, event);
+            update={event => {
+              this.updateData(event);
             }}
           />
           <InputField
@@ -376,8 +413,8 @@ class CreateAccount extends Component {
             text="Repeat Password"
             name="password2"
             error={this.state.password2Error}
-            update={(value, event) => {
-              this.updateData(value, event);
+            update={event => {
+              this.updateData(event);
             }}
           />
         </div>

@@ -35,8 +35,10 @@ exports.connectToDB = async () => {
 exports.queryDB = async query => {
   try {
     const [rows, fields] = await connection.execute(query);
+    console.log('rows:', rows);
     return rows;
-  } catch (e) {
-    console.log('caught exception!', e);
+  } catch (error) {
+    console.log('Uncaught exception!', error);
+    return error;
   }
 };

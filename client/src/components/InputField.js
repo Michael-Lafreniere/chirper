@@ -35,7 +35,7 @@ class InputField extends Component {
     );
     if (error !== undefined) this.setState({ error });
     if (this.state.update !== undefined)
-      this.state.update(event.target.value, event);
+      this.state.update(event);
   };
 
   onKeyUp = event => {

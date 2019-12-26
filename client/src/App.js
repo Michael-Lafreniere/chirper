@@ -28,7 +28,7 @@ class App extends Component {
     return (
       <div className="App">
         <Header />
-        {createAccount}
+        <div className="test">{createAccount}</div>
         <br />
         <Chirp data={chirpData} />
       </div>
