@@ -23,19 +23,13 @@ exports.connectToDB = async () => {
     database: SQL_DATABASE
   });
 
-  // Check the connection:
-  //   conn.connect(error => {
-  //     if (error) throw error;
-  //     console.log(`Connected to ${SQL_DATABASE}`);
-  //   });
   if (connection) console.log(`Connected to ${SQL_DATABASE}`);
   return connection;
 };
 
 exports.queryDB = async query => {
   try {
-    const [rows, fields] = await connection.execute(query);
-    console.log('rows:', rows);
+    const [rows] = await connection.execute(query);
     return rows;
   } catch (error) {
     console.log('Uncaught exception!', error);

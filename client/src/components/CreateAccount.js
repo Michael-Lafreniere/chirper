@@ -5,45 +5,12 @@ import InputField from './InputField';
 import Selector from './Selector';
 import { data } from '../CountryData';
 import { getCountryData } from '../utils/CountryRegion';
+import { submitUser } from '../utils/dbHelpers';
+import { verifyString } from '../utils/Common';
 
 import './CreateAccount.css';
 
-const verifyString = string => {
-  if (string !== undefined && string.length > 0) return true;
-  return false;
-};
-
-async function submitUser(user) {
-  const data = {
-    name: user.name,
-    email: user.email,
-    phone_num: user.phone,
-    dob: user.dob,
-    location: user.selectedCountry,
-    display_name: user.displayName,
-    handle: user.handle,
-    password: user.password
-  };
-
-  fetch('http://192.168.1.71:4000/create-user', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json'
-    },
-    body: JSON.stringify(data)
-  })
-    .then(response => response.json())
-    .then(data => {
-      // console.log(data);
-      if (data.message && data.message === 'successful') {
-        console.log('Created a new user.');
-        localStorage.setItem('token', data.jwt);
-      } else if (data.message) {
-        console.log('error:', data.message);
-      }
-    });
-}
+const serverAddress = 'http://192.168.1.71:4000';
 
 const validateAccountForm = (
   name,
@@ -101,7 +68,7 @@ class CreateAccount extends Component {
     const { value, name } = event.target;
 
     if (name === 'email' && value.trim() !== '') {
-      const url = `http://192.168.1.71:4000/email/${value}`;
+      const url = `${serverAddress}/email/${value}`;
       fetch(url, {
         method: 'GET',
         headers: {
@@ -121,7 +88,7 @@ class CreateAccount extends Component {
           }
         });
     } else if (name === 'handle' && value.trim() !== '') {
-      const url = `http://192.168.1.71:4000/handle/${value}`;
+      const url = `${serverAddress}/handle/${value}`;
       fetch(url, {
         method: 'GET',
         headers: {
@@ -174,6 +141,7 @@ class CreateAccount extends Component {
         }
       }
     } else {
+      // Process phone #, display name, password1, etc.:
       this.setState({ [name]: value });
     }
   };

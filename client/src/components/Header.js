@@ -1,4 +1,5 @@
 import React from 'react';
+import Login from './Login';
 
 import './Header.css';
 
@@ -11,11 +12,12 @@ const Header = () => {
         </h3>
       </div>
       <div className="login-signup">
-        <form>
+        <Login />
+        {/* <form>
           <input type="text" placeholder="Email or handle" />
           <input type="password" placeholder="password" />
           <button>Login</button>
-        </form>
+        </form> */}
         /<button>Signup</button>
       </div>
     </header>

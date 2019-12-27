@@ -66,16 +66,16 @@ app.post('/create-user', async (req, res) => {
         .slice(0, 19)
         .replace('T', ' ');
       const newUser = `INSERT INTO user (passwd, email_addr, phone_num, display_name, name, dob, location, handle) VALUES ('${hashedPass}', '${req.body.email}', '${req.body.phone_num}', '${req.body.display_name}', '${req.body.name}', '${convertedDate}', '${req.body.location}', '${req.body.handle}');`;
-      const result = await queryDB(newUser);
-      // console.log('results', result);
+      const rows = await queryDB(newUser);
+
       req.setTimeout(0);
-      if (result !== null && result.ResultSetHeader.insertId > 0) {
-        console.log('new uers created:', req.body.handle);
-        res.status(201).send({ message: 'successful' });
-      } else {
-        console.log('Failed to create new user.');
-        req.send({ message: result });
-      }
+      // if (result !== null && result.ResultSetHeader.insertId > 0) {
+      console.log('new user created:', req.body.handle);
+      res.status(201).send({ message: 'successful' });
+      // } else {
+      //   console.log('Failed to create new user.');
+      //   req.send({ message: result });
+      // }
     } catch (error) {
       // console.log('The error:', error);
       res.status(500).send({ message: 'internal error.', error });
