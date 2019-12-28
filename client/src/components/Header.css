@@ -22,10 +22,10 @@ header {
 
 .login-signup input {
   padding: 5px;
-  background-color: white;
-  color: blue;
+  background-color: var(--base-color);
+  color: var(--highlight-color);
   outline: none;
-  border: 1px solid blue;
+  border: 1px solid var(--highlight-color);
   border-radius: 5px;
   height: 35px;
   font-size: 0.55em;
@@ -36,10 +36,23 @@ header {
   outline: none;
   border-radius: 20px;
   padding: 10px 25px;
-  background-color: blue;
-  color: white;
+  background-color: var(--highlight-color);
+  color: var(--base-color);
   margin: 0 10px;
   font-size: 0.55em;
   font-weight: 550;
   cursor: pointer;
+}
+
+.error-input {
+  border: 2px solid var(--error-color);
+  border-radius: 4px;
+}
+
+.error-text {
+  margin: 0.25em 0 0 0;
+  padding: 0;
+  color: var(--error-color);
+  font-style: bold;
+  font-size: 1.2rem;
 }

@@ -11,6 +11,7 @@ import './InputField.css';
   @minLength: number of characters needed at a minimum.
   @maxLength: maximum number of characters allowed. 
   @progressiveErrorChecking: true or false (default)
+  @requiredSymbol: text, default is *
 */
 
 class InputField extends Component {
@@ -34,8 +35,7 @@ class InputField extends Component {
       this.state.maxLength
     );
     if (error !== undefined) this.setState({ error });
-    if (this.state.update !== undefined)
-      this.state.update(event);
+    if (this.state.update !== undefined) this.state.update(event);
   };
 
   onKeyUp = event => {
@@ -75,7 +75,8 @@ class InputField extends Component {
       onChange,
       disabled,
       error,
-      maxLength
+      maxLength,
+      requiredSymbol
     } = this.props;
 
     const attrs = {
@@ -90,6 +91,9 @@ class InputField extends Component {
     };
 
     if (name === undefined) attrs.name = this.state.text;
+    let errorMsg = null;
+    if (this.state.error)
+      errorMsg = <span className="error">{this.state.error}</span>;
     if (classes) attrs.classNames = classes;
     if (this.state.type === 'email' || this.state.input === 'textOnly')
       attrs.type = 'text';
@@ -99,11 +103,8 @@ class InputField extends Component {
     if (this.state.width === 'long') divClass += ' input-form_long-width';
 
     let required = null;
-    if (this.state.required) required = <span className="required">*</span>;
-
-    let errorMsg = null;
-    if (this.state.error)
-      errorMsg = <span className="error">{this.state.error}</span>;
+    if (this.state.required)
+      required = <span className="required">{requiredSymbol}</span>;
 
     return (
       <div className={divClass}>
@@ -138,7 +139,8 @@ InputField.propTypes = {
   update: PropTypes.func,
   disabled: PropTypes.bool,
   require: PropTypes.bool,
-  error: PropTypes.string
+  error: PropTypes.string,
+  requiredSymbol: PropTypes.string
 };
 
 InputField.defaultProps = {
@@ -153,7 +155,8 @@ InputField.defaultProps = {
   update: () => {},
   disabled: false,
   required: false,
-  error: null
+  error: null,
+  requiredSymbol: '*'
 };
 
 export default InputField;

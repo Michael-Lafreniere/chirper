@@ -61,7 +61,7 @@ input::selection {
 
 .required {
   font-size: 0.85em;
-  color: red;
+  color: var(--required-color);
   margin-right: 3px;
 }
 
@@ -80,7 +80,7 @@ textarea:focus {
 .input-form input:focus + .label-name .content-name .required,
 .input-form input:valid + .label-name .content-name .required {
   transform: translateY(-5%);
-  color: red;
+  color: var(--error-color);
 }
 
 .input-form input:focus + .label-name::after,
@@ -94,5 +94,5 @@ textarea:focus {
   bottom: -40%;
   left: 0%;
   font-size: 0.85em;
-  color: red;
+  color: var(--error-color);
 }

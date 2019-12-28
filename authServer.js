@@ -115,24 +115,36 @@ app.get('/handle/:handle', async (req, res) => {
 });
 
 app.post('/user-login', async (req, res) => {
-  const email = req.body.email;
-  const query = `SELECT * FROM user WHERE email_addr='${email}';`;
+  let { account, password } = req.body;
+  let accountType = 'email_addr';
+  if (account && account[0] === '@') {
+    accountType = 'handle';
+    account = account.substr(1);
+  }
+  console.log(account, password);
+  const query = `SELECT * FROM user WHERE ${accountType}='${account}';`;
   const results = await queryDB(query);
   if (results[0] !== undefined) {
     const { passwd } = results[0];
 
     try {
-      bcrypt.compare(req.body.password, passwd, (err, result) => {
+      bcrypt.compare(password, passwd, (err, result) => {
         if (result) {
-          const user = { name: 'Mike' };
+          const user = {
+            handle: results[0].handle,
+            displayName: results[0].display_name,
+            userImage: results[0].user_image,
+            totalChirps: results[0].total_chirps,
+            userSince: results[0].created_on
+          };
           const accessToken = generateAccessToken(user);
           const refreshToken = generateRefreshToken(user);
           refreshTokens.push(refreshToken);
-          res.json({ accessToken, refreshToken });
+          res.json({ message: 'successful', accessToken, refreshToken, user });
           // res.cookie('token', token, { httpOnly: true })
           //   .sendStatus(200);
         } else {
-          res.status(401).send(`Invalid email or password.`);
+          res.status(401).send(`Invalid email/handle or password.`);
         }
       });
     } catch {
