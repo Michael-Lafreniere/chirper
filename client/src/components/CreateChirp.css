@@ -1,0 +1,43 @@
+.create-chirp {
+  width: 30%;
+  height: 6vh;
+  border: 0.5px rgba(128, 128, 128, 128) solid;
+  display: flex;
+  flex-direction: row;
+  max-width: 100%;
+}
+
+.chirp-sidebar {
+  max-width: var(--chirp-sidebar-width);
+}
+
+.user-image {
+  width: var(--chirp-user-image-size);
+  height: var(--chirp-user-image-size);
+  padding: 5px 0 0 10px;
+}
+
+.user-image img {
+  border-radius: 50%;
+}
+
+.input-container {
+  width: 100%;
+}
+
+.input-div {
+  /* margin-left: 2%; */
+  display: inline-block;
+  margin: 5px 10px;
+  width: 95%;
+  color: var(--highlight-color);
+  outline: none;
+  user-select: text;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.over-typed {
+  color: var(--base-color);
+  background-color: var(--highlight-color);
+}

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Header from './components/Header';
 import CreateAccount from './components/CreateAccount';
 import Chirp from './components/Chirp';
+import CreateChirp from './components/CreateChirp';
 import './App.css';
 
 const text =
@@ -29,6 +30,7 @@ class App extends Component {
       <div className="App">
         <Header />
         <div className="test">{createAccount}</div>
+        <CreateChirp />
         <br />
         <Chirp data={chirpData} />
       </div>

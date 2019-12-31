@@ -134,8 +134,9 @@ app.post('/user-login', async (req, res) => {
             handle: results[0].handle,
             displayName: results[0].display_name,
             userImage: results[0].user_image,
+            userSince: results[0].created_on,
             totalChirps: results[0].total_chirps,
-            userSince: results[0].created_on
+            verified: results[0].acct_verified
           };
           const accessToken = generateAccessToken(user);
           const refreshToken = generateRefreshToken(user);
