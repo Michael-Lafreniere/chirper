@@ -24,11 +24,16 @@ header {
   padding: 5px;
   background-color: var(--base-color);
   color: var(--highlight-color);
-  outline: none;
-  border: 1px solid var(--highlight-color);
-  border-radius: 5px;
   height: 35px;
   font-size: 0.55em;
+  border-radius: 7px;
+  border: 1px solid var(--highlight-color);
+}
+
+.login-signup input:focus {
+  outline: none;
+  border-color: var(--highlight-color);
+  box-shadow: 0 0 10px var(--highlight-color);
 }
 
 .login-signup button {

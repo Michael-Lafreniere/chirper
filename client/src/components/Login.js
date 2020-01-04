@@ -12,7 +12,7 @@ const INITIAL_STATE = {
 
 export default function Login() {
   const [open, setOpen] = useState(true);
-  const [serverError, setServerError] = React.useState(null);
+  const [error, setError] = React.useState(null);
   const {
     handleSubmit,
     handleChange,
@@ -29,11 +29,10 @@ export default function Login() {
   async function authenticateUser() {
     const { account, password } = values;
     try {
-      await authUser(account, password);
+      const results = await authUser(account, password);
+      console.log(results);
+    } finally {
       setOpen(false);
-    } catch (error) {
-      console.log('Authentication error:', error);
-      setServerError(error);
     }
   }
 
@@ -63,8 +62,10 @@ export default function Login() {
             placeholder="password"
           />
           {errors.password && <p className="error-text">{errors.password}</p>}
-          {serverError && <p className="error-text">{serverError}</p>}
-          <button disabled={isSubmitting}>Login</button>
+          {error && <p className="error-text">{error}</p>}
+          <button disabled={isSubmitting}>
+            {isSubmitting ? 'Working' : 'Login'}
+          </button>
         </form>
       )}
     </>

@@ -8,11 +8,13 @@ import './App.css';
 const text =
   'This is my chirp, there are many like it, but this one is mine. @steve_rocks This is a very long text test to see how it wraps and stuff to see if we need to change anything @World #test';
 
+const AppContext = React.createContext();
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      createAccount: false
+      createAccountOpen: false
     };
   }
 
@@ -25,15 +27,17 @@ class App extends Component {
       // reChirp: "StanLee",
     };
     let createAccount = null;
-    if (this.state.createAccount) createAccount = <CreateAccount />;
+    if (this.state.createAccountOpen) createAccount = <CreateAccount />;
     return (
-      <div className="App">
-        <Header />
-        <div className="test">{createAccount}</div>
-        <CreateChirp />
-        <br />
-        <Chirp data={chirpData} />
-      </div>
+      <AppContext.Provider value={{}}>
+        <div className="App">
+          <Header />
+          <div className="test">{createAccount}</div>
+          <CreateChirp />
+          <br />
+          <Chirp data={chirpData} />
+        </div>
+      </AppContext.Provider>
     );
   }
 }

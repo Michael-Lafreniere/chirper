@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import './CreateChirp.css';
 
 export default function CreateChirp() {
+  const text = 'What is on your mind today?';
   return (
     <>
       <div className="create-chirp">
@@ -17,10 +18,15 @@ export default function CreateChirp() {
           </div>
         </div>
         <div className="input-container">
-          <div className="input-div" contenteditable="true" spellcheck="true">
-            <span>What is on your mind?</span>
-            <span className="over-typed">test text</span>
-          </div>
+          <input
+            type="text"
+            className="my-input"
+            placeholder="What is on your mind today?"
+          />
+          {/* <div className="input-div" contentEditable="true" spellCheck="true">
+            <span>{text}</span>
+            <span className="over-typed"></span>
+          </div> */}
         </div>
       </div>
     </>

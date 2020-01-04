@@ -37,6 +37,16 @@
   overflow-wrap: break-word;
 }
 
+.input-container input[type='text'] {
+  background-color: var(--bkgrnd-color);
+  padding: 5px;
+  width: 95%;
+  height: 40%;
+  outline: none;
+  border: 1px solid white;
+  border-radius: 7px;
+}
+
 .over-typed {
   color: var(--base-color);
   background-color: var(--highlight-color);

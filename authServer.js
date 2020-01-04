@@ -87,7 +87,6 @@ app.post('/create-user', async (req, res) => {
 
 app.get('/email/:email', async (req, res) => {
   const { email } = req.params;
-  // console.log(email);
   if (email !== undefined || email !== null) {
     try {
       const query = `SELECT * FROM user WHERE email_addr='${email}';`;
@@ -145,14 +144,17 @@ app.post('/user-login', async (req, res) => {
           // res.cookie('token', token, { httpOnly: true })
           //   .sendStatus(200);
         } else {
-          res.status(401).send(`Invalid email/handle or password.`);
+          console.log('Could not retrieve data');
+          res.status(401).send({ message: 'Could not retrieve data' });
         }
       });
     } catch {
+      console.log('failed.');
       res.status(500).send('Failed.');
     }
   } else {
-    res.send('Invalid email or password.');
+    console.log('Incorrect email or password.');
+    res.send({ message: 'Incorrect email or password.' });
   }
 });
 

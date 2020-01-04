@@ -24,11 +24,9 @@ export default function LoginFormValidation(
   function handleBlur(event) {
     const validationErrors = validate(values);
     setErrors(validationErrors);
-    // setSubmitting(true);
   }
 
   function handleChange(event) {
-    // const [name, value] = event.target;
     setValues({
       ...values,
       [event.target.name]: event.target.value

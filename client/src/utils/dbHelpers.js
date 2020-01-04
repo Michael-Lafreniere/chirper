@@ -41,25 +41,25 @@ export async function authUser(account, password, address) {
     password
   };
 
-  fetch(`${url}/user-login`, {
+  const results = await fetch(`${url}/user-login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json'
     },
     body: JSON.stringify(user)
-  })
-    .then(response => response.json())
-    .then(data => {
-      if (data.message && data.message === 'successful') {
-        localStorage.setItem('displayName', data.user.displayName);
-        localStorage.setItem('handle', data.user.handle);
-        localStorage.setItem('userImage', data.user.userImage);
-        localStorage.setItem('userSince', data.user.userSince);
-        localStorage.setItem('accessToken', data.accessToken);
-        localStorage.setItem('refreshToken', data.refreshToken);
-      } else if (data.message && data.message) {
-        console.log('error:', data.message);
-      }
-    });
+  });
+  const data = await results.json();
+  if (data) {
+    if (data.message && data.message === 'successful') {
+      localStorage.setItem('displayName', data.user.displayName);
+      localStorage.setItem('handle', data.user.handle);
+      localStorage.setItem('userImage', data.user.userImage);
+      localStorage.setItem('userSince', data.user.userSince);
+      localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('refreshToken', data.refreshToken);
+    }
+    console.log({ data });
+  }
+  return data;
 }
