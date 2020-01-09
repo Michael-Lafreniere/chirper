@@ -51,3 +51,15 @@
   color: var(--base-color);
   background-color: var(--highlight-color);
 }
+
+.remaining-yellow {
+  color: var(--star-color);
+}
+
+.remaining-red {
+  color: var(--comment-color);
+}
+
+.split-chirps {
+  color: var(--rechirp-color);
+}
