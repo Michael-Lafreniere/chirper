@@ -4,7 +4,9 @@ import './CreateChirp.css';
 
 const initialState = {
   text: '',
-  placeholder: 'What is on your mind today?'
+  placeholder: 'What is on your mind today?',
+  maxChirpLength: 25,
+  maxChirpsPerPost: 2
 };
 
 const createChirpReducer = (state, action) => {
@@ -12,7 +14,10 @@ const createChirpReducer = (state, action) => {
     case 'text':
       return {
         ...state,
-        text: action.value
+        text: action.value.substr(
+          0,
+          state.maxChirpLength * state.maxChirpsPerPost
+        )
       };
     default:
       return state;
@@ -22,10 +27,8 @@ const createChirpReducer = (state, action) => {
 export default function CreateChirp() {
   const [state, dispatch] = useReducer(createChirpReducer, initialState);
 
-  const { text, placeholder } = state;
-  const maxChirpLength = 25;
-  const maxChirpsPerPost = 2;
-  const totalLength = maxChirpLength * maxChirpsPerPost;
+  const { text, placeholder, maxChirpLength, maxChirpsPerPost } = state;
+  const maxLength = maxChirpLength * maxChirpsPerPost;
   let textRemaining = '';
   let textRemainingClass = 'remaining-yellow';
   let splitChirps = '';
@@ -60,7 +63,7 @@ export default function CreateChirp() {
               dispatch({ type: 'text', value: event.currentTarget.value })
             }
             placeholder={placeholder}
-            maxLength={totalLength}
+            maxLength={maxLength}
           />
           <div className="add-images">
             <button>
