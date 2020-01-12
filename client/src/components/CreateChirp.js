@@ -1,4 +1,4 @@
-import React, { useReducer, useContext } from 'react';
+import React, { useReducer } from 'react';
 
 import './CreateChirp.css';
 
@@ -25,7 +25,7 @@ const createChirpReducer = (state, action) => {
 };
 
 export default function CreateChirp() {
-  const appContext = useContext(appContext);
+  // const userContext = useContext(userContext);
   const [state, dispatch] = useReducer(createChirpReducer, initialState);
 
   const { text, placeholder, maxChirpLength, maxChirpsPerPost } = state;
