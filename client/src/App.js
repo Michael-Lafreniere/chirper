@@ -1,4 +1,4 @@
-import React, { Component, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Header from './components/Header';
 import CreateAccount from './components/CreateAccount';
 import Chirp from './components/Chirp';
@@ -23,44 +23,36 @@ const getUserData = () => {
   };
 };
 
-// const userContext = useContext(getUser);
+const UserContext = useContext(null);
 
 const text =
   'This is my chirp, there are many like it, but this one is mine. @steve_rocks This is a very long text test to see how it wraps and stuff to see if we need to change anything @World #test';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      createAccountOpen: false
-    };
-  }
+const App = () => {
+  const [createAccountOpen, setCreateAccoutOpen] = useState(false);
+  const [user, setUser] = useState(getUserData());
+  let chirpData = {
+    username: 'SomeCoolDude',
+    handle: 'CoolDude2',
+    userImage: 'https://via.placeholder.com/49',
+    chirpText: text
+    // reChirp: "StanLee",
+  };
+  // console.log(getUserData());
 
-  render() {
-    let chirpData = {
-      username: 'SomeCoolDude',
-      handle: 'CoolDude2',
-      userImage: 'https://via.placeholder.com/49',
-      chirpText: text
-      // reChirp: "StanLee",
-    };
-
-    console.log(getUserData());
-    // Needs to be moved to Header
-    let createAccount = null;
-    if (this.state.createAccountOpen) createAccount = <CreateAccount />;
-    return (
-      // <userContext.Provider>
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
       <div className="App">
         <Header />
-        <div className="test">{createAccount}</div>
+        <div className="test">
+          {createAccountOpen ? <CreateAccount /> : null}
+        </div>
         <CreateChirp />
         <br />
         <Chirp data={chirpData} />
       </div>
-      // </userContext.Provider>
-    );
-  }
-}
+    </UserContext.Provider>
+  );
+};
 
 export default App;

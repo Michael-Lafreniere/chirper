@@ -25,7 +25,7 @@ const createChirpReducer = (state, action) => {
 };
 
 export default function CreateChirp() {
-  // const userContext = useContext(userContext);
+  // const userContext = useContext(UserContext);
   const [state, dispatch] = useReducer(createChirpReducer, initialState);
 
   const { text, placeholder, maxChirpLength, maxChirpsPerPost } = state;
