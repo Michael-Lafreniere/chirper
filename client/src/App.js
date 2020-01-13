@@ -23,7 +23,7 @@ const getUserData = () => {
   };
 };
 
-const UserContext = useContext(null);
+const UserContext = React.createContext(null);
 
 const text =
   'This is my chirp, there are many like it, but this one is mine. @steve_rocks This is a very long text test to see how it wraps and stuff to see if we need to change anything @World #test';
