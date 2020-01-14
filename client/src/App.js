@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Header from './components/Header';
 import CreateAccount from './components/CreateAccount';
 import Chirp from './components/Chirp';
@@ -29,7 +29,7 @@ const text =
   'This is my chirp, there are many like it, but this one is mine. @steve_rocks This is a very long text test to see how it wraps and stuff to see if we need to change anything @World #test';
 
 const App = () => {
-  const [createAccountOpen, setCreateAccoutOpen] = useState(false);
+  const createAccountOpen = useRef(false);
   const [user, setUser] = useState(getUserData());
   let chirpData = {
     username: 'SomeCoolDude',
