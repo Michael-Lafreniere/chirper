@@ -1,12 +1,13 @@
 import React, { useReducer } from 'react';
+// import { useLocalStorage } from './utils/useLocalStorage';
 
 import './CreateChirp.css';
 
 const initialState = {
   text: '',
   placeholder: 'What is on your mind today?',
-  maxChirpLength: 25,
-  maxChirpsPerPost: 2
+  maxChirpLength: 255,
+  maxChirpsPerPost: 1
 };
 
 const createChirpReducer = (state, action) => {
@@ -19,6 +20,15 @@ const createChirpReducer = (state, action) => {
           state.maxChirpLength * state.maxChirpsPerPost
         )
       };
+    case 'send':
+      console.log('text:', action.value.value);
+      return {
+        ...state,
+        text: action.value.value.substr(
+          0,
+          state.maxChirpLength * state.maxChirpsPerPost
+        )
+      };
     default:
       return state;
   }
@@ -26,6 +36,7 @@ const createChirpReducer = (state, action) => {
 
 export default function CreateChirp() {
   // const userContext = useContext(UserContext);
+  const inputRef = React.createRef(null);
   const [state, dispatch] = useReducer(createChirpReducer, initialState);
 
   const { text, placeholder, maxChirpLength, maxChirpsPerPost } = state;
@@ -56,24 +67,59 @@ export default function CreateChirp() {
           </div>
         </div>
         <div className="input-container">
-          <input
+          <textarea
+            // cols="30"
+            // rows="1"
+            className="my-input"
+            placeholder={placeholder}
+            autoresize="true"
+            maxLength={maxLength}
+            value={text}
+            onChange={event =>
+              dispatch({ type: 'text', value: event.currentTarget.value })
+            }
+          ></textarea>
+          {/* <input
             type="text"
+            ref={inputRef}
             className="my-input"
             value={text}
             onChange={event =>
               dispatch({ type: 'text', value: event.currentTarget.value })
             }
+            onKeyDown={event => {
+              if (event.key === 'Enter')
+                dispatch({ type: 'send', value: inputRef.current });
+            }}
             placeholder={placeholder}
             maxLength={maxLength}
-          />
-          <div className="add-images">
-            <button>
-              <span>+</span>
-            </button>
-          </div>
-          <div className="remaining">
-            <span className={textRemainingClass}>{textRemaining}</span>
-            <span className="split-chirps">{splitChirps}</span>
+          /> */}
+          <div className="bottom-row">
+            <div className="add-images">
+              <svg
+                viewBox="0 0 1024 1024"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M720 464H560V304a48 48 0 1 0-96 0v160H304a48 48 0 1 0 0 96h160v160a48 48 0 1 0 96 0V560h160a48 48 0 1 0 0-96zM512 0C229.232 0 0 229.232 0 512s229.232 512 512 512 512-229.232 512-512S794.768 0 512 0z m0 928C282.256 928 96 741.744 96 512 96 282.24 282.256 96 512 96s416 186.256 416 416-186.256 416-416 416z"
+                  fill=""
+                />
+              </svg>
+            </div>
+            <div className="remaining">
+              <span className={textRemainingClass}>{textRemaining}</span>
+              <span className="split-chirps">{splitChirps}</span>
+            </div>
+            <div className="chirp-it">
+              <button
+                onClick={() => {
+                  dispatch({ type: 'send', value: inputRef.current });
+                }}
+              >
+                Chirp
+              </button>
+            </div>
           </div>
         </div>
       </div>

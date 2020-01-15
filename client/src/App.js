@@ -25,9 +25,6 @@ const getUserData = () => {
 
 const UserContext = React.createContext(null);
 
-const text =
-  'This is my chirp, there are many like it, but this one is mine. @steve_rocks This is a very long text test to see how it wraps and stuff to see if we need to change anything @World #test';
-
 const App = () => {
   const createAccountOpen = useRef(false);
   const [user, setUser] = useState(getUserData());
@@ -35,7 +32,8 @@ const App = () => {
     username: 'SomeCoolDude',
     handle: 'CoolDude2',
     userImage: 'https://via.placeholder.com/49',
-    chirpText: text
+    chirpText:
+      'This is my chirp, there are many like it, but this one is mine. @steve_rocks This is a very long text test to see how it wraps and stuff to see if we need to change anything @World #test'
     // reChirp: "StanLee",
   };
   // console.log(getUserData());
@@ -45,7 +43,7 @@ const App = () => {
       <div className="App">
         <Header />
         <div className="test">
-          {createAccountOpen ? <CreateAccount /> : null}
+          {createAccountOpen ? null : <CreateAccount />}
         </div>
         <CreateChirp />
         <br />
