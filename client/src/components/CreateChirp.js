@@ -21,10 +21,10 @@ const createChirpReducer = (state, action) => {
         )
       };
     case 'send':
-      console.log('text:', action.value.value);
+      console.log('text:', action.value);
       return {
         ...state,
-        text: action.value.value.substr(
+        text: action.value.substr(
           0,
           state.maxChirpLength * state.maxChirpsPerPost
         )
@@ -68,8 +68,7 @@ export default function CreateChirp() {
         </div>
         <div className="input-container">
           <textarea
-            // cols="30"
-            // rows="1"
+            ref={inputRef}
             className="my-input"
             placeholder={placeholder}
             autoresize="true"
@@ -78,22 +77,11 @@ export default function CreateChirp() {
             onChange={event =>
               dispatch({ type: 'text', value: event.currentTarget.value })
             }
-          ></textarea>
-          {/* <input
-            type="text"
-            ref={inputRef}
-            className="my-input"
-            value={text}
-            onChange={event =>
-              dispatch({ type: 'text', value: event.currentTarget.value })
-            }
             onKeyDown={event => {
               if (event.key === 'Enter')
-                dispatch({ type: 'send', value: inputRef.current });
+                dispatch({ type: 'send', value: inputRef.current.value });
             }}
-            placeholder={placeholder}
-            maxLength={maxLength}
-          /> */}
+          ></textarea>
           <div className="bottom-row">
             <div className="add-images">
               <svg

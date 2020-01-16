@@ -1,6 +1,6 @@
 .create-chirp {
   width: 30%;
-  height: 8vh;
+  height: 10vh;
   border: 0.5px rgba(128, 128, 128, 128) solid;
   display: flex;
   flex-direction: row;
@@ -23,6 +23,7 @@
 
 .input-container {
   width: 100%;
+  margin: 10px 0;
 }
 
 .input-div {
@@ -40,6 +41,7 @@
 /* .input-container input[type='text'] { */
 .input-container textarea {
   resize: none;
+  font-size: 1em;
   /* color: var(--highlight-color); */
   color: var(--base-color);
   background-color: var(--bkgrnd-color);
@@ -50,6 +52,7 @@
   border: none;
   /* border: 1px solid white; */
   border-radius: 7px;
+  overflow: hidden;
 }
 
 .bottom-row {
