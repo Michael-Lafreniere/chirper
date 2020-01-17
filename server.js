@@ -97,21 +97,24 @@ const isValidChirp = data => {
 app.post('/chirp', authenticateToken, async (req, res) => {
   console.log('/chirp', req.body);
   if (isValidChirp(req.body)) {
+    const { content } = req.body;
+    console.log('content:', content);
     const chirp = {
-      content: filter.clean(req.body.content.toString().substr(0, 255)),
+      content: filter.clean(content.substr(0, 255)),
       reply_to: req.body.reply_to,
       user_id: req.body.user_id,
-      image: req.body.image.toString(),
-      image1: req.body.image1.toString(),
-      image2: req.body.image2.toString(),
-      image3: req.body.image3.toString()
+      image: req.body.image,
+      image1: req.body.image1,
+      image2: req.body.image2,
+      image3: req.body.image3
     };
 
     const newChirp = `INSERT INTO chirps (content, reply_to, user_id) VALUES ('${chirp.content}', '${chirp.reply_to}', '${chirp.user_id}');`;
     await queryDB(newChirp);
 
     req.setTimeout(0);
-    res.status(200).json(chirp);
+    // res.status(200).json(chirp);
+    res.status(200);
   } else {
     res.status(422).send({ message: 'Improperly formatted chrip' });
   }

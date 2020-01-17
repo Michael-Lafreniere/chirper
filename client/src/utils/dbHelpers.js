@@ -74,13 +74,13 @@ export async function postChirp(user, chirp, reply_to, address) {
     user_id: 14
   };
 
-  console.log('postChirp:', user, chirpData, address || '');
+  const { accessToken } = user;
 
   fetch(`${url}/chirp`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${user.accessToken}`
+      Authorization: `Bearer ${accessToken}`
     },
     // body: chirpData
     body: JSON.stringify(chirpData)

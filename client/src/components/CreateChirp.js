@@ -20,7 +20,7 @@ const createChirpReducer = (state, action) => {
         text: action.value
       };
     case 'send':
-      console.log('text:', action.value, 'user:', action.user);
+      // console.log('text:', action.value, 'user:', action.user);
       postChirp(action.user, action.value);
       return {
         ...state,
@@ -35,7 +35,7 @@ const createChirpReducer = (state, action) => {
 };
 
 export default function CreateChirp() {
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const inputRef = React.createRef(null);
   const [state, dispatch] = useReducer(createChirpReducer, initialState);
 
