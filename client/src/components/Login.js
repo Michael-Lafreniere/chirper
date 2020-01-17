@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 
 import { authUser } from '../utils/dbHelpers';
 
@@ -12,8 +12,8 @@ const INITIAL_STATE = {
 
 export default function Login() {
   const [open, setOpen] = useState(true);
-  // const [error, setError] = React.useState(null);
-  const error = useRef(null);
+  const [error] = React.useState(null);
+  // const error = useRef(null);
   const {
     handleSubmit,
     handleChange,

@@ -53,6 +53,7 @@ export async function authUser(account, password, address) {
   const data = await results.json();
   if (data) {
     if (data.message && data.message === 'successful') {
+      localStorage.setItem('id', data.user.id);
       localStorage.setItem('displayName', data.user.displayName);
       localStorage.setItem('handle', data.user.handle);
       localStorage.setItem('userImage', data.user.userImage);
@@ -67,14 +68,14 @@ export async function authUser(account, password, address) {
 
 export async function postChirp(user, chirp, reply_to, address) {
   const url = address ? address : chirpServer;
+  const { accessToken, id } = user;
 
+  // TODO: Get user_id from
   const chirpData = {
     content: chirp,
     reply_to: -1,
-    user_id: 14
+    user_id: id
   };
-
-  const { accessToken } = user;
 
   fetch(`${url}/chirp`, {
     method: 'POST',

@@ -4,7 +4,7 @@ import Header from './components/Header';
 import CreateAccount from './components/CreateAccount';
 import Chirp from './components/Chirp';
 import CreateChirp from './components/CreateChirp';
-import { UserContext, getUserData } from './utils/Users';
+import { UserContext, getUserData } from './utils/User';
 
 import './App.css';
 
@@ -19,7 +19,6 @@ const App = () => {
       'This is my chirp, there are many like it, but this one is mine. @steve_rocks This is a very long text test to see how it wraps and stuff to see if we need to change anything @World #test'
     // reChirp: "StanLee",
   };
-  // console.log(getUserData());
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

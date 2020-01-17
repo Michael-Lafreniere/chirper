@@ -3,6 +3,7 @@ import React from 'react';
 export const UserContext = React.createContext(null);
 
 export const getUserData = () => {
+  const id = localStorage.getItem('id');
   const displayName = localStorage.getItem('displayName');
   const handle = localStorage.getItem('handle');
   const userImage = localStorage.getItem('userImage');
@@ -10,6 +11,7 @@ export const getUserData = () => {
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
   return {
+    id,
     displayName,
     handle,
     userImage,

@@ -130,6 +130,7 @@ app.post('/user-login', async (req, res) => {
       bcrypt.compare(password, passwd, (err, result) => {
         if (result) {
           const user = {
+            id: results[0].uid,
             handle: results[0].handle,
             displayName: results[0].display_name,
             userImage: results[0].user_image,

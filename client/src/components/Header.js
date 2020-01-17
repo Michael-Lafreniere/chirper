@@ -1,9 +1,31 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../utils/User';
 import Login from './Login';
 
 import './Header.css';
 
 const Header = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const { user } = useContext(UserContext);
+  let image = 'https://via.placeholder.com/48';
+
+  useEffect(() => {
+    if (user.id >= 0) setLoggedIn(true);
+  }, [user.id]);
+
+  const login = (
+    <div>
+      <Login /> / <button>Signup</button>
+    </div>
+  );
+  const userInfo = (
+    <div>
+      <a href={`http://localhost:3000/${user.handle}`}>
+        <img src={image} alt="user supplied profile" />
+      </a>
+      /<button>Logout</button>
+    </div>
+  );
   return (
     <header className="App-header">
       <div className="title">
@@ -11,15 +33,7 @@ const Header = () => {
           my<span>C</span>hirper
         </h3>
       </div>
-      <div className="login-signup">
-        <Login />
-        {/* <form>
-          <input type="text" placeholder="Email or handle" />
-          <input type="password" placeholder="password" />
-          <button>Login</button>
-        </form> */}
-        /<button>Signup</button>
-      </div>
+      {loggedIn ? userInfo : login}
     </header>
   );
 };

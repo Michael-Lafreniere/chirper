@@ -1,7 +1,6 @@
 import React, { useReducer, useContext } from 'react';
 import { postChirp } from '../utils/dbHelpers';
-// import { useLocalStorage } from './utils/useLocalStorage';
-import { UserContext } from '../utils/Users';
+import { UserContext } from '../utils/User';
 
 import './CreateChirp.css';
 
