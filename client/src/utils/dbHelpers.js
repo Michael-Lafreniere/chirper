@@ -1,4 +1,5 @@
 const authServer = 'http://192.168.1.71:4000';
+const chirpServer = 'http://192.168.1.71:3000';
 
 export async function submitUser(user, address) {
   const data = {
@@ -62,4 +63,23 @@ export async function authUser(account, password, address) {
     console.log({ data });
   }
   return data;
+}
+
+export async function postChirp(user, chirp, address) {
+  const url = address ? address : chirpServer;
+
+  console.log('postChirp:', user, chirp, address || '');
+
+  fetch(`${url}/chirp`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${user.accessToken}`
+    },
+    body: JSON.stringify(chirp)
+  })
+    .then(response => response.json())
+    .then(reply => {
+      console.log('chirp reply:', reply);
+    });
 }

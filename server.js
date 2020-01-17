@@ -97,7 +97,7 @@ const isValidChirp = data => {
 app.post('/chirp', authenticateToken, async (req, res) => {
   if (isValidChirp(req.body)) {
     const chirp = {
-      content: filter.clean(req.body.content.toString()),
+      content: filter.clean(req.body.content.toString().substr(0, 255)),
       reply_to: req.body.reply_to,
       user_id: req.body.user_id,
       image: req.body.image.toString(),

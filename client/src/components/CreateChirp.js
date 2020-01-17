@@ -1,5 +1,7 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useContext } from 'react';
+import { postChirp } from '../utils/dbHelpers';
 // import { useLocalStorage } from './utils/useLocalStorage';
+import { UserContext } from '../utils/Users';
 
 import './CreateChirp.css';
 
@@ -15,13 +17,11 @@ const createChirpReducer = (state, action) => {
     case 'text':
       return {
         ...state,
-        text: action.value.substr(
-          0,
-          state.maxChirpLength * state.maxChirpsPerPost
-        )
+        text: action.value
       };
     case 'send':
-      console.log('text:', action.value);
+      console.log('text:', action.value, 'user:', action.user);
+      postChirp(action.user, action.value);
       return {
         ...state,
         text: action.value.substr(
@@ -35,7 +35,7 @@ const createChirpReducer = (state, action) => {
 };
 
 export default function CreateChirp() {
-  // const userContext = useContext(UserContext);
+  const user = useContext(UserContext);
   const inputRef = React.createRef(null);
   const [state, dispatch] = useReducer(createChirpReducer, initialState);
 
@@ -75,11 +75,15 @@ export default function CreateChirp() {
             maxLength={maxLength}
             value={text}
             onChange={event =>
-              dispatch({ type: 'text', value: event.currentTarget.value })
+              dispatch({ type: 'text', value: inputRef.current.value })
             }
             onKeyDown={event => {
               if (event.key === 'Enter')
-                dispatch({ type: 'send', value: inputRef.current.value });
+                dispatch({
+                  type: 'send',
+                  value: inputRef.current.value,
+                  user
+                });
             }}
           ></textarea>
           <div className="bottom-row">
@@ -102,7 +106,11 @@ export default function CreateChirp() {
             <div className="chirp-it">
               <button
                 onClick={() => {
-                  dispatch({ type: 'send', value: inputRef.current });
+                  dispatch({
+                    type: 'send',
+                    value: inputRef.current.value,
+                    user
+                  });
                 }}
               >
                 Chirp
