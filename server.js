@@ -95,6 +95,7 @@ const isValidChirp = data => {
 // );
 
 app.post('/chirp', authenticateToken, async (req, res) => {
+  console.log('/chirp', req.body);
   if (isValidChirp(req.body)) {
     const chirp = {
       content: filter.clean(req.body.content.toString().substr(0, 255)),

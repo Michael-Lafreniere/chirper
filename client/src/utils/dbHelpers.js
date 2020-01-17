@@ -65,10 +65,16 @@ export async function authUser(account, password, address) {
   return data;
 }
 
-export async function postChirp(user, chirp, address) {
+export async function postChirp(user, chirp, reply_to, address) {
   const url = address ? address : chirpServer;
 
-  console.log('postChirp:', user, chirp, address || '');
+  const chirpData = {
+    content: chirp,
+    reply_to: -1,
+    user_id: 14
+  };
+
+  console.log('postChirp:', user, chirpData, address || '');
 
   fetch(`${url}/chirp`, {
     method: 'POST',
@@ -76,10 +82,14 @@ export async function postChirp(user, chirp, address) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${user.accessToken}`
     },
-    body: JSON.stringify(chirp)
+    // body: chirpData
+    body: JSON.stringify(chirpData)
   })
     .then(response => response.json())
     .then(reply => {
       console.log('chirp reply:', reply);
+    })
+    .catch(error => {
+      console.log('error', error);
     });
 }
