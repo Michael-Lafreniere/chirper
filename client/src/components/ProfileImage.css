@@ -1,0 +1,9 @@
+.user-image {
+  width: var(--chirp-user-image-size);
+  height: var(--chirp-user-image-size);
+  padding: 5px 0 0 10px;
+}
+
+.user-image img {
+  border-radius: 50%;
+}

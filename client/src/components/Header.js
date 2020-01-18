@@ -1,30 +1,38 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext, clearUserData } from '../utils/User';
 import Login from './Login';
+import ProfileImage from './ProfileImage';
 
 import './Header.css';
 
 const Header = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
   const { user } = useContext(UserContext);
-  let image = 'https://via.placeholder.com/48';
+  const [loggedIn, setLoggedIn] = useState(() => {
+    if (user && user.id !== null) return true;
+    return false;
+  });
 
-  useEffect(() => {
-    if (user && user.id !== null) setLoggedIn(true);
-  }, [user]);
+  // useEffect(() => {
+  //   if (user && user.id !== null) setLoggedIn(true);
+  // }, [user]);
 
   const login = (
-    <div>
+    <>
       <Login /> / <button>Signup</button>
-    </div>
+    </>
   );
   const userInfo = (
-    <div>
-      <a href={`http://localhost:3000/${user.handle}`}>
-        <img src={image} alt="user supplied profile" />
-      </a>
-      /<button onClick={() => clearUserData()}>Logout</button>
-    </div>
+    <>
+      <ProfileImage />/
+      <button
+        onClick={() => {
+          clearUserData();
+          setLoggedIn(false);
+        }}
+      >
+        Logout
+      </button>
+    </>
   );
   return (
     <header className="App-header">
