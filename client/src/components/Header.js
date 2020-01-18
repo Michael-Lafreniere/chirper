@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../utils/User';
+import { UserContext, clearUserData } from '../utils/User';
 import Login from './Login';
 
 import './Header.css';
@@ -10,8 +10,8 @@ const Header = () => {
   let image = 'https://via.placeholder.com/48';
 
   useEffect(() => {
-    if (user.id >= 0) setLoggedIn(true);
-  }, [user.id]);
+    if (user && user.id !== null) setLoggedIn(true);
+  }, [user]);
 
   const login = (
     <div>
@@ -23,7 +23,7 @@ const Header = () => {
       <a href={`http://localhost:3000/${user.handle}`}>
         <img src={image} alt="user supplied profile" />
       </a>
-      /<button>Logout</button>
+      /<button onClick={() => clearUserData()}>Logout</button>
     </div>
   );
   return (

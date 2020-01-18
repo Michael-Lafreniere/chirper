@@ -20,3 +20,13 @@ export const getUserData = () => {
     refreshToken
   };
 };
+
+export const clearUserData = () => {
+  localStorage.removeItem('id');
+  localStorage.removeItem('displayName');
+  localStorage.removeItem('handle');
+  localStorage.removeItem('userImage');
+  localStorage.removeItem('userSince');
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+};
