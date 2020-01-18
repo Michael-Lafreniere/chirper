@@ -1,24 +1,22 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { UserContext, clearUserData } from '../utils/User';
+import { AppContext } from '../utils/AppContext';
 import Login from './Login';
 import ProfileImage from './ProfileImage';
 
 import './Header.css';
 
 const Header = () => {
-  const { user } = useContext(UserContext);
+  const { setNewAcct } = useContext(AppContext);
+  const { user, setUser } = useContext(UserContext);
   const [loggedIn, setLoggedIn] = useState(() => {
     if (user && user.id !== null) return true;
     return false;
   });
 
-  // useEffect(() => {
-  //   if (user && user.id !== null) setLoggedIn(true);
-  // }, [user]);
-
   const login = (
     <>
-      <Login /> / <button>Signup</button>
+      <Login /> / <button onClick={() => setNewAcct(true)}>Signup</button>
     </>
   );
   const userInfo = (
@@ -26,6 +24,7 @@ const Header = () => {
       <ProfileImage />/
       <button
         onClick={() => {
+          setUser(null);
           clearUserData();
           setLoggedIn(false);
         }}
