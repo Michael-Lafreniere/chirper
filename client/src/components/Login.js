@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import { authUser } from '../utils/dbHelpers';
+import { AppContext } from '../utils/AppContext';
 
 import LoginFormValidation from '../utils/LoginFormValidation';
 import LoginFormAuthorization from '../utils/LoginFormAuthorization';
@@ -13,6 +14,7 @@ const INITIAL_STATE = {
 export default function Login() {
   const [open, setOpen] = useState(true);
   const [error] = React.useState(null);
+  const { setNewAcct } = useContext(AppContext);
   // const error = useRef(null);
   const {
     handleSubmit,
@@ -40,7 +42,14 @@ export default function Login() {
   return (
     <>
       {open ? (
-        <button onClick={() => setOpen(!open)}>Login</button>
+        <button
+          onClick={() => {
+            setOpen(!open);
+            setNewAcct(false);
+          }}
+        >
+          Login
+        </button>
       ) : (
         <form onSubmit={handleSubmit}>
           <input
