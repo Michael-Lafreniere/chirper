@@ -11,6 +11,7 @@ import './App.css';
 
 const App = () => {
   const [newAcct, setNewAcct] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
   const [user, setUser] = useState(getUserData());
   let chirpData = {
     username: 'SomeCoolDude',
@@ -21,15 +22,17 @@ const App = () => {
     // reChirp: "StanLee",
   };
 
+  const newsFeedOpen = newAcct || loginOpen;
+
   return (
-    <AppContext.Provider value={{ setNewAcct }}>
+    <AppContext.Provider value={{ setNewAcct, loginOpen, setLoginOpen }}>
       <UserContext.Provider value={{ user, setUser }}>
         <div className="App">
           <Header />
           <div className="test">{newAcct ? <CreateAccount /> : null}</div>
           {user && user.id !== null ? <CreateChirp /> : null}
           <br />
-          {newAcct ? null : <Chirp data={chirpData} />}
+          {newsFeedOpen ? null : <Chirp data={chirpData} />}
         </div>
       </UserContext.Provider>
     </AppContext.Provider>

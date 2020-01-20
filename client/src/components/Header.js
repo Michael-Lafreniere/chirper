@@ -7,7 +7,7 @@ import ProfileImage from './ProfileImage';
 import './Header.css';
 
 const Header = () => {
-  const { setNewAcct } = useContext(AppContext);
+  const { setNewAcct, setLoginOpen } = useContext(AppContext);
   const { user, setUser } = useContext(UserContext);
   const [loggedIn, setLoggedIn] = useState(() => {
     if (user && user.id !== null) return true;
@@ -16,7 +16,15 @@ const Header = () => {
 
   const login = (
     <>
-      <Login /> / <button onClick={() => setNewAcct(true)}>Signup</button>
+      <Login /> /{' '}
+      <button
+        onClick={() => {
+          setNewAcct(true);
+          setLoginOpen(false);
+        }}
+      >
+        Signup
+      </button>
     </>
   );
   const userInfo = (

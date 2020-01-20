@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import { authUser } from '../utils/dbHelpers';
 import { AppContext } from '../utils/AppContext';
@@ -12,10 +12,11 @@ const INITIAL_STATE = {
 };
 
 export default function Login() {
-  const [open, setOpen] = useState(true);
+  const handleRef = React.createRef();
+  const passwdRef = React.createRef();
+  // const [open, setOpen] = useState(true);
   const [error] = React.useState(null);
-  const { setNewAcct } = useContext(AppContext);
-  // const error = useRef(null);
+  const { setNewAcct, loginOpen, setLoginOpen } = useContext(AppContext);
   const {
     handleSubmit,
     handleChange,
@@ -32,27 +33,23 @@ export default function Login() {
   async function authenticateUser() {
     const { account, password } = values;
     try {
-      const results = await authUser(account, password);
-      console.log(results);
-    } finally {
-      setOpen(false);
-    }
+      const result = await authUser(account, password);
+      if (result) {
+        setLoginOpen(false);
+      } else {
+        passwdRef.current.value = '';
+        handleRef.current.value = '';
+        handleRef.current.focus();
+      }
+    } catch {}
   }
 
   return (
     <>
-      {open ? (
-        <button
-          onClick={() => {
-            setOpen(!open);
-            setNewAcct(false);
-          }}
-        >
-          Login
-        </button>
-      ) : (
+      {loginOpen ? (
         <form onSubmit={handleSubmit}>
           <input
+            ref={handleRef}
             name="account"
             value={values.account}
             type="text"
@@ -63,6 +60,7 @@ export default function Login() {
           />
           {errors.account && <p className="error-text">{errors.account}</p>}
           <input
+            ref={passwdRef}
             name="password"
             value={values.password}
             type="password"
@@ -77,6 +75,15 @@ export default function Login() {
             {isSubmitting ? 'Working' : 'Login'}
           </button>
         </form>
+      ) : (
+        <button
+          onClick={() => {
+            setLoginOpen(!loginOpen);
+            setNewAcct(false);
+          }}
+        >
+          Login
+        </button>
       )}
     </>
   );

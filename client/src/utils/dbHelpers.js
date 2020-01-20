@@ -32,6 +32,9 @@ export async function submitUser(user, address) {
       } else if (data.message) {
         console.log('error:', data.message);
       }
+    })
+    .catch(error => {
+      console.log('submitUser:', error);
     });
 }
 
