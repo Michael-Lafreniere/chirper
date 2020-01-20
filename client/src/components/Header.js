@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { UserContext, clearUserData } from '../utils/User';
 import { AppContext } from '../utils/AppContext';
 import Login from './Login';
@@ -7,16 +7,21 @@ import ProfileImage from './ProfileImage';
 import './Header.css';
 
 const Header = () => {
-  const { setNewAcct, setLoginOpen } = useContext(AppContext);
+  const { setNewAcct, setLoginOpen, loginOpen } = useContext(AppContext);
   const { user, setUser } = useContext(UserContext);
-  const [loggedIn, setLoggedIn] = useState(() => {
-    if (user && user.id !== null) return true;
-    return false;
-  });
+  const [loggedIn, setLoggedIn] = useState(false);
+  // const [loggedIn, setLoggedIn] = useState(() => {
+  //   if (user && user.id !== null) return true;
+  //   return false;
+  // });
+
+  useEffect(() => {
+    if (user && user.id !== null) setLoggedIn(true);
+  }, [loginOpen, user]);
 
   const login = (
     <>
-      <Login /> /{' '}
+      <Login />/
       <button
         onClick={() => {
           setNewAcct(true);

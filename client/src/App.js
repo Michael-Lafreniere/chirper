@@ -22,10 +22,17 @@ const App = () => {
     // reChirp: "StanLee",
   };
 
+  const pollUser = () => {
+    // setLoginOpen(false);
+    setUser(getUserData());
+  };
+
   const newsFeedOpen = newAcct || loginOpen;
 
   return (
-    <AppContext.Provider value={{ setNewAcct, loginOpen, setLoginOpen }}>
+    <AppContext.Provider
+      value={{ setNewAcct, loginOpen, setLoginOpen, pollUser }}
+    >
       <UserContext.Provider value={{ user, setUser }}>
         <div className="App">
           <Header />

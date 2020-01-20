@@ -16,7 +16,9 @@ export default function Login() {
   const passwdRef = React.createRef();
   // const [open, setOpen] = useState(true);
   const [error] = React.useState(null);
-  const { setNewAcct, loginOpen, setLoginOpen } = useContext(AppContext);
+  const { setNewAcct, loginOpen, setLoginOpen, pollUser } = useContext(
+    AppContext
+  );
   const {
     handleSubmit,
     handleChange,
@@ -36,6 +38,7 @@ export default function Login() {
       const result = await authUser(account, password);
       if (result) {
         setLoginOpen(false);
+        pollUser();
       } else {
         passwdRef.current.value = '';
         handleRef.current.value = '';
