@@ -26,7 +26,7 @@ exports.authenticateToken = (req, res, next) => {
       return res.sendStatus(403);
     }
     req.data = data;
-    console.log('verified');
+    // console.log('verified');
     next();
   });
 };

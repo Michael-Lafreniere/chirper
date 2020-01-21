@@ -100,7 +100,7 @@ export async function postChirp(user, chirp, reply_to = -1, address) {
 export async function starChirp(user, chirpID, address) {
   const url = address ? address : chirpServer;
   const { accessToken, id } = user;
-  const star = { chirp_id: chirpID, user_id: id };
+  const star = { chirp_id: chirpID, user_id: Number(id) };
 
   fetch(`${url}/star`, {
     method: 'POST',
@@ -110,10 +110,10 @@ export async function starChirp(user, chirpID, address) {
     },
     body: JSON.stringify(star)
   })
-    .then(response => response.json())
-    .then(reply => {
-      console.log('chirp reply:', reply);
-    })
+    // .then(response => response.json())
+    // .then(reply => {
+    //   console.log('chirp reply:', reply);
+    // })
     .catch(error => {
       console.log('error', error);
     });

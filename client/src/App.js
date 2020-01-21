@@ -14,7 +14,7 @@ const App = () => {
   const [loginOpen, setLoginOpen] = useState(false);
   const [user, setUser] = useState(getUserData());
   let chirpData = {
-    chirpID: 1,
+    chirpID: 2,
     username: 'SomeCoolDude',
     handle: 'CoolDude2',
     userImage: 'https://via.placeholder.com/49',
