@@ -121,35 +121,30 @@ app.post('/chirp', authenticateToken, async (req, res) => {
 });
 
 app.post('/star', authenticateToken, async (req, res) => {
-  // TODO:
-  //  [x] - Poll chirpID & userID to see if they liked it already
-  //    [ ] - If they liked it already, we're undoing the like (deleting the entry and decreasing the star count)
-  //  [ ] - Create new entry in DB for the like on the chirp (store userID, time/date and chirpID)
-  //    [ ] - Increase the chirps star count in the chirps table.
-
   const { chirp_id, user_id } = req.body;
-  // console.log(chirp_id, user_id);
 
+  // Checks to see if the chirp exists.  Need to see if it's
   const chirpQuery = `SELECT * FROM chirps WHERE cid='${chirp_id}';`;
   const chirpExists = await queryDB(chirpQuery);
   if (chirpExists.length > 0) {
-    console.log('chirp exists');
     const starQuery = `SELECT * FROM stars WHERE chirp_id='${chirp_id}' AND user_id='${user_id}';`;
     const results = await queryDB(starQuery);
-
-    // req.setTimeout(50);
 
     if (results.length === 0) {
       const addStar = `INSERT INTO stars (chirp_id, user_id) VALUES (${chirp_id}, ${user_id});`;
       await queryDB(addStar);
-      console.log('added.');
+      await queryDB(
+        `UPDATE chirps SET stars = stars + 1 WHERE cid='${chirp_id}';`
+      );
       res.status(200);
       return;
     } else {
       await queryDB(
         `DELETE FROM stars WHERE chirp_id='${chirp_id}' AND user_id='${user_id}';`
       );
-      console.log('deleted.');
+      await queryDB(
+        `UPDATE chirps SET stars = stars - 1 WHERE cid='${chirp_id}';`
+      );
       res.status(200);
       return;
     }

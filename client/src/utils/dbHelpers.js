@@ -110,10 +110,11 @@ export async function starChirp(user, chirpID, address) {
     },
     body: JSON.stringify(star)
   })
-    // .then(response => response.json())
-    // .then(reply => {
-    //   console.log('chirp reply:', reply);
-    // })
+    .then(response => response.json())
+    .then(reply => {
+      // console.log('chirp reply:', reply);
+      return;
+    })
     .catch(error => {
       console.log('error', error);
     });
