@@ -95,7 +95,7 @@ const isValidChirp = data => {
 // );
 
 app.post('/chirp', authenticateToken, async (req, res) => {
-  console.log('/chirp', req.body);
+  // console.log('/chirp', req.body);
   if (isValidChirp(req.body)) {
     const { content } = req.body;
     console.log('content:', content);
@@ -118,6 +118,14 @@ app.post('/chirp', authenticateToken, async (req, res) => {
   } else {
     res.status(422).send({ message: 'Improperly formatted chrip' });
   }
+});
+
+app.post('/star', authenticateToken, async (req, res) => {
+  // TODO:
+  //  [ ] - Poll chirpID & userID to see if they liked it already
+  //    [ ] - If they liked it already, we're undoing the like (deleting the entry and decreasing the star count)
+  //  [ ] - Create new entry in DB for the like on the chirp (store userID, time/date and chirpID)
+  //    [ ] - Increase the chirps star count in the chirps table.
 });
 
 //

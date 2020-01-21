@@ -3,23 +3,9 @@ import { UserContext } from '../../utils/User';
 import { ChirpContext } from '../Chirp';
 import { starChirp } from '../../utils/dbHelpers';
 
-// const footerReducer = (state, action) => {
-//   switch (action.type) {
-//     case 'star':
-//       return state;
-//     default:
-//       return state;
-//   }
-// };
-
 const ChirpFooter = () => {
   const { user } = useContext(UserContext);
   const { comments, reChirps, stars, chirpID } = useContext(ChirpContext);
-  // const [state, dispatch] = useReducer(footerReducer, {
-  //   comments,
-  //   reChirps,
-  //   stars
-  // });
 
   return (
     <>
