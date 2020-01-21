@@ -7,51 +7,65 @@ import Image from './Image';
 
 import './Chirp.css';
 
+export const ChirpContext = React.createContext();
+
 class Chirp extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      chirpID: this.props.data.chirpID,
       chirpText: this.props.data.chirpText,
       username: this.props.data.username,
       handle: this.props.data.handle,
       userImage: this.props.data.userImage,
-      reChirp: this.props.data.reChirp
+      reChirps: this.props.data.reChirps,
+      comments: this.props.data.comments,
+      stars: this.props.data.stars
     };
   }
 
   render() {
     return (
-      <section className="chirp">
-        <div className="container">
-          <div className="chirp-sidebar">
-            <div className="user-image">
-              <a href={`http://localhost:3000/${this.state.username}`}>
-                <img src={this.state.userImage} alt="user supplied profile" />
-              </a>
+      <ChirpContext.Provider
+        value={{
+          chirpID: this.state.chirpID,
+          reChirps: this.state.reChirps,
+          stars: this.state.stars,
+          comments: this.state.comments
+        }}
+      >
+        <section className="chirp">
+          <div className="container">
+            <div className="chirp-sidebar">
+              <div className="user-image">
+                <a href={`http://localhost:3000/${this.state.username}`}>
+                  <img src={this.state.userImage} alt="user supplied profile" />
+                </a>
+              </div>
+            </div>
+            <div className="chirp-wrapper">
+              <ChirpHeader
+                reChirp={this.state.reChirp}
+                username={this.state.username}
+                handle={this.state.handle}
+                time="21h"
+              />
+              <article className="chirp-content">
+                <main>
+                  <ChirpText text={this.state.chirpText} />
+                  <div className="gallary">
+                    <Image imageURL="https://via.placeholder.com/1024" />
+                    {/* <Image imageURL="https://via.placeholder.com/1024" /> */}
+                    {/* <Image imageURL="https://via.placeholder.com/1024" /> */}
+                    {/* <Image imageURL="https://via.placeholder.com/1024" /> */}
+                  </div>
+                </main>
+              </article>
+              <ChirpFooter />
             </div>
           </div>
-          <div className="chirp-wrapper">
-            <ChirpHeader
-              reChirp={this.state.reChirp}
-              username={this.state.username}
-              handle={this.state.handle}
-              time="21h"
-            />
-            <article className="chirp-content">
-              <main>
-                <ChirpText text={this.state.chirpText} />
-                <div className="gallary">
-                  <Image imageURL="https://via.placeholder.com/1024" />
-                  {/* <Image imageURL="https://via.placeholder.com/1024" /> */}
-                  {/* <Image imageURL="https://via.placeholder.com/1024" /> */}
-                  {/* <Image imageURL="https://via.placeholder.com/1024" /> */}
-                </div>
-              </main>
-            </article>
-            <ChirpFooter comments={20} reChirps={4} stars={89} />
-          </div>
-        </div>
-      </section>
+        </section>
+      </ChirpContext.Provider>
     );
   }
 }

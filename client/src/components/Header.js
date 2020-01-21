@@ -10,10 +10,6 @@ const Header = () => {
   const { setNewAcct, setLoginOpen, loginOpen } = useContext(AppContext);
   const { user, setUser } = useContext(UserContext);
   const [loggedIn, setLoggedIn] = useState(false);
-  // const [loggedIn, setLoggedIn] = useState(() => {
-  //   if (user && user.id !== null) return true;
-  //   return false;
-  // });
 
   useEffect(() => {
     if (user && user.id !== null) setLoggedIn(true);

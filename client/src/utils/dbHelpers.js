@@ -69,14 +69,13 @@ export async function authUser(account, password, address) {
   return data;
 }
 
-export async function postChirp(user, chirp, reply_to, address) {
+export async function postChirp(user, chirp, reply_to = -1, address) {
   const url = address ? address : chirpServer;
   const { accessToken, id } = user;
 
-  // TODO: Get user_id from
   const chirpData = {
     content: chirp,
-    reply_to: -1,
+    reply_to,
     user_id: id
   };
 
@@ -88,6 +87,28 @@ export async function postChirp(user, chirp, reply_to, address) {
     },
     // body: chirpData
     body: JSON.stringify(chirpData)
+  })
+    .then(response => response.json())
+    .then(reply => {
+      console.log('chirp reply:', reply);
+    })
+    .catch(error => {
+      console.log('error', error);
+    });
+}
+
+export async function starChirp(user, chirpID, address) {
+  const url = address ? address : chirpServer;
+  const { accessToken, id } = user;
+  const star = { chirp_id: chirpID, user_id: id };
+
+  fetch(`${url}/star`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`
+    },
+    body: JSON.stringify(star)
   })
     .then(response => response.json())
     .then(reply => {

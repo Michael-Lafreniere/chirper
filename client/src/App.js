@@ -14,16 +14,19 @@ const App = () => {
   const [loginOpen, setLoginOpen] = useState(false);
   const [user, setUser] = useState(getUserData());
   let chirpData = {
+    chirpID: 1,
     username: 'SomeCoolDude',
     handle: 'CoolDude2',
     userImage: 'https://via.placeholder.com/49',
+    reChirps: 3,
+    stars: 88,
+    comments: 19,
     chirpText:
       'This is my chirp, there are many like it, but this one is mine. @steve_rocks This is a very long text test to see how it wraps and stuff to see if we need to change anything @World #test'
     // reChirp: "StanLee",
   };
 
   const pollUser = () => {
-    // setLoginOpen(false);
     setUser(getUserData());
   };
 
