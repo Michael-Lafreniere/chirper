@@ -1,24 +1,31 @@
 import React, { Component } from 'react';
-import { urlDecorator, textDecorator, decoratorWrapper } from '../../utils/Decorators';
-import { scrapeFromChirp } from '../../utils/Scrappers'
+import {
+  urlDecorator,
+  textDecorator,
+  decoratorWrapper
+} from '../../utils/Decorators';
+import { scrapeFromChirp } from '../../utils/Scrappers';
 
 class ChirpText extends Component {
-    splitMessage = content => {
+  splitMessage = content => {
+    if (content !== undefined) {
       const SPLIT_SHORTCODES_REGEX = /([^[\]]|\[\])+/g;
       content = content.match(SPLIT_SHORTCODES_REGEX);
-      return content;
     }
-  
-    parseChirp = chirp => {
-      let data = scrapeFromChirp('AT', '@', chirp);
-      data = scrapeFromChirp('TREND', '#', data);
-      let content = this.splitMessage(data);
-      return content;
-    }
-  
-    formatChirp = chirp => {
-      const data = this.parseChirp(chirp);
-    
+    return content;
+  };
+
+  parseChirp = chirp => {
+    let data = scrapeFromChirp('AT', '@', chirp);
+    data = scrapeFromChirp('TREND', '#', data);
+    let content = this.splitMessage(data);
+    return content;
+  };
+
+  formatChirp = chirp => {
+    const data = this.parseChirp(chirp);
+
+    if (data !== undefined) {
       return data.map((item, i) => {
         if (item.match('AT')) {
           const index = item.indexOf(':');
@@ -36,14 +43,16 @@ class ChirpText extends Component {
         return decoratorWrapper(textDecorator(item), i);
       });
     }
-  
-    render() {
-      return (
-        <div className="text">
-          <React.Fragment>{this.formatChirp(this.props.text)}</React.Fragment>
-        </div>
-      )
-    }
+    return chirp;
+  };
+
+  render() {
+    return (
+      <div className="text">
+        <React.Fragment>{this.formatChirp(this.props.text)}</React.Fragment>
+      </div>
+    );
   }
+}
 
 export default ChirpText;

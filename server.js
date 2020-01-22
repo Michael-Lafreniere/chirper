@@ -112,13 +112,11 @@ app.post('/chirps', async (req, res) => {
   console.log('/chirps - no user logged in...');
   const query = 'SELECT * FROM chirps LIMIT 25';
   const results = await queryDB(query);
-  // console.log(results);
   res.send(results);
   return;
 });
 
 app.post('/chirp', authenticateToken, async (req, res) => {
-  // console.log('/chirp', req.body);
   if (isValidChirp(req.body)) {
     const { content } = req.body;
     console.log('content:', content);
@@ -136,7 +134,6 @@ app.post('/chirp', authenticateToken, async (req, res) => {
     await queryDB(newChirp);
 
     req.setTimeout(0);
-    // res.status(200).json(chirp);
     res.status(200);
   } else {
     res.status(422).send({ message: 'Improperly formatted chrip' });
