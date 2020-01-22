@@ -95,7 +95,7 @@ app.get('/chirp', async (req, res) => {
 //
 //
 //
-app.get('/chirps', async (req, res) => {
+app.post('/chirps', async (req, res) => {
   const maxRange = 25;
   let { start, end } = req.body;
   const askedRange = end - start;
@@ -103,7 +103,7 @@ app.get('/chirps', async (req, res) => {
 
   console.log('/chirps:');
 
-  const hasUser = req.headers.includes('authorization');
+  const hasUser = req.headers.authorization;
   if (hasUser) {
     authenticateToken(req, res, () => {
       console.log('/chirps - user authenticated...');
@@ -112,8 +112,9 @@ app.get('/chirps', async (req, res) => {
   console.log('/chirps - no user logged in...');
   const query = 'SELECT * FROM chirps LIMIT 25';
   const results = await queryDB(query);
-  console.log(results);
+  // console.log(results);
   res.send(results);
+  return;
 });
 
 app.post('/chirp', authenticateToken, async (req, res) => {

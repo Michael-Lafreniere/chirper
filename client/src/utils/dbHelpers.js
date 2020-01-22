@@ -112,7 +112,6 @@ export async function starChirp(user, chirpID, address) {
   })
     .then(response => response.json())
     .then(reply => {
-      // console.log('chirp reply:', reply);
       return;
     })
     .catch(error => {
@@ -122,10 +121,10 @@ export async function starChirp(user, chirpID, address) {
 
 export async function getChirps(user, start, end, address) {
   const url = address ? address : chirpServer;
-  const { accessToken, id } = user;
+  const { accessToken } = user;
 
   fetch(`${url}/chirps`, {
-    method: 'GET',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`
@@ -133,10 +132,7 @@ export async function getChirps(user, start, end, address) {
     body: JSON.stringify({ start, end })
   })
     .then(response => response.json())
-    .then(reply => {
-      // console.log('chirp reply:', reply);
-      return;
-    })
+    .then(reply => reply)
     .catch(error => {
       console.log('error', error);
     });

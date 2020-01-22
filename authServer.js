@@ -120,7 +120,7 @@ app.post('/user-login', async (req, res) => {
     accountType = 'handle';
     account = account.substr(1);
   }
-  console.log(account, password);
+  // console.log(account, password);
   const query = `SELECT * FROM user WHERE ${accountType}='${account}';`;
   const results = await queryDB(query);
   if (results[0] !== undefined) {
