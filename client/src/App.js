@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Header from './components/Header';
 import CreateAccount from './components/CreateAccount';
 import Chirp from './components/Chirp';
+import ChirpFeed from './components/ChirpFeed';
 import CreateChirp from './components/CreateChirp';
 import { UserContext, getUserData } from './utils/User';
 import { AppContext } from './utils/AppContext';
@@ -42,6 +43,7 @@ const App = () => {
           <div className="test">{newAcct ? <CreateAccount /> : null}</div>
           {user && user.id !== null ? <CreateChirp /> : null}
           <br />
+          <ChirpFeed />
           {newsFeedOpen ? null : <Chirp data={chirpData} />}
         </div>
       </UserContext.Provider>

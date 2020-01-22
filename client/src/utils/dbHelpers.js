@@ -119,3 +119,25 @@ export async function starChirp(user, chirpID, address) {
       console.log('error', error);
     });
 }
+
+export async function getChirps(user, start, end, address) {
+  const url = address ? address : chirpServer;
+  const { accessToken, id } = user;
+
+  fetch(`${url}/chirps`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`
+    },
+    body: JSON.stringify({ start, end })
+  })
+    .then(response => response.json())
+    .then(reply => {
+      // console.log('chirp reply:', reply);
+      return;
+    })
+    .catch(error => {
+      console.log('error', error);
+    });
+}

@@ -32,13 +32,7 @@ const ChirpFooter = () => {
           </svg>
           <div className="num-rechirps">{reChirps}</div>
         </div>
-        <div
-          className="star"
-          onClick={() => {
-            starChirp(user, chirpID);
-            console.log('once');
-          }}
-        >
+        <div className="star" onClick={() => starChirp(user, chirpID)}>
           <svg
             className="star-icon"
             viewBox="0 0 1024 1024"

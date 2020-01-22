@@ -62,17 +62,6 @@ app.use(express.json());
 connectToDB();
 
 //
-// Get chrips, for those not logged in to see latest 'trending' chirps:
-//
-app.get('/chirp', async (req, res) => {
-  const query = 'SELECT * FROM chirps LIMIT 25';
-  const results = await queryDB(query);
-  //const { passwd } = results[0];
-  //console.log(passwd);
-  res.send(results);
-});
-
-//
 // Validates that a Chirp is properly formatted:
 //
 const isValidChirp = data => {
@@ -93,6 +82,39 @@ const isValidChirp = data => {
 // app.use(
 //   rateLimit({ windowMs: RATE_TIME_BETWEEN_MSGS * 1000, max: RATE_MSG_PER })
 // );
+
+//
+// Get chrips, for those not logged in to see latest 'trending' chirps:
+//
+app.get('/chirp', async (req, res) => {
+  const query = 'SELECT * FROM chirps LIMIT 25';
+  const results = await queryDB(query);
+  res.send(results);
+});
+
+//
+//
+//
+app.get('/chirps', async (req, res) => {
+  const maxRange = 25;
+  let { start, end } = req.body;
+  const askedRange = end - start;
+  if (askedRange > maxRange) end = maxRange;
+
+  console.log('/chirps:');
+
+  const hasUser = req.headers.includes('authorization');
+  if (hasUser) {
+    authenticateToken(req, res, () => {
+      console.log('/chirps - user authenticated...');
+    });
+  }
+  console.log('/chirps - no user logged in...');
+  const query = 'SELECT * FROM chirps LIMIT 25';
+  const results = await queryDB(query);
+  console.log(results);
+  res.send(results);
+});
 
 app.post('/chirp', authenticateToken, async (req, res) => {
   // console.log('/chirp', req.body);
@@ -127,29 +149,32 @@ app.post('/star', authenticateToken, async (req, res) => {
   const chirpQuery = `SELECT * FROM chirps WHERE cid='${chirp_id}';`;
   const chirpExists = await queryDB(chirpQuery);
   if (chirpExists.length > 0) {
+    // if the chirp exists, see if we liked it already...
     const starQuery = `SELECT * FROM stars WHERE chirp_id='${chirp_id}' AND user_id='${user_id}';`;
     const results = await queryDB(starQuery);
 
     if (results.length === 0) {
+      // if not, like it and update the chirp's star count...
       const addStar = `INSERT INTO stars (chirp_id, user_id) VALUES (${chirp_id}, ${user_id});`;
       await queryDB(addStar);
       await queryDB(
         `UPDATE chirps SET stars = stars + 1 WHERE cid='${chirp_id}';`
       );
-      res.status(200);
+      res.status(200).json('');
       return;
     } else {
+      // otherwise, remove it and decrease the chirps star count...
       await queryDB(
         `DELETE FROM stars WHERE chirp_id='${chirp_id}' AND user_id='${user_id}';`
       );
       await queryDB(
         `UPDATE chirps SET stars = stars - 1 WHERE cid='${chirp_id}';`
       );
-      res.status(200);
+      res.status(200).json('');
       return;
     }
   }
-  res.status(422);
+  res.status(422).json('error');
 });
 
 //
