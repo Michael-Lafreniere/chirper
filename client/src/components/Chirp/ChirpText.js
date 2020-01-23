@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { useContext } from 'react';
+import { ChirpContext } from '../Chirp';
 import {
   urlDecorator,
   textDecorator,
@@ -6,8 +7,11 @@ import {
 } from '../../utils/Decorators';
 import { scrapeFromChirp } from '../../utils/Scrappers';
 
-class ChirpText extends Component {
-  splitMessage = content => {
+// class ChirpText extends Component {
+const ChirpText = () => {
+  const { content } = useContext(ChirpContext);
+
+  const splitMessage = content => {
     if (content !== undefined) {
       const SPLIT_SHORTCODES_REGEX = /([^[\]]|\[\])+/g;
       content = content.match(SPLIT_SHORTCODES_REGEX);
@@ -15,15 +19,15 @@ class ChirpText extends Component {
     return content;
   };
 
-  parseChirp = chirp => {
+  const parseChirp = chirp => {
     let data = scrapeFromChirp('AT', '@', chirp);
     data = scrapeFromChirp('TREND', '#', data);
-    let content = this.splitMessage(data);
+    let content = splitMessage(data);
     return content;
   };
 
-  formatChirp = chirp => {
-    const data = this.parseChirp(chirp);
+  const formatChirp = chirp => {
+    const data = parseChirp(chirp);
 
     if (data !== undefined) {
       return data.map((item, i) => {
@@ -46,13 +50,11 @@ class ChirpText extends Component {
     return chirp;
   };
 
-  render() {
-    return (
-      <div className="text">
-        <React.Fragment>{this.formatChirp(this.props.text)}</React.Fragment>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="text">
+      <>{formatChirp(content)}</>
+    </div>
+  );
+};
 
 export default ChirpText;

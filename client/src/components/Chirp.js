@@ -33,6 +33,7 @@ class Chirp extends Component {
       <ChirpContext.Provider
         value={{
           chirpID: this.state.cid,
+          content: this.state.content,
           display_name: this.state.display_name,
           handle: this.state.handle,
           time: this.state.time,
@@ -48,16 +49,10 @@ class Chirp extends Component {
               <ProfileImage />
             </div>
             <div className="chirp-wrapper">
-              <ChirpHeader
-                reChirp={this.state.reChirp}
-                display_name={this.state.display_name}
-                handle={this.state.handle}
-                time={this.state.created_on}
-                acct_verified={this.state.acct_verified}
-              />
+              <ChirpHeader />
               <article className="chirp-content">
                 <main>
-                  <ChirpText text={this.state.content} />
+                  <ChirpText />
                   <div className="gallary">
                     <Image imageURL="https://via.placeholder.com/1024" />
                     {/* <Image imageURL="https://via.placeholder.com/1024" /> */}
