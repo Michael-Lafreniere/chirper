@@ -15,13 +15,16 @@ class Chirp extends Component {
     super(props);
     this.state = {
       chirpID: this.props.data.chirpID,
-      chirpText: this.props.data.chirpText,
-      username: this.props.data.username,
+      content: this.props.data.content,
+      display_name: this.props.data.display_name,
       handle: this.props.data.handle,
+      reply_to: this.props.data.reply_to,
       userImage: this.props.data.userImage,
       reChirps: this.props.data.reChirps,
       comments: this.props.data.comments,
-      stars: this.props.data.stars
+      stars: this.props.data.stars,
+      acct_verified: this.props.data.acct_verified,
+      time: this.props.data.created_on
     };
   }
 
@@ -29,10 +32,14 @@ class Chirp extends Component {
     return (
       <ChirpContext.Provider
         value={{
-          chirpID: this.state.chirpID,
-          reChirps: this.state.reChirps,
+          chirpID: this.state.cid,
+          display_name: this.state.display_name,
+          handle: this.state.handle,
+          time: this.state.time,
+          reChirps: this.state.num_rechirps,
           stars: this.state.stars,
-          comments: this.state.comments
+          comments: this.state.num_replies,
+          acct_verified: this.state.acct_verified
         }}
       >
         <section className="chirp">
@@ -43,9 +50,10 @@ class Chirp extends Component {
             <div className="chirp-wrapper">
               <ChirpHeader
                 reChirp={this.state.reChirp}
-                username={this.state.username}
+                display_name={this.state.display_name}
                 handle={this.state.handle}
-                time="21h"
+                time={this.state.created_on}
+                acct_verified={this.state.acct_verified}
               />
               <article className="chirp-content">
                 <main>

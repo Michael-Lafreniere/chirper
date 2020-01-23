@@ -111,11 +111,10 @@ app.post('/chirps', async (req, res) => {
   }
   // console.log('/chirps - no user logged in...');
   const joinQuery =
-    'SELECT chirps.cid, chirps.content, chirps.num_rechirps, chirps.stars, chirps.reply_to, chirps.num_replies, chirps.created_on, chirps.star1, chirps.star2, user.display_name, user.handle, user.acct_verified, user.user_image FROM chirps INNER JOIN user ON chirps.user_id=user.uid;';
-  const query = 'SELECT * FROM chirps LIMIT 25';
+    'SELECT chirps.cid, chirps.content, chirps.num_rechirps, chirps.stars, chirps.reply_to, chirps.num_replies, chirps.created_on, chirps.star1, chirps.star2, chirps.image1, chirps.image2, chirps.image3, chirps.image4, user.display_name, user.handle, user.acct_verified, user.user_image FROM chirps INNER JOIN user ON chirps.user_id=user.uid;';
+  // const query = 'SELECT * FROM chirps LIMIT 25';
   const results = await queryDB(joinQuery);
   res.send(results);
-  // return;
 });
 
 app.post('/chirp', authenticateToken, async (req, res) => {

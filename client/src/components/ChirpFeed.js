@@ -1,13 +1,12 @@
 import React, { useEffect, useContext, useState } from 'react';
 import Chirp from './Chirp';
 import { UserContext } from '../utils/User';
-// import { getChirps } from '../utils/dbHelpers';
 
 const ChirpFeed = () => {
   const maxRange = 24;
   const [chirps, setChirps] = useState(null);
   const [error, setError] = useState(null);
-  const [location, setLocation] = useState(0);
+  const [location] = useState(0);
   const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -33,28 +32,14 @@ const ChirpFeed = () => {
     getTheChirps();
   }, [location, user.accessToken]);
 
-  let chirpsToRender = null;
-  if (chirps === null) console.log('none');
-  else {
-    console.log('chirps:', chirps);
-    chirpsToRender = chirps.map((chirp, index) => {
-      return <Chirp key={index} data={chirp} />;
-    });
-  }
-
-  // if (chirps !== null) chirpsToRender = <Chirp data={chirps[0]} />;
-  // if (chirps !== null) console.log('first chirp:', chirps[0]);
-
   return (
     <>
-      <div>ChirpFeed:</div>
       <div className="chirp-feed-error">{error}</div>
-      {chirpsToRender}
-      {/* {chirps
+      {chirps === null
         ? null
         : chirps.map((chirp, index) => {
             return <Chirp key={index} data={chirp} />;
-          })} */}
+          })}
     </>
   );
 };
