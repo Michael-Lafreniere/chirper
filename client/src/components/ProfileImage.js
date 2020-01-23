@@ -3,7 +3,9 @@ import { UserContext } from '../utils/User';
 
 export default function ProfileImage() {
   const user = useContext(UserContext);
-  let image = 'https://via.placeholder.com/48';
+  let image = user.user_image
+    ? user.user_image
+    : 'https://via.placeholder.com/48';
   return (
     <div className="user-image">
       <a href={`http://localhost:3000/${user.handle}`}>

@@ -22,7 +22,7 @@ const App = () => {
     reChirps: 3,
     stars: 88,
     comments: 19,
-    chirpText: 'Test, only a test'
+    content: 'Test, only a test'
     // chirpText:
     //   'This is my chirp, there are many like it, but this one is mine. @steve_rocks This is a very long text test to see how it wraps and stuff to see if we need to change anything @World #test'
     // reChirp: "StanLee",

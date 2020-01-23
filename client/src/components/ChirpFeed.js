@@ -9,23 +9,21 @@ const ChirpFeed = () => {
   const [error, setError] = useState(null);
   const [location, setLocation] = useState(0);
   const { user } = useContext(UserContext);
-  const end = location + maxRange;
-  const start = location;
 
   useEffect(() => {
     async function getTheChirps() {
+      const end = location + maxRange;
       fetch('http://192.168.1.71:3000/chirps', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${user.accessToken}`
         },
-        body: JSON.stringify({ start, end })
+        body: JSON.stringify({ location, end })
       })
         .then(response => response.json())
         .then(res => {
           setChirps(res);
-          setLocation(end);
         })
         .catch(error => {
           console.log(error);
@@ -33,18 +31,19 @@ const ChirpFeed = () => {
         });
     }
     getTheChirps();
-  }, []);
+  }, [location, user.accessToken]);
 
   let chirpsToRender = null;
-  // if (chirps === null) console.log('none');
-  // else {
-  //   chirpsToRender = chirps.map((chirp, index) => {
-  //     return <Chirp key={index} data={chirp} />;
-  //   });
-  // }
+  if (chirps === null) console.log('none');
+  else {
+    console.log('chirps:', chirps);
+    chirpsToRender = chirps.map((chirp, index) => {
+      return <Chirp key={index} data={chirp} />;
+    });
+  }
 
-  if (chirps !== null) chirpsToRender = <Chirp data={chirps[0]} />;
-  if (chirps !== null) console.log('first chirp:', chirps[0]);
+  // if (chirps !== null) chirpsToRender = <Chirp data={chirps[0]} />;
+  // if (chirps !== null) console.log('first chirp:', chirps[0]);
 
   return (
     <>

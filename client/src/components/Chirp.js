@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import ChirpText from './Chirp/ChirpText';
 import ChirpHeader from './Chirp/ChirpHeader';
 import ChirpFooter from './Chirp/ChirpFooter';
+import ProfileImage from './ProfileImage';
 import Image from './Image';
 
 import './Chirp.css';
@@ -37,11 +38,7 @@ class Chirp extends Component {
         <section className="chirp">
           <div className="container">
             <div className="chirp-sidebar">
-              <div className="user-image">
-                <a href={`http://localhost:3000/${this.state.username}`}>
-                  <img src={this.state.userImage} alt="user supplied profile" />
-                </a>
-              </div>
+              <ProfileImage />
             </div>
             <div className="chirp-wrapper">
               <ChirpHeader
@@ -52,7 +49,7 @@ class Chirp extends Component {
               />
               <article className="chirp-content">
                 <main>
-                  <ChirpText text={this.state.chirpText} />
+                  <ChirpText text={this.state.content} />
                   <div className="gallary">
                     <Image imageURL="https://via.placeholder.com/1024" />
                     {/* <Image imageURL="https://via.placeholder.com/1024" /> */}

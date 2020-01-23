@@ -101,19 +101,21 @@ app.post('/chirps', async (req, res) => {
   const askedRange = end - start;
   if (askedRange > maxRange) end = maxRange;
 
-  console.log('/chirps:');
+  // console.log('/chirps:');
 
   const hasUser = req.headers.authorization;
   if (hasUser) {
     authenticateToken(req, res, () => {
-      console.log('/chirps - user authenticated...');
+      // console.log('/chirps - user authenticated...');
     });
   }
-  console.log('/chirps - no user logged in...');
+  // console.log('/chirps - no user logged in...');
+  const joinQuery =
+    'SELECT chirps.cid, chirps.content, chirps.num_rechirps, chirps.stars, chirps.reply_to, chirps.num_replies, chirps.created_on, chirps.star1, chirps.star2, user.display_name, user.handle, user.acct_verified, user.user_image FROM chirps INNER JOIN user ON chirps.user_id=user.uid;';
   const query = 'SELECT * FROM chirps LIMIT 25';
-  const results = await queryDB(query);
+  const results = await queryDB(joinQuery);
   res.send(results);
-  return;
+  // return;
 });
 
 app.post('/chirp', authenticateToken, async (req, res) => {
