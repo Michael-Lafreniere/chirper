@@ -3,8 +3,9 @@ import React, { Component } from 'react';
 import ChirpText from './Chirp/ChirpText';
 import ChirpHeader from './Chirp/ChirpHeader';
 import ChirpFooter from './Chirp/ChirpFooter';
+import ChirpGallery from './Chirp/ChirpGallery';
 import ProfileImage from './ProfileImage';
-import Image from './Image';
+// import Image from './Image';
 
 import './Chirp.css';
 
@@ -40,7 +41,11 @@ class Chirp extends Component {
           reChirps: this.state.num_rechirps,
           stars: this.state.stars,
           comments: this.state.num_replies,
-          acct_verified: this.state.acct_verified
+          acct_verified: this.state.acct_verified,
+          image1: this.state.image1,
+          image2: this.state.image2,
+          image3: this.state.image3,
+          image4: this.state.image4
         }}
       >
         <section className="chirp">
@@ -53,12 +58,7 @@ class Chirp extends Component {
               <article className="chirp-content">
                 <main>
                   <ChirpText />
-                  <div className="gallary">
-                    <Image imageURL="https://via.placeholder.com/1024" />
-                    {/* <Image imageURL="https://via.placeholder.com/1024" /> */}
-                    {/* <Image imageURL="https://via.placeholder.com/1024" /> */}
-                    {/* <Image imageURL="https://via.placeholder.com/1024" /> */}
-                  </div>
+                  <ChirpGallery />
                 </main>
               </article>
               <ChirpFooter />
