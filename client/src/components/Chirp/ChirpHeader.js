@@ -4,6 +4,7 @@ import { ChirpContext } from '../Chirp';
 import './ChirpHeader.css';
 
 const ChirpHeader = () => {
+  let postedTime = null;
   const { display_name, handle, time, acct_verified, reply_to } = useContext(
     ChirpContext
   );
@@ -23,10 +24,8 @@ const ChirpHeader = () => {
   };
 
   const convertSQLDateTimeToJS = () => {
-    // console.log('sql datetime:', time);
-    // console.log('js datetime:', new Date());
-    var dateParts = time.split('-');
-    var jsDate = new Date(
+    const dateParts = time.split('-');
+    postedTime = new Date(
       dateParts[0],
       dateParts[1] - 1,
       dateParts[2].substr(0, 2),
@@ -34,12 +33,45 @@ const ChirpHeader = () => {
       dateParts[2].substr(6, 2),
       dateParts[2].substr(9, 2)
     );
-    console.log('converted:', jsDate);
-    return String(jsDate);
+  };
+
+  const refactorTime = () => {
+    const current = new Date();
+    if (current.getFullYear() === postedTime.getFullYear()) {
+      if (current.getMonth() === postedTime.getMonth()) {
+        if (current.getDate() === postedTime.getDate()) {
+          if (current.getHours() === postedTime.getHours()) {
+            if (current.getMinutes() === postedTime.getMinutes()) {
+            } else {
+              const diff = current.getMinutes() - postedTime.getMinutes();
+              if (diff > 1) return `${diff} mins ago`;
+              else return `${diff} min ago`;
+            }
+          } else {
+            const diff = current.getHours() - postedTime.getHours();
+            if (diff > 1) return `${diff} hrs ago`;
+            else return `${diff} hr ago`;
+          }
+        } else {
+          const diff = current.getDate() - postedTime.getDate();
+          if (diff > 1) return `${diff} days ago`;
+          else return `${diff} day ago`;
+        }
+      } else {
+        const diff = current.getMonth() - postedTime.getMonth();
+        if (diff > 1) return `${diff} mnths ago`;
+        else return `${diff} mnth ago`;
+      }
+    } else {
+      const diff = current.getFullYear() - postedTime.getFullYear();
+      if (diff > 1) return `${diff} yrs ago`;
+      else return `${diff} yr ago`;
+    }
   };
 
   let isReChirp = reChirp(reply_to);
-  let convertedTime = convertSQLDateTimeToJS();
+  convertSQLDateTimeToJS();
+  let convertedTime = refactorTime();
 
   return (
     <>
