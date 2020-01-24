@@ -48,7 +48,7 @@ const ChirpFooter = () => {
               fill=""
             />
           </svg>
-          <div className="num-stars">{stars}</div>
+          {stars === 0 ? null : <div className="num-stars">{stars}</div>}
         </div>
       </div>
     </>

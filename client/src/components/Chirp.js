@@ -14,7 +14,7 @@ class Chirp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      chirpID: this.props.data.chirpID,
+      chirpID: this.props.data.cid,
       content: this.props.data.content,
       display_name: this.props.data.display_name,
       handle: this.props.data.handle,
@@ -32,7 +32,7 @@ class Chirp extends Component {
     return (
       <ChirpContext.Provider
         value={{
-          chirpID: this.state.cid,
+          chirpID: this.state.chirpID,
           content: this.state.content,
           display_name: this.state.display_name,
           handle: this.state.handle,
