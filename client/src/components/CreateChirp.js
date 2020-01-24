@@ -1,4 +1,5 @@
 import React, { useReducer, useContext } from 'react';
+import ProfileImage from './ProfileImage';
 import { postChirp } from '../utils/dbHelpers';
 import { UserContext } from '../utils/User';
 
@@ -56,14 +57,7 @@ export default function CreateChirp() {
     <>
       <div className="create-chirp">
         <div className="chirp-sidebar">
-          <div className="user-image">
-            <a href={`http://localhost:3000/test`}>
-              <img
-                src="https://via.placeholder.com/48"
-                alt="user supplied profile"
-              />
-            </a>
-          </div>
+          <ProfileImage />
         </div>
         <div className="input-container">
           <textarea

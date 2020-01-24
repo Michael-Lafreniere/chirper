@@ -5,7 +5,6 @@ import ChirpHeader from './Chirp/ChirpHeader';
 import ChirpFooter from './Chirp/ChirpFooter';
 import ChirpGallery from './Chirp/ChirpGallery';
 import ProfileImage from './ProfileImage';
-// import Image from './Image';
 
 import './Chirp.css';
 

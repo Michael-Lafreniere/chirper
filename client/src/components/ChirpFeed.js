@@ -23,7 +23,7 @@ const ChirpFeed = () => {
         .then(response => response.json())
         .then(res => {
           setChirps(res);
-          console.log(res);
+          // console.log(res);
         })
         .catch(error => {
           console.log(error);
