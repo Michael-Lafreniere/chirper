@@ -14,6 +14,7 @@ class Chirp extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      creator_id: this.props.data.uid,
       chirpID: this.props.data.cid,
       content: this.props.data.content,
       display_name: this.props.data.display_name,
