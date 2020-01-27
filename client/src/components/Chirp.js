@@ -25,7 +25,8 @@ class Chirp extends Component {
       comments: this.props.data.comments,
       stars: this.props.data.stars,
       acct_verified: this.props.data.acct_verified,
-      time: this.props.data.created_on
+      time: this.props.data.created_on,
+      iStared: this.props.data.sid
     };
   }
 
@@ -40,6 +41,7 @@ class Chirp extends Component {
           time: this.state.time,
           reChirps: this.state.num_rechirps,
           stars: this.state.stars,
+          iStared: this.state.iStared,
           comments: this.state.num_replies,
           acct_verified: this.state.acct_verified,
           image1: this.state.image1,

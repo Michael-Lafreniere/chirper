@@ -68,12 +68,13 @@
   display: flex;
   justify-content: space-around;
   width: 100%;
-  margin: 5px 0;
+  /* margin: 5px 0; */
   font-size: 1.25em;
 }
 
 .chirp-footer .comments {
   display: flex;
+  padding: 5px;
   color: var(--comment-color);
 }
 
@@ -91,6 +92,7 @@
 
 .chirp-footer .rechirp {
   display: flex;
+  padding: 5px;
   color: var(--rechirp-color);
 }
 
@@ -108,8 +110,10 @@
 
 .chirp-footer .star {
   display: flex;
+  padding: 4px 10px;
   cursor: pointer;
   color: var(--star-color);
+  border-radius: 50%;
 }
 
 .chirp-footer .star .num-stars {
@@ -122,6 +126,10 @@
   height: var(--chirp-interactive-icon-size);
   vertical-align: middle;
   overflow: hidden;
+}
+
+.star-background {
+  background-color: rgba(100, 100, 0, 0.55);
 }
 
 @media screen and (min-width: 600px) {

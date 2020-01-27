@@ -5,7 +5,12 @@ import { starChirp } from '../../utils/dbHelpers';
 
 const ChirpFooter = () => {
   const { user } = useContext(UserContext);
-  const { comments, reChirps, stars, chirpID } = useContext(ChirpContext);
+  const { comments, reChirps, stars, chirpID, iStared } = useContext(
+    ChirpContext
+  );
+
+  let starClass = 'star';
+  if (iStared !== null) starClass = 'star star-background';
 
   return (
     <>
@@ -36,7 +41,7 @@ const ChirpFooter = () => {
             <div className="num-rechirps">{reChirps}</div>
           )}
         </div>
-        <div className="star" onClick={() => starChirp(user, chirpID)}>
+        <div className={starClass} onClick={() => starChirp(user, chirpID)}>
           <svg
             className="star-icon"
             viewBox="0 0 1024 1024"
