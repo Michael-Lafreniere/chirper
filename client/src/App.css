@@ -3,11 +3,14 @@
   --bkgrnd-color: #282c34;
   --base-color: #fff;
   --highlight-color: #5fa8de;
-  --comment-color: rgba(250, 10, 10, 255);
   --error-color: rgba(198, 20, 20, 255);
   --required-color: rgba(200, 10, 10, 255);
+  --comment-color: rgba(250, 10, 10, 255);
+  --comment-background-color: rgba(125, 5, 5, 0.55);
   --rechirp-color: rgba(10, 200, 10, 255);
-  --star-color: rgba(200, 200, 10, 255);
+  --rechirp-background-color: rgba(5, 100, 5, 0.55);
+  --star-color: rgba(210, 210, 11, 255);
+  --star-background-color: rgba(100, 100, 5, 0.55);
 
   /* sizes: */
   --chirp-sidebar-width: 15%;

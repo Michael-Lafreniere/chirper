@@ -5,17 +5,27 @@ import { starChirp } from '../../utils/dbHelpers';
 
 const ChirpFooter = () => {
   const { user } = useContext(UserContext);
-  const { comments, reChirps, stars, chirpID, iStared } = useContext(
-    ChirpContext
-  );
+  const {
+    comments,
+    reChirps,
+    stars,
+    chirpID,
+    iStared,
+    iCommented,
+    iReChirped
+  } = useContext(ChirpContext);
 
+  let commentClass = 'comments';
+  if (iCommented !== null) commentClass = 'comments comments-background';
+  let reChirpedClass = 'rechirp';
+  if (iReChirped !== null) reChirpedClass = 'rechirped rechirped-background';
   let starClass = 'star';
   if (iStared !== null) starClass = 'star star-background';
 
   return (
     <>
       <div className="chirp-footer">
-        <div className="comments">
+        <div className={commentClass}>
           <svg
             className="comments-icon"
             viewBox="0 0 1024 1024"
@@ -28,7 +38,7 @@ const ChirpFooter = () => {
             <div className="num-comments">{comments}</div>
           )}
         </div>
-        <div className="rechirp">
+        <div className={reChirpedClass}>
           <svg
             className="rechirp-icon"
             viewBox="0 0 1024 1024"

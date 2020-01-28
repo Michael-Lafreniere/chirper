@@ -78,6 +78,10 @@
   color: var(--comment-color);
 }
 
+.comments-background {
+  background-color: var(--comment-background-color);
+}
+
 .chirp-footer .comments .num-comments {
   margin: 0 3px;
 }
@@ -94,6 +98,10 @@
   display: flex;
   padding: 5px;
   color: var(--rechirp-color);
+}
+
+.rechirp-background {
+  background-color: var(--rechirp-background-color);
 }
 
 .chirp-footer .rechirp .num-rechirps {
@@ -129,7 +137,7 @@
 }
 
 .star-background {
-  background-color: rgba(100, 100, 0, 0.55);
+  background-color: var(--star-background-color);
 }
 
 @media screen and (min-width: 600px) {

@@ -22,11 +22,13 @@ class Chirp extends Component {
       reply_to: this.props.data.reply_to,
       userImage: this.props.data.userImage,
       reChirps: this.props.data.reChirps,
+      iReChirped: null,
       comments: this.props.data.comments,
+      iCommented: null,
       stars: this.props.data.stars,
+      iStared: this.props.data.sid,
       acct_verified: this.props.data.acct_verified,
-      time: this.props.data.created_on,
-      iStared: this.props.data.sid
+      time: this.props.data.created_on
     };
   }
 
@@ -39,10 +41,12 @@ class Chirp extends Component {
           display_name: this.state.display_name,
           handle: this.state.handle,
           time: this.state.time,
+          comments: this.state.num_replies,
+          iCommented: this.state.iCommented,
           reChirps: this.state.num_rechirps,
+          iReChirped: this.state.iReChirped,
           stars: this.state.stars,
           iStared: this.state.iStared,
-          comments: this.state.num_replies,
           acct_verified: this.state.acct_verified,
           image1: this.state.image1,
           image2: this.state.image2,
