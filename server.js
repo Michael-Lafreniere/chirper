@@ -76,6 +76,8 @@ const isValidChirp = data => {
   return false;
 };
 
+const updateRepliedToChirp = data => {};
+
 //
 // Rate limit posts:
 //

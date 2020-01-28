@@ -2,12 +2,12 @@ import React, { useReducer, useContext } from 'react';
 import ProfileImage from './ProfileImage';
 import { postChirp } from '../utils/dbHelpers';
 import { UserContext } from '../utils/User';
+import { AppContext } from '../utils/AppContext';
 
 import './CreateChirp.css';
 
 const initialState = {
   text: '',
-  // placeholder: 'What is on your mind today?',
   maxChirpLength: 255,
   maxChirpsPerPost: 1
 };
@@ -20,14 +20,25 @@ const createChirpReducer = (state, action) => {
         text: action.value
       };
     case 'send':
-      // console.log('text:', action.value, 'user:', action.user);
-      postChirp(action.user, action.value);
+      console.log(
+        'text:',
+        action.value,
+        'user:',
+        action.user,
+        'reply to:',
+        action.reply
+      );
+      postChirp(action.user, action.value, action.reply);
+      action.setReply(-1);
       return {
         ...state,
-        text: action.value.substr(
-          0,
-          state.maxChirpLength * state.maxChirpsPerPost
-        )
+        text: ''
+      };
+    case 'clear':
+      if (action.value.length === 0) action.setReply(-1);
+      return {
+        ...state,
+        text: ''
       };
     default:
       return state;
@@ -35,6 +46,7 @@ const createChirpReducer = (state, action) => {
 };
 
 const CreateChirp = ({ placeholder = 'What is on your mind today?' }) => {
+  const { reply, setReply } = useContext(AppContext);
   const { user } = useContext(UserContext);
   const inputRef = React.createRef(null);
   const [state, dispatch] = useReducer(createChirpReducer, initialState);
@@ -75,7 +87,15 @@ const CreateChirp = ({ placeholder = 'What is on your mind today?' }) => {
                 dispatch({
                   type: 'send',
                   value: inputRef.current.value,
-                  user
+                  reply,
+                  user,
+                  setReply: setReply
+                });
+              if (event.key === 'Escape')
+                dispatch({
+                  type: 'clear',
+                  value: inputRef.current.value,
+                  setReply
                 });
             }}
           ></textarea>

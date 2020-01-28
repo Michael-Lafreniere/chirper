@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import Chirp from './Chirp';
 import { UserContext } from '../utils/User';
+import { AppContext } from '../utils/AppContext';
 
 const ChirpFeed = () => {
   const maxRange = 24;
@@ -8,6 +9,7 @@ const ChirpFeed = () => {
   const [error, setError] = useState(null);
   const [location] = useState(0);
   const { user } = useContext(UserContext);
+  const { reply } = useContext(AppContext);
 
   useEffect(() => {
     async function getTheChirps() {
@@ -31,7 +33,7 @@ const ChirpFeed = () => {
         });
     }
     getTheChirps();
-  }, [location, user.accessToken]);
+  }, [location, user.accessToken, reply]);
 
   return (
     <>
