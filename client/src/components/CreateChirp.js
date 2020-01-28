@@ -7,7 +7,7 @@ import './CreateChirp.css';
 
 const initialState = {
   text: '',
-  placeholder: 'What is on your mind today?',
+  // placeholder: 'What is on your mind today?',
   maxChirpLength: 255,
   maxChirpsPerPost: 1
 };
@@ -34,12 +34,12 @@ const createChirpReducer = (state, action) => {
   }
 };
 
-export default function CreateChirp() {
+const CreateChirp = ({ placeholder = 'What is on your mind today?' }) => {
   const { user } = useContext(UserContext);
   const inputRef = React.createRef(null);
   const [state, dispatch] = useReducer(createChirpReducer, initialState);
 
-  const { text, placeholder, maxChirpLength, maxChirpsPerPost } = state;
+  const { text, maxChirpLength, maxChirpsPerPost } = state;
   const maxLength = maxChirpLength * maxChirpsPerPost;
   let textRemaining = '';
   let textRemainingClass = 'remaining-yellow';
@@ -114,4 +114,6 @@ export default function CreateChirp() {
       </div>
     </>
   );
-}
+};
+
+export default CreateChirp;

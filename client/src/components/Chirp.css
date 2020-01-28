@@ -75,6 +75,7 @@
 .chirp-footer .comments {
   display: flex;
   padding: 5px;
+  cursor: pointer;
   color: var(--comment-color);
 }
 

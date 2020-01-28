@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import Header from './components/Header';
 import CreateAccount from './components/CreateAccount';
-// import Chirp from './components/Chirp';
 import ChirpFeed from './components/ChirpFeed';
 import CreateChirp from './components/CreateChirp';
 import { UserContext, getUserData } from './utils/User';
@@ -14,6 +13,7 @@ const App = () => {
   const [newAcct, setNewAcct] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [user, setUser] = useState(getUserData());
+  const [reply, setReply] = useState(-1);
   // let chirpData = {
   //   chirpID: 2,
   //   username: 'SomeCoolDude',
@@ -36,13 +36,13 @@ const App = () => {
 
   return (
     <AppContext.Provider
-      value={{ setNewAcct, loginOpen, setLoginOpen, pollUser }}
+      value={{ setNewAcct, loginOpen, setLoginOpen, pollUser, reply, setReply }}
     >
       <UserContext.Provider value={{ user, setUser }}>
         <div className="App">
           <Header />
           <div className="test">{newAcct ? <CreateAccount /> : null}</div>
-          {user && user.id !== null ? <CreateChirp /> : null}
+          {user && user.id !== null && reply === -1 ? <CreateChirp /> : null}
           <br />
           {newsFeedOpen ? null : <ChirpFeed />}
           {/* {newsFeedOpen ? null : <Chirp data={chirpData} />} */}

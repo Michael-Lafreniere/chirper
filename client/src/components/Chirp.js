@@ -1,10 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import ChirpText from './Chirp/ChirpText';
 import ChirpHeader from './Chirp/ChirpHeader';
 import ChirpFooter from './Chirp/ChirpFooter';
 import ChirpGallery from './Chirp/ChirpGallery';
+import CreateChirp from './CreateChirp';
 import ProfileImage from './ProfileImage';
+
+import { AppContext } from '../utils/AppContext';
 
 import './Chirp.css';
 
@@ -71,6 +74,15 @@ class Chirp extends Component {
             </div>
           </div>
         </section>
+        <AppContext.Consumer>
+          {context => (
+            <Fragment>
+              {context.reply === this.state.chirpID ? (
+                <CreateChirp placeholder="What are you thinking?" />
+              ) : null}
+            </Fragment>
+          )}
+        </AppContext.Consumer>
       </ChirpContext.Provider>
     );
   }

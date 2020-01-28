@@ -2,8 +2,10 @@ import React, { useContext } from 'react';
 import { UserContext } from '../../utils/User';
 import { ChirpContext } from '../Chirp';
 import { starChirp } from '../../utils/dbHelpers';
+import { AppContext } from '../../utils/AppContext';
 
 const ChirpFooter = () => {
+  const { reply, setReply } = useContext(AppContext);
   const { user } = useContext(UserContext);
   const {
     comments,
@@ -24,7 +26,12 @@ const ChirpFooter = () => {
 
   return (
     <>
-      <div className="chirp-footer">
+      <div
+        className="chirp-footer"
+        onClick={() => {
+          if (reply === -1) setReply(chirpID);
+        }}
+      >
         <div className={commentClass}>
           <svg
             className="comments-icon"
