@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react';
 
-import ChirpText from './Chirp/ChirpText';
-import ChirpHeader from './Chirp/ChirpHeader';
-import ChirpFooter from './Chirp/ChirpFooter';
-import ChirpGallery from './Chirp/ChirpGallery';
-import CreateChirp from './CreateChirp';
 import ProfileImage from './ProfileImage';
+import ChirpHeader from './Chirp/ChirpHeader';
+import ChirpText from './Chirp/ChirpText';
+import ChirpGallery from './Chirp/ChirpGallery';
+import ChirpFooter from './Chirp/ChirpFooter';
+import CreateChirp from './CreateChirp';
 
 import { AppContext } from '../utils/AppContext';
 
@@ -26,7 +26,7 @@ class Chirp extends Component {
       userImage: this.props.data.userImage,
       reChirps: this.props.data.reChirps,
       iReChirped: null,
-      comments: this.props.data.comments,
+      comments: this.props.data.num_replies,
       iCommented: null,
       stars: this.props.data.stars,
       iStared: this.props.data.sid,
@@ -44,7 +44,7 @@ class Chirp extends Component {
           display_name: this.state.display_name,
           handle: this.state.handle,
           time: this.state.time,
-          comments: this.state.num_replies,
+          comments: this.state.comments,
           iCommented: this.state.iCommented,
           reChirps: this.state.num_rechirps,
           iReChirped: this.state.iReChirped,
