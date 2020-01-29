@@ -76,7 +76,16 @@ const isValidChirp = data => {
   return false;
 };
 
-const updateRepliedToChirp = data => {};
+const updateRepliedToChirp = async data => {
+  // Checks to see if the chirp exists.  Need to see if it's
+  const chirpQuery = `SELECT * FROM chirps WHERE cid='${data.reply_to}';`;
+  const chirpExists = await queryDB(chirpQuery);
+  if (chirpExists.length > 0) {
+    await queryDB(
+      `UPDATE chirps SET num_replies = num_replies + 1 WHERE cid='${data.reply_to}';`
+    );
+  }
+};
 
 //
 // Rate limit posts:
@@ -136,6 +145,8 @@ app.post('/chirp', authenticateToken, async (req, res) => {
 
     const newChirp = `INSERT INTO chirps (content, reply_to, user_id) VALUES ('${chirp.content}', '${chirp.reply_to}', '${chirp.user_id}');`;
     await queryDB(newChirp);
+
+    updateRepliedToChirp(chirp);
 
     req.setTimeout(0);
     res.status(200);
