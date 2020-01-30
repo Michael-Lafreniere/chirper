@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { ChirpContext } from '../Chirp';
+import ToolTip from '../ToolTip';
 
 import './ChirpHeader.css';
 
@@ -93,7 +94,13 @@ const ChirpHeader = () => {
             <a href={`http://localhost:3000/${handle}`}>@{handle}</a>
           </div>
           <div className="dot">&middot;</div>
-          <div className="post-time">{convertedTime}</div>
+          <div
+            className="post-time"
+            onMouseOver={() => <ToolTip text={String(postedTime)} />}
+          >
+            {convertedTime}
+          </div>
+          <ToolTip text={String(postedTime)} />
         </div>
       </div>
     </>
