@@ -122,8 +122,9 @@ app.post('/chirps', async (req, res) => {
   }
   // console.log('/chirps - no user logged in...');
   const query =
-    'SELECT * FROM chirps INNER JOIN user ON chirps.user_id=user.uid LEFT OUTER JOIN stars ON chirps.user_id=stars.user_id AND chirps.cid=stars.chirp_id WHERE chirps.reply_to = -1 LIMIT 50;';
+    'SELECT chirps.cid, chirps.content, chirps.num_rechirps, chirps.stars, chirps.reply_to, chirps.num_replies, chirps.created_on, chirps.star1, chirps.star2, chirps.image1, chirps.image2, chirps.image3, chirps.image4, user.display_name, user.handle, user.acct_verified, user.user_image, stars.sid FROM chirps INNER JOIN user ON chirps.user_id=user.uid LEFT OUTER JOIN stars ON chirps.user_id=stars.user_id AND chirps.cid=stars.chirp_id WHERE chirps.reply_to = -1 LIMIT 50;';
   const results = await queryDB(query);
+  // console.log(results);
   res.send(results);
 });
 

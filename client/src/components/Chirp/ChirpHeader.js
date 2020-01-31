@@ -25,49 +25,53 @@ const ChirpHeader = () => {
   };
 
   const convertSQLDateTimeToJS = () => {
-    const dateParts = time.split('-');
-    postedTime = new Date(
-      dateParts[0],
-      dateParts[1] - 1,
-      dateParts[2].substr(0, 2),
-      dateParts[2].substr(3, 2),
-      dateParts[2].substr(6, 2),
-      dateParts[2].substr(9, 2)
-    );
+    if (time !== null) {
+      const dateParts = time.split('-');
+      postedTime = new Date(
+        dateParts[0],
+        dateParts[1] - 1,
+        dateParts[2].substr(0, 2),
+        dateParts[2].substr(3, 2),
+        dateParts[2].substr(6, 2),
+        dateParts[2].substr(9, 2)
+      );
+    }
   };
 
   const refactorTime = () => {
-    const current = new Date();
-    if (current.getFullYear() === postedTime.getFullYear()) {
-      if (current.getMonth() === postedTime.getMonth()) {
-        if (current.getDate() <= postedTime.getDate()) {
-          if (current.getHours() <= postedTime.getHours()) {
-            if (current.getMinutes() === postedTime.getMinutes()) {
-              return `now`;
+    if (postedTime !== null) {
+      const current = new Date();
+      if (current.getFullYear() === postedTime.getFullYear()) {
+        if (current.getMonth() === postedTime.getMonth()) {
+          if (current.getDate() <= postedTime.getDate()) {
+            if (current.getHours() <= postedTime.getHours()) {
+              if (current.getMinutes() === postedTime.getMinutes()) {
+                return `now`;
+              } else {
+                const diff = current.getMinutes() - postedTime.getMinutes();
+                if (diff > 1) return `${diff} mins ago`;
+                else return `${diff} min ago`;
+              }
             } else {
-              const diff = current.getMinutes() - postedTime.getMinutes();
-              if (diff > 1) return `${diff} mins ago`;
-              else return `${diff} min ago`;
+              const diff = current.getHours() - postedTime.getHours();
+              if (diff > 1) return `${diff} hrs ago`;
+              else return `${diff} hr ago`;
             }
           } else {
-            const diff = current.getHours() - postedTime.getHours();
-            if (diff > 1) return `${diff} hrs ago`;
-            else return `${diff} hr ago`;
+            const diff = current.getDate() - postedTime.getDate();
+            if (diff > 1) return `${diff} days ago`;
+            else return `${diff} day ago`;
           }
         } else {
-          const diff = current.getDate() - postedTime.getDate();
-          if (diff > 1) return `${diff} days ago`;
-          else return `${diff} day ago`;
+          const diff = current.getMonth() - postedTime.getMonth();
+          if (diff > 1) return `${diff} mnths ago`;
+          else return `${diff} mnth ago`;
         }
       } else {
-        const diff = current.getMonth() - postedTime.getMonth();
-        if (diff > 1) return `${diff} mnths ago`;
-        else return `${diff} mnth ago`;
+        const diff = current.getFullYear() - postedTime.getFullYear();
+        if (diff > 1) return `${diff} yrs ago`;
+        else return `${diff} yr ago`;
       }
-    } else {
-      const diff = current.getFullYear() - postedTime.getFullYear();
-      if (diff > 1) return `${diff} yrs ago`;
-      else return `${diff} yr ago`;
     }
   };
 
