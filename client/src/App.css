@@ -11,6 +11,7 @@
   --rechirp-background-color: rgba(5, 100, 5, 0.55);
   --star-color: rgba(210, 210, 11, 255);
   --star-background-color: rgba(100, 100, 5, 0.55);
+  --border-color: rgba(128, 128, 128, 128);
 
   /* sizes: */
   --chirp-sidebar-width: 15%;

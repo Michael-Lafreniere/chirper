@@ -36,6 +36,9 @@ class Chirp extends Component {
   }
 
   render() {
+    let containerClass = 'container';
+    if (this.props.index + 1 === this.props.total)
+      containerClass = 'container border-bottom';
     return (
       <ChirpContext.Provider
         value={{
@@ -58,7 +61,7 @@ class Chirp extends Component {
         }}
       >
         <section className="chirp">
-          <div className="container">
+          <div className={containerClass}>
             <div className="chirp-sidebar">
               <ProfileImage />
             </div>

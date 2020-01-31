@@ -6,6 +6,7 @@ import { AppContext } from '../utils/AppContext';
 const ChirpFeed = () => {
   const maxRange = 24;
   const [chirps, setChirps] = useState(null);
+  const [numChirps, setNumChirps] = useState(0);
   const [error, setError] = useState(null);
   const [location] = useState(0);
   const { user } = useContext(UserContext);
@@ -25,7 +26,6 @@ const ChirpFeed = () => {
         .then(response => response.json())
         .then(res => {
           setChirps(res);
-          // console.log(res);
         })
         .catch(error => {
           console.log(error);
@@ -35,13 +35,19 @@ const ChirpFeed = () => {
     getTheChirps();
   }, [location, user.accessToken, reply]);
 
+  useEffect(() => {
+    if (chirps !== null) setNumChirps(chirps.length);
+  }, [chirps]);
+
   return (
     <>
       {error ? <div className="chirp-feed-error">{error}</div> : null}
       {chirps === null
         ? null
         : chirps.map((chirp, index) => {
-            return <Chirp key={index} data={chirp} />;
+            return (
+              <Chirp key={index} data={chirp} index={index} total={numChirps} />
+            );
           })}
     </>
   );

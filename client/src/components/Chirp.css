@@ -13,9 +13,13 @@
   display: flex;
   flex-direction: row;
   max-width: 100%;
-  border-top: 1px solid white;
-  border-left: 1px solid white;
-  border-right: 1px solid white;
+  border-top: 1px solid var(--border-color);
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+}
+
+.chirp .border-bottom {
+  border-bottom: 1px solid var(--border-color);
 }
 
 .container .chirp-sidebar {
