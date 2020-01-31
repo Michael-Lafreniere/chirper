@@ -76,12 +76,19 @@ const isValidChirp = data => {
   return false;
 };
 
-const updateRepliedToChirp = async data => {
+const updateRepliedToChirp = async (data, chirpID) => {
   // Checks to see if the chirp exists.  Need to see if it's
-  // const chirpQuery = `SELECT * FROM chirps WHERE cid='${data.reply_to}';`;
-  // const chirpExists = await queryDB(chirpQuery);
-  // if (chirpExists.length > 0) {
-  console.log('here...');
+  const chirpQuery = `SELECT * FROM chirps WHERE cid='${data.reply_to}';`;
+  const chirp = await queryDB(chirpQuery);
+  if (chirp.length > 0) {
+    if (chirp.top_reply === undefined) {
+      await queryDB(
+        `UPDATE chirps SET top_reply='${chirpID}' WHERE cid='${data.reply_to}';`
+      );
+    } else {
+      // Need to search all replies
+    }
+  }
   await queryDB(
     `UPDATE chirps SET num_replies = num_replies + 1 WHERE cid='${data.reply_to}';`
   );
@@ -112,26 +119,21 @@ app.post('/chirps', async (req, res) => {
   const askedRange = end - start;
   if (askedRange > maxRange) end = maxRange;
 
-  // console.log('/chirps:');
-
   const hasUser = req.headers.authorization;
   if (hasUser) {
-    authenticateToken(req, res, () => {
-      // console.log('/chirps - user authenticated...');
-    });
+    authenticateToken(req, res, () => {});
   }
-  // console.log('/chirps - no user logged in...');
+
   const query =
-    'SELECT chirps.cid, chirps.content, chirps.num_rechirps, chirps.stars, chirps.reply_to, chirps.num_replies, chirps.created_on, chirps.star1, chirps.star2, chirps.image1, chirps.image2, chirps.image3, chirps.image4, user.display_name, user.handle, user.acct_verified, user.user_image, stars.sid FROM chirps INNER JOIN user ON chirps.user_id=user.uid LEFT OUTER JOIN stars ON chirps.user_id=stars.user_id AND chirps.cid=stars.chirp_id WHERE chirps.reply_to = -1 LIMIT 50;';
+    'SELECT chirps.cid, chirps.content, chirps.num_rechirps, chirps.stars, chirps.reply_to, chirps.top_reply, chirps.num_replies, chirps.created_on, chirps.star1, chirps.star2, chirps.image1, chirps.image2, chirps.image3, chirps.image4, user.display_name, user.handle, user.acct_verified, user.user_image, stars.sid FROM chirps INNER JOIN user ON chirps.user_id=user.uid LEFT OUTER JOIN stars ON chirps.user_id=stars.user_id AND chirps.cid=stars.chirp_id WHERE chirps.reply_to = -1 LIMIT 50;';
   const results = await queryDB(query);
-  // console.log(results);
   res.send(results);
 });
 
 app.post('/chirp', authenticateToken, async (req, res) => {
   if (isValidChirp(req.body)) {
     const { content } = req.body;
-    console.log('content:', content);
+    // console.log('content:', content);
     const chirp = {
       content: filter.clean(content.substr(0, 255)),
       reply_to: req.body.reply_to,
@@ -143,9 +145,11 @@ app.post('/chirp', authenticateToken, async (req, res) => {
     };
 
     const newChirp = `INSERT INTO chirps (content, reply_to, user_id) VALUES ('${chirp.content}', '${chirp.reply_to}', '${chirp.user_id}');`;
-    await queryDB(newChirp);
+    const reply = await queryDB(newChirp);
 
-    updateRepliedToChirp(chirp);
+    // console.log('reply:', reply);
+
+    updateRepliedToChirp(chirp, reply.insertId);
 
     req.setTimeout(0);
     res.status(200);
