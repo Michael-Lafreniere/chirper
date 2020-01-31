@@ -37,7 +37,7 @@ const ChirpFeed = () => {
 
   return (
     <>
-      <div className="chirp-feed-error">{error}</div>
+      {/* <div className="chirp-feed-error">{error}</div> */}
       {chirps === null
         ? null
         : chirps.map((chirp, index) => {

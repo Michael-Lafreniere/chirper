@@ -78,13 +78,13 @@ const isValidChirp = data => {
 
 const updateRepliedToChirp = async data => {
   // Checks to see if the chirp exists.  Need to see if it's
-  const chirpQuery = `SELECT * FROM chirps WHERE cid='${data.reply_to}';`;
-  const chirpExists = await queryDB(chirpQuery);
-  if (chirpExists.length > 0) {
-    await queryDB(
-      `UPDATE chirps SET num_replies = num_replies + 1 WHERE cid='${data.reply_to}';`
-    );
-  }
+  // const chirpQuery = `SELECT * FROM chirps WHERE cid='${data.reply_to}';`;
+  // const chirpExists = await queryDB(chirpQuery);
+  // if (chirpExists.length > 0) {
+  console.log('here...');
+  await queryDB(
+    `UPDATE chirps SET num_replies = num_replies + 1 WHERE cid='${data.reply_to}';`
+  );
 };
 
 //
@@ -121,10 +121,8 @@ app.post('/chirps', async (req, res) => {
     });
   }
   // console.log('/chirps - no user logged in...');
-  // const joinQuery =
-  //   'SELECT chirps.cid, chirps.content, chirps.num_rechirps, chirps.stars, chirps.reply_to, chirps.num_replies, chirps.created_on, chirps.star1, chirps.star2, chirps.image1, chirps.image2, chirps.image3, chirps.image4, user.display_name, user.handle, user.acct_verified, user.user_image, user.uid FROM chirps INNER JOIN user ON chirps.user_id=user.uid;';
   const query =
-    'SELECT chirps.cid, chirps.content, chirps.num_rechirps, chirps.stars, chirps.reply_to, chirps.num_replies, chirps.created_on, chirps.star1, chirps.star2, chirps.image1, chirps.image2, chirps.image3, chirps.image4, user.display_name, user.handle, user.acct_verified, user.user_image, stars.sid FROM chirps INNER JOIN user ON chirps.user_id=user.uid LEFT OUTER JOIN stars ON chirps.user_id=stars.user_id AND chirps.cid=stars.chirp_id;';
+    'SELECT * FROM chirps INNER JOIN user ON chirps.user_id=user.uid LEFT OUTER JOIN stars ON chirps.user_id=stars.user_id AND chirps.cid=stars.chirp_id WHERE chirps.reply_to = -1 LIMIT 50;';
   const results = await queryDB(query);
   res.send(results);
 });

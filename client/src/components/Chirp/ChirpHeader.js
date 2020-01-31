@@ -40,9 +40,10 @@ const ChirpHeader = () => {
     const current = new Date();
     if (current.getFullYear() === postedTime.getFullYear()) {
       if (current.getMonth() === postedTime.getMonth()) {
-        if (current.getDate() === postedTime.getDate()) {
-          if (current.getHours() === postedTime.getHours()) {
+        if (current.getDate() <= postedTime.getDate()) {
+          if (current.getHours() <= postedTime.getHours()) {
             if (current.getMinutes() === postedTime.getMinutes()) {
+              return `now`;
             } else {
               const diff = current.getMinutes() - postedTime.getMinutes();
               if (diff > 1) return `${diff} mins ago`;
@@ -100,7 +101,7 @@ const ChirpHeader = () => {
           >
             {convertedTime}
           </div>
-          <ToolTip text={String(postedTime)} />
+          {/* <ToolTip text={String(postedTime)} /> */}
         </div>
       </div>
     </>
