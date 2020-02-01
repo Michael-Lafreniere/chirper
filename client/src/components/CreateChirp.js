@@ -21,14 +21,14 @@ const createChirpReducer = (state, action) => {
       };
     case 'send':
       if (action.reply !== undefined) {
-        console.log(
-          'text:',
-          action.value,
-          'user:',
-          action.user,
-          'reply to:',
-          action.reply
-        );
+        // console.log(
+        //   'text:',
+        //   action.value,
+        //   'user:',
+        //   action.user,
+        //   'reply to:',
+        //   action.reply
+        // );
         postChirp(action.user, action.value, action.reply);
         action.setReply(-1);
         return {
