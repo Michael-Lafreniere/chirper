@@ -2,7 +2,7 @@ const express = require('express');
 const assert = require('assert');
 const bcrypt = require('bcryptjs');
 const cors = require('cors');
-//const jwt = require('jsonwebtoken');
+const helmet = require('helmet');
 require('dotenv').config();
 
 const { connectToDB, queryDB } = require('./dbAccess');
@@ -49,6 +49,7 @@ assert(
   'RATE_TIME_BETWEEN_MSG value not found in .env file.'
 );
 
+app.use(helmet());
 app.use(cors());
 app.use(express.json());
 

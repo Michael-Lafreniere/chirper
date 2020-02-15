@@ -1,7 +1,7 @@
 const express = require('express');
 const assert = require('assert');
 const path = require('path');
-//const mysql = require('mysql2');
+const helmet = require('helmet');
 const cors = require('cors');
 const Filter = require('bad-words');
 const rateLimit = require('express-rate-limit');
@@ -13,16 +13,16 @@ const { connectToDB, queryDB } = require('./dbAccess');
 const app = express();
 const filter = new Filter();
 
-let users = [
-  {
-    username: 'Mike',
-    title: 'Post 1'
-  },
-  {
-    username: 'Steve',
-    title: 'Post 2'
-  }
-];
+// let users = [
+//   {
+//     username: 'Mike',
+//     title: 'Post 1'
+//   },
+//   {
+//     username: 'Steve',
+//     title: 'Post 2'
+//   }
+// ];
 
 const {
   NODE_ENV,
@@ -46,6 +46,7 @@ assert(
 // Setup the express server:
 //
 //app.set('view engine', 'ejs');
+app.use(helmet());
 app.use(cors());
 // if (NODE_ENV === 'production') {
 //   app.set(express.static(path.join(__dirname, '/client/build')));
@@ -194,23 +195,41 @@ app.post('/star', authenticateToken, async (req, res) => {
 //
 // Error handing needs to be after routes:
 //
-app.get('*', function(req, res, next) {
-  let err = new Error(`${req.ip} tried to reach ${req.originalUrl}`); // Tells us which IP tried to reach a particular URL
-  err.statusCode = 404;
-  err.shouldRedirect = true; //New property on err so that our middleware will redirect
-  next(err);
+app.use((req, res, next) => {
+  const error = new Error(
+    `This is not the route you're looking for - ${req.originalUrl}`
+  );
+  res.status(404);
+  next(error);
 });
 
-app.use(function(err, req, res, next) {
-  console.error(err.message);
-  if (!err.statusCode) err.statusCode = 500; // Sets a generic server error status code if none is part of the err
-
-  if (err.shouldRedirect) {
-    res.render('error', { status: err.statusCode, message: err.message }); // Renders a myErrorPage.html for the user
-  } else {
-    res.status(err.statusCode).send(err.message); // If shouldRedirect is not defined in our error, sends our original err data
-  }
+// eslint-disable-next-line no-unused-vars
+app.use((error, req, res, next) => {
+  const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+  res.status(statusCode);
+  res.json({
+    message: error.message,
+    stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack
+  });
 });
+
+// app.get('*', function(req, res, next) {
+//   let err = new Error(`${req.ip} tried to reach ${req.originalUrl}`); // Tells us which IP tried to reach a particular URL
+//   err.statusCode = 404;
+//   err.shouldRedirect = true; //New property on err so that our middleware will redirect
+//   next(err);
+// });
+
+// app.use(function(err, req, res, next) {
+//   console.error(err.message);
+//   if (!err.statusCode) err.statusCode = 500; // Sets a generic server error status code if none is part of the err
+
+//   if (err.shouldRedirect) {
+//     res.render('error', { status: err.statusCode, message: err.message }); // Renders a myErrorPage.html for the user
+//   } else {
+//     res.status(err.statusCode).send(err.message); // If shouldRedirect is not defined in our error, sends our original err data
+//   }
+// });
 
 //
 // Start the server:
