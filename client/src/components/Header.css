@@ -1,6 +1,7 @@
-header {
+.app-header {
+  position: relative;
   display: flex;
-  /* justify-content: space-between; */
+  justify-content: center;
 }
 
 .title {
@@ -11,6 +12,11 @@ header {
   color: yellow;
 }
 
+.site-title {
+  font-size: 3em;
+  font-weight: bold;
+}
+
 .login-signup {
   margin: 0 5px;
   display: flex;
@@ -18,6 +24,26 @@ header {
 
 .login-signup form {
   height: 55px;
+}
+
+.right-side {
+  position: absolute;
+  right: 15px;
+  top: 5px;
+  display: flex;
+  align-items: center;
+  /* height: 1em; */
+}
+
+.login-logout {
+  margin-left: 20px;
+  padding: 0.5em 1em;
+  background-color: var(--highlight-color);
+  color: var(--base-color);
+  outline: none;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
 }
 
 .login-signup input {

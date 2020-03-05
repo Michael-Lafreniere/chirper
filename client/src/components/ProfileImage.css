@@ -1,4 +1,5 @@
 .user-image {
+  display: flex;
   width: var(--chirp-user-image-size);
   height: var(--chirp-user-image-size);
   padding: 5px 0 0 10px;

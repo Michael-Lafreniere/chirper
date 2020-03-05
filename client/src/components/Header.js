@@ -16,9 +16,10 @@ const Header = () => {
   }, [loginOpen, user]);
 
   const login = (
-    <>
-      <Login />/
+    <div className="right-side">
+      <Login />
       <button
+        className="login-logout"
         onClick={() => {
           setNewAcct(true);
           setLoginOpen(false);
@@ -26,12 +27,13 @@ const Header = () => {
       >
         Signup
       </button>
-    </>
+    </div>
   );
   const userInfo = (
-    <>
-      <ProfileImage />/
+    <div className="right-side">
+      <ProfileImage />
       <button
+        className="login-logout"
         onClick={() => {
           setUser(null);
           clearUserData();
@@ -40,14 +42,14 @@ const Header = () => {
       >
         Logout
       </button>
-    </>
+    </div>
   );
   return (
-    <header className="App-header">
+    <header className="app-header">
       <div className="title">
-        <h3>
+        <div className="site-title">
           my<span>C</span>hirper
-        </h3>
+        </div>
       </div>
       {loggedIn ? userInfo : login}
     </header>
